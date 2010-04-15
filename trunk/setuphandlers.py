@@ -77,7 +77,7 @@ def postInstall(context):
     site = context.getSite()
 
     # create the ELFolder to contain ELEvents
-    if 'eventslist_folder' not in site.objectIds():
+    if False: #Don't auto create: 'eventslist_folder' not in site.objectIds():
         folder = ELFolder('eventslist_folder')
         site._setObject('eventslist_folder', folder)
 
