@@ -37,6 +37,7 @@ __docformat__ = 'plaintext'
 
 # Classes
 import EventsConfiglet
+import EventsTool
 
 ##code-section init-module-footer #fill in your manual code here
 ##/code-section init-module-footer

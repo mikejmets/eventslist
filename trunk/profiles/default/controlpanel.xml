@@ -15,6 +15,17 @@
   <permission>Manage Portal Content</permission>
  </configlet>
 
+ <configlet title="EventsTool" 
+            action_id="EventsTool"
+            appId="eventslist" 
+            category="Products" 
+            condition_expr=""
+            url_expr="string:${portal_url}/portal_eventstool/view"
+            visible="True" 
+            i18n:attributes="title">
+  <permission>Manage portal</permission>
+ </configlet>
+
  <!-- ##code-section controlpanel.xml -->
  <!-- ##/code-section controlpanel.xml -->
 

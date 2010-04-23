@@ -39,6 +39,48 @@ class ELEventView(BrowserView):
 
 
 
+    def listPackages(self):
+        """ list the event packages
+        """
+        event = aq_inner(self.context)
+        pc = getToolByName(event, 'portal_catalog')
+        brains = pc(portal_type='Package',
+                    review_status='published',
+                    path='/'.join(event.getPhysicalPath()))
+        return [item.getObject() for item in brains]
+
+
+    def getEventParent(self):
+        """ check if this instance is a sub-event of a event
+        """
+        context = aq_inner(self.context)
+        context_state = getMultiAdapter((context, self.request),
+                                            name=u"plone_context_state")
+        parent = context_state.parent()
+        if parent and parent.portal_type == 'ELEvent':
+            return parent
+        return None
+
+
+    def listAgendaItems(self):
+        """ list the event agenda items
+        """
+        event = aq_inner(self.context)
+        pc = getToolByName(event, 'portal_catalog')
+        brains = pc(portal_type='AgendaItem',
+                    path='/'.join(event.getPhysicalPath()),
+                    sort_on='getItemStarts')
+        return [item.getObject() for item in brains]
+
+
+    def getNextWorkflowActions(self):
+        """ get the available workflow actions on the object
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        return wft.listActions(object=context)
+
+
     def __call__(self):
         """ Handle the signup form submission
         """
@@ -109,46 +151,12 @@ class ELEventView(BrowserView):
         return self.index()
 
 
-    def getNextWorkflowActions(self):
+    def validate_event(self):
         """ get the available workflow actions on the object
         """
         context = aq_inner(self.context)
-        wft = getToolByName(context, 'portal_workflow')
-        return wft.listActions(object=context)
-
-
-    def getEventParent(self):
-        """ check if this instance is a sub-event of a event
-        """
-        context = aq_inner(self.context)
-        context_state = getMultiAdapter((context, self.request),
-                                            name=u"plone_context_state")
-        parent = context_state.parent()
-        if parent and parent.portal_type == 'ELEvent':
-            return parent
-        return None
-
-
-    def listAgendaItems(self):
-        """ list the event agenda items
-        """
-        event = aq_inner(self.context)
-        pc = getToolByName(event, 'portal_catalog')
-        brains = pc(portal_type='AgendaItem',
-                    path='/'.join(event.getPhysicalPath()),
-                    sort_on='getItemStarts')
-        return [item.getObject() for item in brains]
-
-
-    def listPackages(self):
-        """ list the event packages
-        """
-        event = aq_inner(self.context)
-        pc = getToolByName(event, 'portal_catalog')
-        brains = pc(portal_type='Package',
-                    review_status='published',
-                    path='/'.join(event.getPhysicalPath()))
-        return [item.getObject() for item in brains]
+        et = getToolByName(context, 'portal_eventstool')
+        return et.validateEvent(event=context)
 
 
 ##code-section module-footer #fill in your manual code here

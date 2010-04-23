@@ -2,6 +2,8 @@
 <tool-setup>
  <required tool_id="portal_eventsconfiglet"
            class="Products.eventslist.utilities.EventsConfiglet.EventsConfiglet"/>
+ <required tool_id="portal_eventstool"
+           class="Products.eventslist.utilities.EventsTool.EventsTool"/>
 
  <!-- ##code-section toolset.xml -->
  <!-- ##/code-section toolset.xml -->

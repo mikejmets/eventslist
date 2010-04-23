@@ -5,6 +5,7 @@
 <!-- ##/code-section workflowobjects -->   
  <bindings>
   <type type_id="EventsConfiglet" />
+  <type type_id="EventsTool" />
   <type type_id="Booking">
    <bound-workflow workflow_id="booking_workflow" />
   </type>

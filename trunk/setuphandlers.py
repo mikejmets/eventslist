@@ -32,7 +32,7 @@ def setupHideToolsFromNavigation(context):
     if isNoteventslistProfile(context): return 
     # uncatalog tools
     site = context.getSite()
-    toolnames = ['portal_eventsconfiglet']
+    toolnames = ['portal_eventsconfiglet', 'portal_eventstool']
     portalProperties = getToolByName(site, 'portal_properties')
     navtreeProperties = getattr(portalProperties, 'navtree_properties')
     if navtreeProperties.hasProperty('idsNotToList'):
