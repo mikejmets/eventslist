@@ -89,6 +89,15 @@
         template="templates/RegistrationsView.pt"
         permission="zope2.View"
         />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="validate_event"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     template="templates/ELEventValidation.pt"
+     permission="zope2.View"
+     />
+
 <!-- ##/code-section BROWSER -->
 
 </configure>

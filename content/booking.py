@@ -40,7 +40,7 @@ schema = Schema((
             label_msgid='eventslist_label_salutation',
             i18n_domain='eventslist',
         ),
-        vocabulary=(('Mr', 'Mr'), ('Mrs', 'Mrs'), ('Miss','Miss'), ('Rev', 'Rev'), ('Hon', 'Hon'), ('Dr', 'Dr'), ('Prof', 'Prof'),),
+        vocabulary=(('mr', 'Mr'), ('mrs', 'Mrs'), ('miss','Miss'), ('rev', 'Rev'), ('hon', 'Hon'), ('dr', 'Dr'), ('prof', 'Prof'),),
     ),
     StringField(
         name='initials',

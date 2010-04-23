@@ -72,7 +72,7 @@ def initialize(context):
 
 
     # Initialize portal tools
-    tools = [utilities.EventsConfiglet.EventsConfiglet]
+    tools = [utilities.EventsConfiglet.EventsConfiglet, utilities.EventsTool.EventsTool]
     ToolInit( PROJECTNAME +' Tools',
                 tools = tools,
                 icon='tool.gif'
