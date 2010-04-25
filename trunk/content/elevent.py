@@ -40,7 +40,7 @@ schema = Schema((
 
     BooleanField(
         name='isInternal',
-        default="False",
+        default=False,
         widget=BooleanField._properties['widget'](
             label="Hosted with EventsList?",
             label_msgid='eventslist_label_isInternal',
@@ -49,7 +49,7 @@ schema = Schema((
     ),
     BooleanField(
         name='isBookable',
-        default="False",
+        default= False,
         widget=BooleanField._properties['widget'](
             label="Bookable event?",
             description="Enable online bookings",
@@ -285,7 +285,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             parent = getParentEvent(self)
             if parent:
                 return parent.getStartDate()
-            
+
     def getEndDate(self):
         if self.endDate:
             return self.endDate
