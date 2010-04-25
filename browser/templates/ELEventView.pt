@@ -280,9 +280,15 @@
       <input type="hidden" name="form.submitted" value="1" />
 
     <!-- ============================================================= -->
-    <tal:packages>
-    <h3 i18n:translate="registration_options">Registration Options</h3>
+    <tal:packages
+        tal:condition="python: only_for_editor or packages">
+    <h3 i18n:translate="pricing_options">Pricing Options</h3>
+    <tal:if tal:condition="context/isBookable">
+    </tal:if>
+    <tal:else tal:condition="context/isBookable">
+    </tal:else>
     <p i18n:translate="">Click the options that you want to participate in.</p>
+    <p i18n:translate="">Select the option that you want to participate in.</p>
     <p tal:condition="request/package_error|nothing"
        tal:content="request/package_error"
        style="color: red; font-weight: bold;">accept the disclaimer or else</p>
@@ -297,10 +303,12 @@
             <th tal:condition="context/canSignup"
                 i18n:translate="sign_up">Sign Up</th>
             <th i18n:translate="packages">Package</th>
-            <th i18n:translate="unit_price">Unit Cost</th>
-            <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
-            <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
-            <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+            <th i18n:translate="price">Price</th>
+            <tal:if tal:condition="context/isBookable">
+              <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
+              <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
+              <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+            </tal:if>
             <th tal:condition="only_for_editor"
                 i18n:translate="package_manage">Manage</th>
           </tr>
@@ -316,18 +324,20 @@
               <td>
                 <span metal:use-macro="python:pkg.widget('unitPrice', mode='view')" />
               </td>
+              <tal:if tal:condition="context/isBookable">
 
-              <td>
-                <span metal:use-macro="python:pkg.widget('earlyBirdRebate', mode='view')" />
-              </td>
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('earlyBirdRebate', mode='view')" />
+                  </td>
 
-              <td>
-                <span metal:use-macro="python:pkg.widget('lateComerPenalty', mode='view')" />
-              </td>
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('lateComerPenalty', mode='view')" />
+                  </td>
 
-              <td>
-                <span metal:use-macro="python:pkg.widget('cancellationRebate', mode='view')" />
-              </td>
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('cancellationRebate', mode='view')" />
+                  </td>
+              </tal:if>
               </metal:package>
               <td tal:condition="only_for_editor">
                 <a href="#"

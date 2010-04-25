@@ -21,7 +21,7 @@
     <table class="listing vertical">
       <tbody>
         <tr tal:condition="context/getUnitPrice">
-          <th i18n:translate="unit_price">Unit Cost</th>
+          <th i18n:translate="unit_price">Price</th>
           <td>
             <span metal:use-macro="python:context.widget('unitPrice', mode='view')" />
           </td>

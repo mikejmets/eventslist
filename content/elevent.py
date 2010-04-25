@@ -19,6 +19,9 @@ import interfaces
 
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 
+from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import \
+    ReferenceBrowserWidget
+from Products.ATVocabularyManager.namedvocabulary import NamedVocabulary
 from Products.eventslist.config import *
 
 # additional imports from tagged value 'import'
@@ -133,11 +136,23 @@ schema = Schema((
     ),
     LinesField(
         name='category',
-        widget=KeywordWidget(
+        widget=InAndOutWidget(
             label='Category',
             label_msgid='eventslist_label_category',
             i18n_domain='eventslist',
         ),
+        vocabulary=NamedVocabulary("""event_catagories"""),
+    ),
+    ReferenceField(
+        name="venue",
+        widget=ReferenceBrowserWidget(
+            label='Venue',
+            label_msgid='eventslist_label_Venue',
+            i18n_domain='eventslist',
+        ),
+        allowed_types=('Venue',),
+        multiValued=0,
+        relationship='elevent_venue',
     ),
 
 ),
@@ -152,10 +167,12 @@ ELEvent_schema = BaseFolderSchema.copy() + \
 
 ##code-section after-schema #fill in your manual code here
 ELEvent_schema.moveField('isInternal', after='title')
-ELEvent_schema.moveField('eventType', after='isInternal')
+ELEvent_schema.moveField('isBookable', after='isInternal')
+ELEvent_schema.moveField('eventType', after='isBookable')
 ELEvent_schema.moveField('text', after='description')
 ELEvent_schema.moveField('eventUrl', after='text')
-ELEvent_schema.moveField('location', after='eventUrl')
+ELEvent_schema.moveField('venue', after='eventUrl')
+ELEvent_schema.moveField('location', after='venue')
 ELEvent_schema.moveField('startDate', after='location')
 ELEvent_schema.moveField('endDate', after='startDate')
 ELEvent_schema.moveField('signupStartDate', after='endDate')
@@ -183,6 +200,10 @@ ELEvent_schema['startDate'].required = False
 ELEvent_schema['startDate'].default_method = 'getDefaultStartDate'
 ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
+
+#Change location wording
+ELEvent_schema['location'].widget.label = 'Other Location'
+ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
 
 ##/code-section after-schema
 
@@ -303,13 +324,6 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
                     return self.aq_parent
                 return getParentEvent(self.aq_parent)
             return getParentEvent(self.aq_parent)
-
-    def getCategory(self):
-        """fetch a list of the available categories from the vocabulary
-        """
-        f = self.getField('category')
-        result = self.collectKeywords('category', f.accessor)
-        return tuple(result)
 
 
 

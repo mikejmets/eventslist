@@ -1,31 +1,28 @@
 <?xml version="1.0"?>
-<object name="ELFolder"
+<object name="VenueFolder"
         meta_type="Factory-based Type Information with dynamic views"
         xmlns:i18n="http://xml.zope.org/namespaces/i18n"
         i18n:domain="plone">
    
- <property name="title" i18n:translate="">ELFolder</property>
+ <property name="title" i18n:translate="">VenueFolder</property>
  <property name="description" i18n:translate=""></property>
- <property name="content_icon">ELFolder.gif</property>
- <property name="content_meta_type">ELFolder</property>
+ <property name="content_icon">VenueFolder.gif</property>
+ <property name="content_meta_type">VenueFolder</property>
  <property name="product">eventslist</property>
- <property name="factory">addELFolder</property>
+ <property name="factory">addVenueFolder</property>
  <property name="immediate_view">folder_listing</property>
- <property name="global_allow">True</property>
+ <property name="global_allow">False</property>
  <property name="filter_content_types">True</property>
  <property name="allowed_content_types">
-   <element value="ELEvent"/>
-   <element value="CalendarXFolder"/>
-   <element value="VenueFolder"/>
+   <element value="Venue"/>
  </property>
  <property name="allow_discussion">False</property>
- <property name="default_view">view_el_folder</property>
+ <property name="default_view">folder_listing</property>
  <property name="view_methods">
   <element value="folder_summary_view"/>
   <element value="folder_tabular_view"/>
   <element value="atct_album_view"/>
   <element value="folder_listing"/>
-  <element value="view_el_folder"/>
  </property>
  <property name="default_view_fallback">False</property>
  <alias from="(Default)" to="(dynamic view)"/>
