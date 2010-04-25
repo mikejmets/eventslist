@@ -89,14 +89,14 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
         if top.isBookable:
             if len(top.contactName) == 0:
                 errors.append({'objects': (top,),
-                  'msg':'Contact name is required'})
+                  'msg':'Contact name is required for bookings'})
 
         """ Contact email requried for bookings
         """
         if top.isBookable:
             if len(top.contactEmail) == 0:
                 errors.append({'objects': (top,),
-                  'msg':'Contact name is required'})
+                  'msg':'Contact email is required for bookings'})
 
         if not top.hasSubEvents():
             """ Start date required for top if no subs exist

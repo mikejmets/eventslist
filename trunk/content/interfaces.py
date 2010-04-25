@@ -45,5 +45,13 @@ class IELMember(Interface):
     """Marker interface for .elmember.ELMember
     """
 
+class IVenue(Interface):
+    """Marker interface for .venue.Venue
+    """
+
+class IVenueFolder(Interface):
+    """Marker interface for .venuefolder.VenueFolder
+    """
+
 ##code-section FOOT
 ##/code-section FOOT

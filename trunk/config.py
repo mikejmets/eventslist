@@ -25,6 +25,7 @@ __docformat__ = 'plaintext'
 from Products.CMFCore.permissions import setDefaultRoles
 from Products.remember.permissions import ADD_MEMBER_PERMISSION
 ##code-section config-head #fill in your manual code here
+VERSION = "0.2 Beta"
 ##/code-section config-head
 
 
@@ -44,6 +45,8 @@ ADD_CONTENT_PERMISSIONS = {
     'InternalEvent': 'eventslist: Add InternalEvent',
     'EventAttendance': 'eventslist: Add EventAttendance',
     'ELMember': ADD_MEMBER_PERMISSION,
+    'Venue': 'eventslist: Add Venue',
+    'VenueFolder': 'eventslist: Add VenueFolder',
 }
 
 setDefaultRoles('eventslist: Add ELEvent', ('Manager','Owner'))
@@ -55,6 +58,8 @@ setDefaultRoles('eventslist: Add ELFolder', ('Manager','Owner'))
 setDefaultRoles('eventslist: Add AgendaItem', ('Manager','Owner'))
 setDefaultRoles('eventslist: Add InternalEvent', ('Manager','Owner'))
 setDefaultRoles('eventslist: Add EventAttendance', ('Manager','Owner'))
+setDefaultRoles('eventslist: Add Venue', ('Manager','Owner'))
+setDefaultRoles('eventslist: Add VenueFolder', ('Manager','Owner'))
 
 product_globals = globals()
 

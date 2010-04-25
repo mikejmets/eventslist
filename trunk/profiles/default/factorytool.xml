@@ -11,5 +11,7 @@
   <type portal_type="InternalEvent"/>
   <type portal_type="EventAttendance"/>
   <type portal_type="ELMember"/>
+  <type portal_type="Venue"/>
+  <type portal_type="VenueFolder"/>
  </factorytypes>
 </object>

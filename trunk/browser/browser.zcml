@@ -63,6 +63,14 @@
      permission="zope2.View"
      />
 
+  <browser:page
+     for="Products.eventslist.content.interfaces.IVenue"
+     name="VenueView"
+     class="Products.eventslist.browser.VenueView.VenueView"
+     template="templates/VenueView.pt"
+     permission="zope2.View"
+     />
+
 
 
  

@@ -41,6 +41,9 @@
   </p>
   </tal:errors>
 
+  <a href=""
+    tal:attributes="href string:${context/absolute_url}/view"
+    >Back to event</a>
 </div>
 
 </body>
