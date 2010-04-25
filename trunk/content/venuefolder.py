@@ -56,6 +56,7 @@ class VenueFolder(BaseFolder, BrowserDefaultMixin):
 
     # Methods
 
+
 registerType(VenueFolder, PROJECTNAME)
 # end of class VenueFolder
 
