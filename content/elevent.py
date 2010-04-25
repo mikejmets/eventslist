@@ -144,10 +144,10 @@ schema = Schema((
         vocabulary=NamedVocabulary("""event_catagories"""),
     ),
     ReferenceField(
-        name="venue",
+        name='venues',
         widget=ReferenceBrowserWidget(
-            label='Venue',
-            label_msgid='eventslist_label_Venue',
+            label='Venues',
+            label_msgid='eventslist_label_venues',
             i18n_domain='eventslist',
         ),
         allowed_types=('Venue',),
@@ -168,14 +168,16 @@ ELEvent_schema = BaseFolderSchema.copy() + \
 ##code-section after-schema #fill in your manual code here
 ELEvent_schema.moveField('isInternal', after='title')
 ELEvent_schema.moveField('isBookable', after='isInternal')
-ELEvent_schema.moveField('eventType', after='isBookable')
+ELEvent_schema.moveField('category', after='isInternal')
+ELEvent_schema.moveField('eventType', after='category')
 ELEvent_schema.moveField('text', after='description')
 ELEvent_schema.moveField('eventUrl', after='text')
-ELEvent_schema.moveField('venue', after='eventUrl')
-ELEvent_schema.moveField('location', after='venue')
+ELEvent_schema.moveField('venues', after='eventUrl')
+ELEvent_schema.moveField('location', after='venues')
 ELEvent_schema.moveField('startDate', after='location')
 ELEvent_schema.moveField('endDate', after='startDate')
-ELEvent_schema.moveField('signupStartDate', after='endDate')
+ELEvent_schema.moveField('registrationIsOpen', after='endDate')
+ELEvent_schema.moveField('signupStartDate', after='registrationIsOpen')
 ELEvent_schema.moveField('earlybirdEndDate', after='signupStartDate')
 ELEvent_schema.moveField('signupEndDate', after='earlybirdEndDate')
 ELEvent_schema.moveField('cancelEndDate', after='signupEndDate')
@@ -185,8 +187,7 @@ ELEvent_schema.moveField('contactPhone', after='contactEmail')
 ELEvent_schema.moveField('contactMobile', after='contactPhone')
 ELEvent_schema.moveField('contactFax', after='contactMobile')
 ELEvent_schema.moveField('attendees', after='contactFax')
-ELEvent_schema.moveField('registrationIsOpen', after='attendees')
-ELEvent_schema.moveField('liabilityClause', after='registrationIsOpen')
+ELEvent_schema.moveField('liabilityClause', after='attendees')
 ELEvent_schema.moveField('declarationAndConfirmation', after='liabilityClause')
 
 #Set default values from configlet tool
@@ -201,7 +202,8 @@ ELEvent_schema['startDate'].default_method = 'getDefaultStartDate'
 ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
 
-#Change location wording
+#Change field labels and descriptions
+ELEvent_schema['venues'].widget.label = 'Venue'
 ELEvent_schema['location'].widget.label = 'Other Location'
 ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
 
@@ -273,6 +275,28 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         configtool = getToolByName(self, 'portal_eventsconfiglet')
         return configtool.getDeclarationAndConfirmation()
 
+    def getStartDate(self):
+        if self.startDate:
+            return self.startDate
+        if self.isTopEvent():
+            subs = self.objectValues(spec='ELEvent')
+            return subs[0].startDate
+        else:
+            parent = getParentEvent(self)
+            if parent:
+                return parent.getStartDate()
+            
+    def getEndDate(self):
+        if self.endDate:
+            return self.endDate
+        if self.isTopEvent():
+            subs = self.objectValues(spec='ELEvent')
+            return subs[0].endDate
+        else:
+            parent = getParentEvent(self)
+            if parent:
+                return parent.getEndDate()
+
     def getDefaultStartDate(self):
         return
 
@@ -288,11 +312,14 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ()
 
     def getLocation(self):
+        venues = self.getVenues()
+        if venues:
+            return venues.title
         if len(self.location) > 0:
             return self.location
         parent = getParentEvent(self)
         if parent:
-            return parent.location
+            return parent.getLocation()
 
     def getContactName(self):
         if len(self.contactName) > 0:
