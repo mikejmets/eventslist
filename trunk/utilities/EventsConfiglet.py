@@ -104,7 +104,7 @@ class EventsConfiglet(UniqueObject, BaseContent, BrowserDefaultMixin):
 
     def getLiabilityClause(self):
         return """
-EventsList or any individual of the Organising Committee of the Workshop, cannot be held repsonsible for any loss, damage, injury, accident, delay or inconvenience experienced by the attending delegate or guest during their travel or stay. No guarantees of acceptance can be given for late registration or arrival.
+EventsList or any individual of the Organising Committee of the Workshop, cannot be held responsible for any loss, damage, injury, accident, delay or inconvenience experienced by the attending delegate or guest during their travel or stay. No guarantees of acceptance can be given for late registration or arrival.
         """
 
     def getDeclarationAndConfirmation(self):
