@@ -279,8 +279,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if self.startDate:
             return self.startDate
         if self.isTopEvent():
-            subs = self.objectValues(spec='ELEvent')
-            return subs[0].startDate
+            if self.hasSubEvents():
+                subs = self.objectValues(spec='ELEvent')
+                return subs[0].startDate
         else:
             parent = getParentEvent(self)
             if parent:
@@ -290,8 +291,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if self.endDate:
             return self.endDate
         if self.isTopEvent():
-            subs = self.objectValues(spec='ELEvent')
-            return subs[0].endDate
+            if self.hasSubEvents():
+                subs = self.objectValues(spec='ELEvent')
+                return subs[0].endDate
         else:
             parent = getParentEvent(self)
             if parent:
