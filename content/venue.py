@@ -108,13 +108,13 @@ schema = Schema((
 ##code-section after-local-schema #fill in your manual code here
 ##/code-section after-local-schema
 
-Venue_schema = BaseSchema.copy() + \
+Venue_schema = BaseFolderSchema.copy() + \
     schema.copy()
 
 ##code-section after-schema #fill in your manual code here
 ##/code-section after-schema
 
-class Venue(BaseContent, BrowserDefaultMixin):
+class Venue(BaseFolder, BrowserDefaultMixin):
     """
     """
     security = ClassSecurityInfo()
@@ -131,11 +131,38 @@ class Venue(BaseContent, BrowserDefaultMixin):
 
     # Methods
 
+    def getCountry(self):
+        if len(self.country) > 0:
+            return self.country
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getCountry()
+
+    def getParentVenue(self):
+        if self.aq_parent:
+            portal_type = self.aq_parent.get('portal_type', None)
+            if portal_type:
+                if portal_type == 'VenueFolder':
+                    return
+                if portal_type == 'Venue':
+                    return self.aq_parent
+                return getParentVenue(self.aq_parent)
+            return getParentVenue(self.aq_parent)
 
 registerType(Venue, PROJECTNAME)
 # end of class Venue
 
 ##code-section module-footer #fill in your manual code here
+def getParentVenue(obj):
+    if obj.aq_parent:
+        portal_type = obj.aq_parent.get('portal_type', None)
+        if portal_type:
+            if portal_type == 'VenueFolder':
+                return
+            if portal_type == 'Venue':
+                return obj.aq_parent
+            return getParentEvent(obj.aq_parent)
+        return getParentEvent(obj.aq_parent)
 ##/code-section module-footer
 
 
