@@ -204,6 +204,7 @@ ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
 
 #Change field labels and descriptions
 ELEvent_schema['venues'].widget.label = 'Venue'
+ELEvent_schema['venues'].widget.startup_directory_method = 'getVenueFolder'
 ELEvent_schema['location'].widget.label = 'Other Location'
 ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
 
@@ -354,6 +355,20 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
                 return getParentEvent(self.aq_parent)
             return getParentEvent(self.aq_parent)
 
+    def getEventFolder(self):
+        if self.aq_parent:
+            parent = self.aq_parent
+            portal_type = parent.get('portal_type', None)
+            if portal_type:
+                if portal_type == 'ELFolder':
+                    return parent
+                return parent.getEventFolder()
+            return parent.getEventFolder()
+
+    def getVenueFolder(self):
+        ef = self.getEventFolder()
+        if ef:
+            return '/'.join(ef.getPhysicalPath()) + '/%s-venues' % ef.__name__
 
 
 registerType(ELEvent, PROJECTNAME)
@@ -370,6 +385,7 @@ def getParentEvent(obj):
                 return obj.aq_parent
             return getParentEvent(obj.aq_parent)
         return getParentEvent(obj.aq_parent)
+
 ##/code-section module-footer
 
 
