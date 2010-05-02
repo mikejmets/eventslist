@@ -294,7 +294,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if self.isTopEvent():
             if self.hasSubEvents():
                 subs = self.objectValues(spec='ELEvent')
-                return subs[0].endDate
+                return subs[-1].endDate
         else:
             parent = getParentEvent(self)
             if parent:
