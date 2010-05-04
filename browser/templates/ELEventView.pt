@@ -93,7 +93,7 @@
               <td>
                   <a tal:condition="venueObj"
                      tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
-                     tal:content="venueObj/Title">Oslo, Norway
+                     tal:content="venueObj/getName">Oslo, Norway
                   </a>
                   <span class="location" 
                       tal:condition="python:not venueObj and locationText"
@@ -642,7 +642,7 @@
                                 venueObj evt/getVenueObject">
                 <a tal:condition="venueObj"
                    tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
-                   tal:content="venueObj/Title">Oslo, Norway
+                   tal:content="venueObj/getName">Oslo, Norway
                 </a>
                 <span class="location" 
                     tal:condition="python:not venueObj and locationText"

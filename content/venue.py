@@ -101,6 +101,15 @@ schema = Schema((
         ),
         label="Full Post Address",
     ),
+    StringField(
+        name='website',
+        widget=StringField._properties['widget'](
+            label='Website',
+            label_msgid='eventslist_label_website',
+            i18n_domain='eventslist',
+        ),
+        validators=('isURL',),
+    ),
 
 ),
 )
@@ -133,7 +142,7 @@ class Venue(BaseFolder, BrowserDefaultMixin):
 
     # Manually created methods
 
-    def Title(self):
+    def getName(self):
         if self.isTopVenue():
             return self.title
         else:
