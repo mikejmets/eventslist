@@ -131,12 +131,35 @@ class Venue(BaseFolder, BrowserDefaultMixin):
 
     # Methods
 
+    # Manually created methods
+
+    def Title(self):
+        if self.isTopVenue():
+            return self.title
+        else:
+            return '%s, %s' % (self.title, self.getParentVenue().Title())
+
     def getCountry(self):
         if len(self.country) > 0:
             return self.country
         parent = getParentVenue(self)
         if parent:
             return parent.getCountry()
+
+    def isTopVenue(self):
+      return not self.getParentVenue()
+
+    def getTopVenue(self):
+      top = self
+      while top.getParentVenue():
+          top = top.getParentVenue()
+      return top
+
+    def hasSubVenues(self):
+        return len(self.objectIds(spec='Venue')) > 0
+
+    def getSubVenue(self):
+        return self.objectValues(spec='Venue')
 
     def getParentVenue(self):
         if self.aq_parent:
@@ -148,6 +171,8 @@ class Venue(BaseFolder, BrowserDefaultMixin):
                     return self.aq_parent
                 return getParentVenue(self.aq_parent)
             return getParentVenue(self.aq_parent)
+
+
 
 registerType(Venue, PROJECTNAME)
 # end of class Venue

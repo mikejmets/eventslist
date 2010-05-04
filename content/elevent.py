@@ -31,8 +31,6 @@ from Products.ATContentTypes.content.event import ATEvent
 import logging
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
-from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import \
-    ReferenceBrowserWidget
 from Products.CMFPlone import PloneMessageFactory as _
 ##/code-section module-header
 
@@ -144,15 +142,16 @@ schema = Schema((
         vocabulary=NamedVocabulary("""event_catagories"""),
     ),
     ReferenceField(
-        name='venues',
+        name='venue',
         widget=ReferenceBrowserWidget(
-            label='Venues',
-            label_msgid='eventslist_label_venues',
+            label='Venue',
+            label_msgid='eventslist_label_venue',
             i18n_domain='eventslist',
         ),
         allowed_types=('Venue',),
         multiValued=0,
         relationship='elevent_venue',
+        default_method='getVenue',
     ),
 
 ),
@@ -172,8 +171,8 @@ ELEvent_schema.moveField('category', after='isInternal')
 ELEvent_schema.moveField('eventType', after='category')
 ELEvent_schema.moveField('text', after='description')
 ELEvent_schema.moveField('eventUrl', after='text')
-ELEvent_schema.moveField('venues', after='eventUrl')
-ELEvent_schema.moveField('location', after='venues')
+ELEvent_schema.moveField('venue', after='eventUrl')
+ELEvent_schema.moveField('location', after='venue')
 ELEvent_schema.moveField('startDate', after='location')
 ELEvent_schema.moveField('endDate', after='startDate')
 ELEvent_schema.moveField('registrationIsOpen', after='endDate')
@@ -203,8 +202,7 @@ ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
 
 #Change field labels and descriptions
-ELEvent_schema['venues'].widget.label = 'Venue'
-ELEvent_schema['venues'].widget.startup_directory_method = 'getVenueFolder'
+ELEvent_schema['venue'].widget.startup_directory_method = 'getVenueFolder'
 ELEvent_schema['location'].widget.label = 'Other Location'
 ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
 
@@ -315,9 +313,6 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ()
 
     def getLocation(self):
-        venues = self.getVenues()
-        if venues:
-            return venues.title
         if len(self.location) > 0:
             return self.location
         parent = getParentEvent(self)
@@ -369,6 +364,15 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         ef = self.getEventFolder()
         if ef:
             return '/'.join(ef.getPhysicalPath()) + '/%s-venues' % ef.__name__
+
+    def getVenueObject(self):
+        venue = self.getVenue()
+        if venue:
+           return venue
+        else:
+           if not self.isTopEvent():
+               return self.getParentEvent().getVenueObject()
+
 
 
 registerType(ELEvent, PROJECTNAME)

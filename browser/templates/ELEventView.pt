@@ -87,18 +87,17 @@
                 <span tal:replace="python:context.toLocalizedTime(context.getEarlybirdEndDate())">signup ends</span>
               </td>
           </tr>
-          <tr tal:condition="context/getLocation | nothing">
+          <tr tal:define="locationText context/getLocation;
+                              venueObj context/getVenueObject">
               <th i18n:translate="event_where">Where</th>
-              <td class="location" 
-                  tal:condition="python:not context.getVenues()"
-                  tal:content="context/getLocation">
-              </td>
-              <td class="location" 
-                  tal:condition="context/getVenues">
-                  <a 
-                     tal:attributes="href python:'%s/view' % context.getVenues().absolute_url()" 
-                     tal:content="python:context.getVenues().Title()">Oslo, Norway
+              <td>
+                  <a tal:condition="venueObj"
+                     tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+                     tal:content="venueObj/Title">Oslo, Norway
                   </a>
+                  <span class="location" 
+                      tal:condition="python:not venueObj and locationText"
+                      tal:content="locationText"/>
               </td>
           </tr>
           <tr tal:condition="context/getContactName">
@@ -639,7 +638,17 @@
                   <span tal:replace="python:ampm and evt.getEndDate().AMPMMinutes()or evt.getEndDate().TimeMinutes()">End Time</span>
               </tal:sameday>
             </td>
-            <td class="location" tal:content="evt/getLocation">Oslo, Norway</td>
+            <td tal:define="locationText evt/getLocation;
+                                venueObj evt/getVenueObject">
+                <a tal:condition="venueObj"
+                   tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+                   tal:content="venueObj/Title">Oslo, Norway
+                </a>
+                <span class="location" 
+                    tal:condition="python:not venueObj and locationText"
+                    tal:content="locationText">
+                </span>
+            </td>
             <!--
             <td>
               <tal:costinfo tal:condition="evt/getItemCost">
