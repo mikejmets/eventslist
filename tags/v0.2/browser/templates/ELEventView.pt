@@ -1,0 +1,736 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main">
+
+  <div class="vevent">
+
+  <h1 tal:content="object_title" class="documentFirstHeading summary">
+      Title or id
+  </h1>
+
+  <p tal:condition="request/input_errors|nothing"
+     tal:content="request/input_errors"
+     style="color: red; font-weight: bold;">correct the indicated errors</p>
+
+  <!-- ****************************************************************** -->
+
+  <div class="eventDetails vcard">
+  <table class="vertical listing"
+         summary="Event details" i18n:attributes="summary summary_event_details;">
+
+      <tbody>
+          <tr>
+              <th i18n:translate="event_what">What</th>
+              <td tal:content="python:modules['string'].join(context.getSubject(), ' ')">
+                  Subject
+              </td>
+          </tr>
+          <tr>
+              <th i18n:translate="event_when">When</th>
+              <td>
+                  <tal:differentday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate() != context.getEndDate()">
+                      <abbr class="dtstart"
+                            tal:attributes="title python:context.getStartDate()"
+                            tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
+                          Start Date Time
+                      </abbr>
+                      <span i18n:translate="event_to">to</span> <br />
+                      <abbr class="dtend"
+                            tal:attributes="title python:context.getEndDate()"
+                            tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
+                          End Date Time
+                      </abbr>
+                  </tal:differentday>
+
+                  <tal:sameday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate() == context.getEndDate()"
+                               tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                      <abbr class="dtstart"
+                            style="display: none;"
+                            tal:attributes="title python:context.getStartDate()"
+                            tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
+                          Start Date Time
+                      </abbr>
+                      <abbr class="dtend"
+                            style="display: none;"
+                            tal:attributes="title python:context.getEndDate()"
+                            tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
+                          End Date Time
+                      </abbr>
+                      <span tal:replace="python:context.toLocalizedTime(context.getStartDate())">Start Date Time</span> <br />
+                      <span i18n:translate="event_from">from</span>
+                      <span tal:replace="python:ampm and context.getStartDate().AMPMMinutes() or context.getStartDate().TimeMinutes()">Start Time</span>
+                      <span i18n:translate="event_to">to</span>
+                      <span tal:replace="python:ampm and context.getEndDate().AMPMMinutes()or context.getEndDate().TimeMinutes()">End Time</span>
+                  </tal:sameday>
+
+              </td>
+          </tr>
+          <tr tal:condition="context/getSignupStartDate | nothing">
+              <th i18n:translate="event_signup_start">Registration opens on</th>
+              <td class="location">
+                <span tal:replace="python:context.toLocalizedTime(context.getSignupStartDate())">signup starts</span>
+              </td>
+          </tr>
+          <tr tal:condition="context/getSignupEndDate | nothing">
+              <th i18n:translate="event_signup_ends">Registration closes on</th>
+              <td class="location">
+                <span tal:replace="python:context.toLocalizedTime(context.getSignupEndDate())">signup ends</span>
+              </td>
+          </tr>
+          <tr tal:condition="context/getEarlybirdEndDate | nothing">
+              <th i18n:translate="early_bird_ends">Early-bird bonus until</th>
+              <td class="location">
+                <span tal:replace="python:context.toLocalizedTime(context.getEarlybirdEndDate())">signup ends</span>
+              </td>
+          </tr>
+          <tr tal:define="locationText context/getLocation;
+                              venueObj context/getVenueObject">
+              <th i18n:translate="event_where">Where</th>
+              <td>
+                  <a tal:condition="venueObj"
+                     tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+                     tal:content="venueObj/getName">Oslo, Norway
+                  </a>
+                  <span class="location" 
+                      tal:condition="python:not venueObj and locationText"
+                      tal:content="locationText"/>
+              </td>
+          </tr>
+          <tr tal:condition="context/getContactName">
+              <th i18n:translate="contact_name">Contact Name</th>
+              <td class="fn"
+                  tal:content="context/getContactName">John Smith</td>
+          </tr>
+          <tr tal:define="contact_email context/getContactEmail"
+              tal:condition="context/getContactEmail">
+              <th i18n:translate="contact_email">Contact Email</th>
+              <td class="email">
+                  <a tal:replace="structure python: context.spamProtect(contact_email)" />
+              </td>
+          </tr>
+          <tr tal:condition="context/contact_phone">
+              <th i18n:translate="contact_phone">Contact Phone</th>
+              <td class="tel"
+                  tal:content="context/contact_phone">555-GET-PLONE</td>
+          </tr>
+          <tr tal:condition="context/getContactMobile">
+              <th i18n:translate="contact_mobile">Contact Mobile</th>
+              <td class="tel"
+                  tal:content="context/getContactMobile">555-GET-PLONE</td>
+          </tr>
+          <tr tal:condition="context/getContactFax">
+              <th i18n:translate="contact_fax">Contact Fax</th>
+              <td class="tel"
+                  tal:content="context/getContactFax">555-GET-PLONE</td>
+          </tr>
+          <tr>
+              <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
+              <td>
+                  <a href="#"
+                    tal:attributes="href string:${context/absolute_url}/vcs_view"
+                     title="Add this item to your vCal calendar"
+                     i18n:attributes="title title_add_to_vcal;">
+                      <img tal:replace="structure context/icon_export_vcal.png" src="" alt="" />
+                      <span i18n:translate="label_add_to_vcal">vCal</span></a><br />
+                  <a href="#"
+                    tal:attributes="href string:${context/absolute_url}/ics_view"
+                     title="Add this item to your iCal calendar"
+                     i18n:attributes="title title_add_to_ical;">
+                      <img tal:replace="structure context/icon_export_ical.png" src="" alt="" />
+                      <span i18n:translate="label_add_to_ical">iCal</span></a>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+  </div>
+
+  <!-- ****************************************************************** -->
+
+  <tal:byline tal:condition="python:checkPermission('Change portal events', context)">
+  <div metal:use-macro="context/document_byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+  </div>
+  </tal:byline>
+
+  <p class="documentDescription description"
+     tal:content="context/Description"
+     tal:condition="context/Description">
+      Description
+  </p>
+
+  <div tal:condition="context/getText|nothing">
+      <div tal:replace="structure context/getText" />
+  </div>
+
+  <p tal:condition="context/event_url|nothing">
+      <a class="url"
+         href="event_url"
+         tal:attributes="href context/event_url"
+         i18n:translate="visit_organiser_website">
+         Visit the organiser&apos;s website &hellip;</a>
+  </p>
+
+  </div>
+
+    <!-- ********************************************************************** -->
+
+  <tal:manage tal:condition="python:checkPermission('Change portal events', context)">
+    <h2 i18n:translate="manage_the_event">Manage the Event</h2>
+
+    <div>
+      <a href="edit"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        i18n:translate="edit_event">Edit</a>
+      &nbsp;&nbsp;
+      <a tal:attributes="href string:${context/absolute_url}/delete_confirmation"
+        i18n:translate="delete_event">Delete</a>
+      &nbsp;&nbsp;
+      <a tal:attributes="href string:${context/absolute_url}/validate_event"
+        i18n:translate="validate_event">Validate</a>
+      &nbsp;&nbsp;
+      <tal:actions tal:repeat="action view/getNextWorkflowActions">
+        <a tal:attributes="href action/url"
+           tal:condition="python:action['category'] == 'workflow'"
+           tal:content="action/name">workflow action</a>
+      </tal:actions>
+      &nbsp;&nbsp;
+      <a tal:define="eventparent view/getEventParent|nothing"
+         tal:condition="python:eventparent"
+         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
+        <span i18n:translate="up_to">Up to</span>
+        <span tal:content="eventparent/Title">parent</span>
+      </a>
+    </div>
+  </tal:manage>
+
+  <!-- ****************************************************************** -->
+
+  <tal:event_details
+      tal:define="
+        only_for_editor python:checkPermission('Change portal events', context);
+        packages view/listPackages|nothing">
+    <!-- ============================================================= -->
+    <tal:items 
+      tal:define="items view/listAgendaItems|nothing"
+        tal:condition="python:only_for_editor or items">
+    <h3 i18n:translate="event_agenda">Event Agenda</h3>
+      <a href="#"
+        tal:condition="only_for_editor"
+        tal:attributes="href string:${context/absolute_url}/createObject?type_name=AgendaItem"
+        i18n:translate="add_agenda_item">Add an Agenda Item</a>
+    <div tal:condition="items">
+      <table class="listing vertical">
+        <tbody>
+          <tr>
+            <th i18n:translate="agenda_item">Item</th>
+            <th i18n:translate="agenda_presenters">Presenters</th>
+            <th i18n:translate="agenda_when">When</th>
+            <th i18n:translate="agenda_where">Where</th>
+            <th tal:condition="only_for_editor"
+                i18n:translate="agenda_manage">Manage</th>
+          </tr>
+          <tr tal:repeat="item items">
+            <metal:agenda_entry metal:define-macro="agenda_item_entry">
+            <td>
+              <a href=""
+                tal:attributes="href string:${item/absolute_url}/view"
+                tal:content="item/Title">title</a>
+            </td>
+            <td tal:define="persons item/getPresenters">
+              <tal:presenter tal:repeat="oke persons">
+              <span tal:content="oke">person</span><br />
+              </tal:presenter>
+            </td>
+            <td>
+              <strong i18n:translate="starts_at">Starts at:</strong>
+              <span tal:content="python:context.toLocalizedTime(item.getItemStarts(), long_format=1)">start</span>
+              <br />
+              <strong i18n:translate="duration">Duration:</strong>
+              <span tal:content="item/getDuration">duration</span>
+              <span i18n:translate="duration">minutes</span>
+            </td>
+            <td>
+              <strong i18n:translate="building">Building:</strong>
+              <span tal:content="item/getBuilding">building</span>
+              <br />
+              <strong i18n:translate="room">Room:</strong>
+              <span tal:content="item/getRoom">room</span>
+              <br />
+            </td>
+            </metal:agenda_entry>
+            <td tal:condition="only_for_editor">
+              <a href="#"
+                tal:attributes="href string:${item/absolute_url}/edit"
+                i18n:translate="agenda_edit">Edit</a><br />
+              <a href="#"
+                tal:attributes="href string:${item/absolute_url}/delete_confirmation"
+                i18n:translate="agenda_delete">Delete</a><br />
+              <tal:actions tal:repeat="action item/@@view_agenda_item/getNextWorkflowActions">
+                <a tal:attributes="href action/url"
+                   tal:condition="python:action['category'] == 'workflow'"
+                   tal:content="action/name">workflow action</a><br />
+              </tal:actions>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </tal:items>
+
+    <!-- ********************************************************************** -->
+    <form action="register"
+          tal:attributes="action string:${context/absolute_url}/${view/__name__}"
+          method="post">
+
+      <input type="hidden" name="form.submitted" value="1" />
+
+    <!-- ============================================================= -->
+    <tal:packages
+        tal:condition="python: only_for_editor or packages">
+    <h3 i18n:translate="pricing_options">Pricing Options</h3>
+    <tal:if tal:condition="context/isBookable">
+    </tal:if>
+    <tal:else tal:condition="context/isBookable">
+    </tal:else>
+    <p i18n:translate="">Click the options that you want to participate in.</p>
+    <p i18n:translate="">Select the option that you want to participate in.</p>
+    <p tal:condition="request/package_error|nothing"
+       tal:content="request/package_error"
+       style="color: red; font-weight: bold;">accept the disclaimer or else</p>
+    <a href="#"
+      tal:condition="only_for_editor"
+      tal:attributes="href string:${context/absolute_url}/createObject?type_name=Package"
+      i18n:translate="add_package">Add a Registration Option</a>
+    <div tal:condition="packages">
+      <table class="listing vertical">
+        <tbody>
+          <tr>
+            <th tal:condition="context/canSignup"
+                i18n:translate="sign_up">Sign Up</th>
+            <th i18n:translate="packages">Package</th>
+            <th i18n:translate="price">Price</th>
+            <tal:if tal:condition="context/isBookable">
+              <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
+              <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
+              <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+            </tal:if>
+            <th tal:condition="only_for_editor"
+                i18n:translate="package_manage">Manage</th>
+          </tr>
+            <tr tal:repeat="pkg packages">
+              <td tal:condition="context/canSignup"
+                  class="package_selection">
+                <input type="radio" name="package" checked="" value=""
+                      tal:attributes="value pkg/UID;
+                                      checked python:request.get('package', None) == pkg.UID() and 'checked' or None" />
+              </td>
+              <td tal:content="pkg/Title">package</td>
+              <metal:package metal:define-macro="package_details">
+              <td>
+                <span metal:use-macro="python:pkg.widget('unitPrice', mode='view')" />
+              </td>
+              <tal:if tal:condition="context/isBookable">
+
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('earlyBirdRebate', mode='view')" />
+                  </td>
+
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('lateComerPenalty', mode='view')" />
+                  </td>
+
+                  <td>
+                    <span metal:use-macro="python:pkg.widget('cancellationRebate', mode='view')" />
+                  </td>
+              </tal:if>
+              </metal:package>
+              <td tal:condition="only_for_editor">
+                <a href="#"
+                  tal:attributes="href string:${pkg/absolute_url}/edit"
+                  i18n:translate="agenda_edit">Edit</a><br />
+                <a href="#"
+                  tal:attributes="href string:${pkg/absolute_url}/delete_confirmation"
+                  i18n:translate="agenda_delete">Delete</a><br />
+                <tal:actions 
+                      tal:repeat="action pkg/@@view_package/getNextWorkflowActions">
+                  <a tal:attributes="href action/url"
+                     tal:condition="python:action['category'] == 'workflow'"
+                     tal:content="action/name">workflow action</a><br />
+                </tal:actions>
+              </td>
+            </tr>
+        </tbody>
+      </table>
+    </div>
+    </tal:packages>
+
+    <!-- ============================================================= -->
+    <tal:events 
+        tal:define="internals python:context.objectValues(spec='InternalEvent') or None"
+        tal:condition="python:only_for_editor or internals">
+    <h3 i18n:translate="internal_events">Optional Events During the Main Event</h3>
+    <a href="#"
+      tal:condition="only_for_editor"
+      tal:attributes="href string:${context/absolute_url}/createObject?type_name=InternalEvent"
+      i18n:translate="add_internal_event">Add an Event</a>
+    <div tal:condition="internals">
+      <table class="listing vertical">
+        <tbody>
+          <tr>
+            <th tal:condition="context/canSignup"
+                i18n:translate="view_signup">Sign Up</th>
+            <th i18n:translate="view_details_events">View details of the event</th>
+            <th i18n:translate="view_when">When</th>
+            <th i18n:translate="view_where">Where</th>
+            <th i18n:translate="view_cost">Cost per Attendee</th>
+            <th tal:condition="only_for_editor"
+                i18n:translate="item_manage">Manage</th>
+          </tr>
+          <tr tal:repeat="evt internals">
+            <tal:has_internal_value 
+                tal:condition="context/canSignup"
+                tal:define="internal_value request/internal_event|nothing">
+              <td class="internal_selection" tal:condition="internal_value">
+                <input 
+                  type="checkbox" name="internal_event" value=""
+                  tal:attributes="
+                    value evt/UID;
+                    checked python:(internal_value == evt.UID() or evt.UID() in internal_value) and 'checked' or None" />
+              </td>
+              <td class="internal_selection" tal:condition="not:internal_value">
+                <input 
+                  type="checkbox" name="internal_event" value=""
+                  tal:attributes="value evt/UID" />
+              </td>
+            </tal:has_internal_value>
+            <metal:events metal:define-macro="internal_event_details">
+            <td>
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/view"
+                tal:content="evt/Title">event</a>
+            </td>
+            <td>
+              <abbr class="dtstart"
+                    tal:attributes="title python:evt.getItemStarts()"
+                    tal:content="python:context.toLocalizedTime(evt.getItemStarts(), long_format=1)">
+                  Start Date Time
+              </abbr>
+            </td>
+            <td class="location" tal:content="evt/getLocation">Oslo, Norway</td>
+            <td>
+              <tal:costinfo tal:condition="evt/getItemCost">
+              <span tal:content="evt/getItemCost">R50.00</span>
+              </tal:costinfo>
+            </td>
+            </metal:events>
+            <td  tal:condition="only_for_editor"
+                 tal:define="evtview nocall:evt/@@view_internalevent">
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/edit"
+                i18n:translate="agenda_edit">Edit</a><br />
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
+                i18n:translate="agenda_delete">Delete</a><br />
+              <tal:actions tal:repeat="action evtview/getNextWorkflowActions">
+                <a tal:attributes="href action/url"
+                   tal:condition="python:action['category'] == 'workflow'"
+                   tal:content="action/name">workflow action</a><br />
+              </tal:actions>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </tal:events>
+
+    <!-- ============================================================= -->
+    <tal:events 
+        tal:define="externals python:context.objectValues(spec='ExternalEvent') or None"
+        tal:condition="python:only_for_editor or externals">
+    <h3 i18n:translate="external_events">Optional Events Outside the Main Event</h3>
+    <a href="#"
+      tal:condition="only_for_editor"
+      tal:attributes="href string:${context/absolute_url}/createObject?type_name=ExternalEvent"
+      i18n:translate="add_internal_event">Add an Event</a>
+    <div tal:condition="externals">
+      <table class="listing vertical">
+        <tbody>
+          <tr>
+            <th tal:condition="context/canSignup"
+                i18n:translate="sign_up">Sign Up</th>
+            <th i18n:translate="view_details_events">View details of the event</th>
+            <th i18n:translate="when_events">When</th>
+            <th i18n:translate="where_events">Where</th>
+            <th i18n:translate="cost_events">Cost per Attendee</th>
+            <th tal:condition="only_for_editor"
+                i18n:translate="item_manage">Manage</th>
+          </tr>
+          <tr tal:repeat="evt externals">
+            <tal:has_external_value 
+                tal:condition="context/canSignup"
+                tal:define="external_value request/external_event|nothing">
+              <td class="external_selection" tal:condition="external_value">
+                <input 
+                  type="checkbox" name="external_event" value=""
+                  tal:attributes="
+                    value evt/UID;
+                    checked python:(external_value == evt.UID() or evt.UID() in external_value) and 'checked' or None" />
+              </td>
+              <td class="external_selection" tal:condition="not:external_value">
+                <input 
+                  type="checkbox" name="external_event" value=""
+                  tal:attributes="value evt/UID" />
+              </td>
+            </tal:has_external_value>
+            <metal:events metal:define-macro="external_event_details">
+            <td>
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/view"
+                tal:content="evt/Title">event</a>
+            </td>
+            <td>
+              <tal:differentday tal:condition="python:not evt.getItemStarts() == evt.getItemEnds()">
+                  <abbr class="dtstart"
+                        tal:attributes="title python:evt.getItemStarts()"
+                        tal:content="python:context.toLocalizedTime(evt.getItemStarts(), long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <span i18n:translate="event_to">to</span> <br />
+                  <abbr class="dtend"
+                        tal:attributes="title python:evt.getItemEnds()"
+                        tal:content="python:context.toLocalizedTime(evt.getItemEnds(), long_format=1)">
+                      End Date Time
+                  </abbr>
+              </tal:differentday>
+
+              <tal:sameday tal:condition="python:evt.getItemStarts() == evt.getItemEnds()"
+                           tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                  <abbr class="dtstart"
+                        style="display: none;"
+                        tal:attributes="title python:evt.getItemStarts()"
+                        tal:content="python:context.toLocalizedTime(evt.getItemStarts(), long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <abbr class="dtend"
+                        style="display: none;"
+                        tal:attributes="title python:evt.getItemEnds()"
+                        tal:content="python:context.toLocalizedTime(evt.getItemEnds(), long_format=1)">
+                      End Date Time
+                  </abbr>
+                  <span tal:replace="python:context.toLocalizedTime(evt.getItemStarts())">Start Date Time</span> <br />
+                  <span i18n:translate="event_from">from</span>
+                  <span tal:replace="python:ampm and evt.getItemStarts().AMPMMinutes() or evt.getItemStarts().TimeMinutes()">Start Time</span>
+                  <span i18n:translate="event_to">to</span>
+                  <span tal:replace="python:ampm and evt.getItemEnds().AMPMMinutes()or evt.getItemEnds().TimeMinutes()">End Time</span>
+              </tal:sameday>
+            </td>
+            <td class="location" tal:content="evt/getLocation">Oslo, Norway</td>
+            <td>
+              <tal:costinfo tal:condition="evt/getItemCost">
+              <span tal:content="evt/getItemCost">R50.00</span>
+              </tal:costinfo>
+            </td>
+            </metal:events>
+            <td  tal:condition="only_for_editor"
+                 tal:define="evtview nocall:evt/@@view_external_event">
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/edit"
+                i18n:translate="agenda_edit">Edit</a><br />
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
+                i18n:translate="agenda_delete">Delete</a><br />
+              <tal:actions tal:repeat="action evtview/getNextWorkflowActions">
+                <a tal:attributes="href action/url"
+                   tal:condition="python:action['category'] == 'workflow'"
+                   tal:content="action/name">workflow action</a><br />
+              </tal:actions>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </tal:events>
+
+    <!-- ============================================================= -->
+    <tal:events 
+        tal:define="subevents python:context.objectValues(spec='ELEvent') or None"
+        tal:condition="python:only_for_editor or subevents">
+    <h3 i18n:translate="external_events">Events within the Umbrella Event</h3>
+    <a href="#"
+      tal:condition="only_for_editor"
+      tal:attributes="href string:${context/absolute_url}/createObject?type_name=ELEvent"
+      i18n:translate="add_internal_event">Add an Event</a>
+    <div tal:condition="subevents">
+      <table class="listing">
+        <thead>
+          <tr>
+            <th tal:condition="context/canSignup"
+                i18n:translate="sign_up">Sign Up</th>
+            <th i18n:translate="view_details_events">View details of the event</th>
+            <th i18n:translate="when_events">When</th>
+            <th i18n:translate="where_events">Where</th>
+            <!--<th i18n:translate="cost_events">Cost per Attendee</th>-->
+            <th tal:condition="only_for_editor"
+                i18n:translate="item_manage">Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="evt subevents">
+            <tal:has_external_value 
+                tal:condition="context/canSignup"
+                tal:define="external_value request/external_event|nothing">
+              <td class="external_selection" tal:condition="external_value">
+                <input 
+                  type="checkbox" name="external_event" value=""
+                  tal:attributes="
+                    value evt/UID;
+                    checked python:(external_value == evt.UID() or evt.UID() in external_value) and 'checked' or None" />
+              </td>
+              <td class="external_selection" tal:condition="not:external_value">
+                <input 
+                  type="checkbox" name="external_event" value=""
+                  tal:attributes="value evt/UID" />
+              </td>
+            </tal:has_external_value>
+            <metal:events metal:define-macro="sub_event_details">
+            <td>
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/view"
+                tal:content="evt/Title">event</a>
+            </td>
+            <td>
+              <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() != evt.getEndDate()">
+                  <abbr class="dtstart"
+                        tal:attributes="title python:evt.getStartDate()"
+                        tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <span i18n:translate="event_to">to</span> <br />
+                  <abbr class="dtend"
+                        tal:attributes="title python:evt.getEndDate()"
+                        tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
+                      End Date Time
+                  </abbr>
+              </tal:differentday>
+
+              <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() == evt.getEndDate()"
+                           tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                  <abbr class="dtstart"
+                        style="display: none;"
+                        tal:attributes="title python:evt.getStartDate()"
+                        tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <abbr class="dtend"
+                        style="display: none;"
+                        tal:attributes="title python:evt.getEndDate()"
+                        tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
+                      End Date Time
+                  </abbr>
+                  <span tal:replace="python:context.toLocalizedTime(evt.getStartDate())">Start Date Time</span> <br />
+                  <span i18n:translate="event_from">from</span>
+                  <span tal:replace="python:ampm and evt.getStartDate().AMPMMinutes() or evt.getStartDate().TimeMinutes()">Start Time</span>
+                  <span i18n:translate="event_to">to</span>
+                  <span tal:replace="python:ampm and evt.getEndDate().AMPMMinutes()or evt.getEndDate().TimeMinutes()">End Time</span>
+              </tal:sameday>
+            </td>
+            <td tal:define="locationText evt/getLocation;
+                                venueObj evt/getVenueObject">
+                <a tal:condition="venueObj"
+                   tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+                   tal:content="venueObj/getName">Oslo, Norway
+                </a>
+                <span class="location" 
+                    tal:condition="python:not venueObj and locationText"
+                    tal:content="locationText">
+                </span>
+            </td>
+            <!--
+            <td>
+              <tal:costinfo tal:condition="evt/getItemCost">
+              <span tal:content="evt/getItemCost">R50.00</span>
+              </tal:costinfo>
+            </td>
+            -->
+            </metal:events>
+            <td  tal:condition="only_for_editor">
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/edit"
+                i18n:translate="agenda_edit">Edit</a><br />
+              <a href="#"
+                tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
+                i18n:translate="agenda_delete">Delete</a><br />
+              <tal:actions tal:repeat="action evt/getNextWorkflowActions">
+                <a tal:attributes="href action/url"
+                   tal:condition="python:action['category'] == 'workflow'"
+                   tal:content="action/name">workflow action</a><br />
+              </tal:actions>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    </tal:events>
+
+    <!-- ============================================================= -->
+    <tal:disclaimer tal:condition="context/canSignup">
+    <h3 i18n:translate="liability_disclaimer">Disclaimer and Agreement</h3>
+    <p tal:condition="request/disclaimer_error|nothing"
+       tal:content="request/disclaimer_error"
+       style="color: red; font-weight: bold;">accept the disclaimer or else</p>
+    <div>
+      <table class="listing vertical">
+        <tr>
+          <td colspan="2" 
+            tal:content="structure context/getLiabilityClause">liability clause</td>
+        </tr>
+        <tr>
+          <td>
+            <input type="checkbox" name="accept_disclaimer" checked=""
+              tal:attributes="checked python:request.get('accept_disclaimer', False) and 'checked' or None" />
+          </td>
+          <td tal:content="structure context/getDeclarationAndConfirmation">
+            declaration text
+          </td>
+        </tr>
+      </table>
+    </div>
+    </tal:disclaimer>
+
+    <!-- ============================================================= -->
+    <div tal:condition="context/canSignup">
+      <br />
+      <input type="submit" name="form.button.submit" value="Sign up"
+             class="standalone"
+             i18n:attributes="value sign_up" />
+      &nbsp;  
+      &nbsp;  
+      &nbsp;  
+      <span style="color: green; font-weight: bold;">
+        <span i18n:translate="total">Total:</span>
+        <span id="total_amount_display"
+          tal:content="request/total_amount|string:R 0.00">R 0.00</span> 
+      </span>
+    </div>
+
+    <input tal:condition="context/canSignup"
+           type="hidden" 
+           name="total_amount" 
+           id="total_amount_hidden"
+           value="R 0.00"
+           tal:attributes="value request/total_amount|string:R 0.00" />
+
+    </form>
+
+  </tal:event_details>
+
+  <!-- ********************************************************************* -->
+
+</div>
+
+</body>
+</html>
