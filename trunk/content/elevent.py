@@ -151,7 +151,6 @@ schema = Schema((
         allowed_types=('Venue',),
         multiValued=0,
         relationship='elevent_venue',
-        default_method='getVenue',
     ),
 
 ),
