@@ -106,6 +106,21 @@
      permission="zope2.View"
      />
 
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="sub_event_listing"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     template="templates/SubEventsView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="create-sub-events"
+     class="Products.eventslist.browser.subeventview.SubEventForm"
+     permission="zope2.View"
+     />
+
 <!-- ##/code-section BROWSER -->
 
 </configure>
