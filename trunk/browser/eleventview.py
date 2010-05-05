@@ -93,59 +93,93 @@ class ELEventView(BrowserView):
         # check if the sign up form has been submitted
         form = self.request.form
         if form.get('form.submitted', False):
+            sign_up_button = form.get('form.button.SignUp', None) is not None
+            add_sub_event_button = \
+                form.get('form.button.AddSubEvent', None) is not None
+
             post_back = False
 
-            # check that the disclaimer was accepted
-            if not form.get('accept_disclaimer', False):
-                self.request.set('disclaimer_error', u'Please accept the disclaimer')
-                post_back = True
+            if sign_up_button:
+                # check that the disclaimer was accepted
+                if not form.get('accept_disclaimer', False):
+                    self.request.set('disclaimer_error', u'Please accept the disclaimer')
+                    post_back = True
 
-            # check that at least a package linked to the main event has been checked
-            package = form.get('package', '')
-            if not package:
-                self.request.set('package_error', u'Please select a pacakage')
-                post_back = True
+                # check that at least a package linked to the main event has been checked
+                package = form.get('package', '')
+                if not package:
+                    self.request.set('package_error', u'Please select a pacakage')
+                    post_back = True
 
-            if post_back:
-                self.request.set('input_errors',
+                if post_back:
+                    self.request.set('input_errors',
+                                    u'Please correct the errors indicated below')
+                else:
+                    # get the logged in member
+                    mt = getToolByName(context, 'portal_membership')
+                    member = mt.getAuthenticatedMember()
+                    #find the member's event attendance object
+                    if 'event_attendance' not in member.objectIds():
+                        member.invokeFactory('EventAttendance', 'event_attendance', \
+                                title='Attendance Attributes and Bookings')
+                    event_prefs = member['event_attendance']
+
+                    # create the event booking
+                    rid = event_prefs.generateUniqueId('Booking')
+                    event_prefs.invokeFactory('Booking', rid)
+                    booking = getattr(event_prefs, rid)
+                    booking.setTitle(context.Title())
+                    booking.setElevents(context.UID())
+                    booking.setElmembers(member.UID())
+
+                    # set the references to the optional events
+                    # the member is signing up for
+                    booking.setPackages(package)
+                    internal_events = form.get('internal_event',[])
+                    booking.setInternalevents(internal_events)
+                    external_events = form.get('external_event', [])
+                    booking.setExternalevents(external_events)
+                    total_cost = form.get('total_amount', 'R 0.00')
+                    logging.info('Total cost on form: %s', total_cost)
+                    booking.setTotalCost(Money(total_cost, 'ZAR'))
+                    logging.info('Booking total cost: %s', booking.getTotalCost())
+
+                    booking.reindexObject()
+                    logging.info('After reindex total cost: %s', booking.getTotalCost())
+
+                    # redirect the member to capture their personal details
+                    self.request.response.redirect(booking.absolute_url() + "/edit")
+                    return ''
+
+            if add_sub_event_button:
+                # check that the disclaimer was accepted
+                if not form.get('event_title', False):
+                    self.request.set(
+                        'event_title', u'Title is required')
+                    post_back = True
+                if not form.get('event_start_date', False):
+                    self.request.set(
+                        'event_start_date', u'Start date is required')
+                    post_back = True
+                if not form.get('event_end_date', False):
+                    self.request.set(
+                        'event_end_date', u'End date is required')
+                    post_back = True
+                if post_back:
+                    self.request.set('input_errors',
                                 u'Please correct the errors indicated below')
-            else:
-                # get the logged in member
-                mt = getToolByName(context, 'portal_membership')
-                member = mt.getAuthenticatedMember()
-                #find the member's event attendance object
-                if 'event_attendance' not in member.objectIds():
-                    member.invokeFactory('EventAttendance', 'event_attendance', \
-                            title='Attendance Attributes and Bookings')
-                event_prefs = member['event_attendance']
-
-                # create the event booking
-                rid = event_prefs.generateUniqueId('Booking')
-                event_prefs.invokeFactory('Booking', rid)
-                booking = getattr(event_prefs, rid)
-                booking.setTitle(context.Title())
-                booking.setElevents(context.UID())
-                booking.setElmembers(member.UID())
-
-                # set the references to the optional events
-                # the member is signing up for
-                booking.setPackages(package)
-                internal_events = form.get('internal_event',[])
-                booking.setInternalevents(internal_events)
-                external_events = form.get('external_event', [])
-                booking.setExternalevents(external_events)
-                total_cost = form.get('total_amount', 'R 0.00')
-                logging.info('Total cost on form: %s', total_cost)
-                booking.setTotalCost(Money(total_cost, 'ZAR'))
-                logging.info('Booking total cost: %s', booking.getTotalCost())
-
-                booking.reindexObject()
-                logging.info('After reindex total cost: %s', booking.getTotalCost())
-
-                # redirect the member to capture their personal details
-                self.request.response.redirect(booking.absolute_url() + "/edit")
-                return ''
-
+                    return ''
+                else:
+                    # create the subevent
+                    rid = context.generateUniqueId('ELEvent')
+                    context.invokeFactory('ELEvent', rid)
+                    sub = getattr(context, rid)
+                    sub.setTitle(form.get('event_title'))
+                    sub.setStartDate(form.get('event_start_date'))
+                    sub.setEndDate(form.get('event_end_date'))
+                    sub.reindexObject()
+                    return self.index()
+        
         # return the page if the form has not been submitted,
         # or there were errors on the form
         return self.index()
