@@ -291,9 +291,18 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if parent:
             return parent.getField('description').get(parent)
 
+    def getText(self):
+        txt = self.getField('text').get(self)
+        if len(txt) > 0:
+            return txt
+        parent = getParentEvent(self)
+        if parent:
+            return parent.getField('text').get(parent)
+
     def getStartDate(self):
         if self.startDate:
             return self.startDate
+        parent = getParentEvent(self)
         if parent:
             return parent.getStartDate()
         if self.hasSubEvents():
