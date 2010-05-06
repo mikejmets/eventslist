@@ -273,29 +273,42 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         configtool = getToolByName(self, 'portal_eventsconfiglet')
         return configtool.getDeclarationAndConfirmation()
 
+    def Title(self):
+        parent = getParentEvent(self)
+        if parent:
+            new_title = '%s - %s' % (
+              parent.getField('title').get(parent),
+              self.getField('title').get(self))
+            return new_title
+        else:
+          	return self.getField('title').get(self)
+
+    def Description(self):
+        desc = self.getField('description').get(self)
+        if len(desc) > 0:
+            return desc
+        parent = getParentEvent(self)
+        if parent:
+            return parent.getField('description').get(parent)
+
     def getStartDate(self):
         if self.startDate:
             return self.startDate
-        if self.isTopEvent():
-            if self.hasSubEvents():
-                subs = self.objectValues(spec='ELEvent')
-                return subs[0].startDate
-        else:
-            parent = getParentEvent(self)
-            if parent:
-                return parent.getStartDate()
+        if parent:
+            return parent.getStartDate()
+        if self.hasSubEvents():
+            subs = self.objectValues(spec='ELEvent')
+            return subs[0].startDate
 
     def getEndDate(self):
         if self.endDate:
             return self.endDate
-        if self.isTopEvent():
-            if self.hasSubEvents():
-                subs = self.objectValues(spec='ELEvent')
-                return subs[-1].endDate
-        else:
-            parent = getParentEvent(self)
-            if parent:
-                return parent.getEndDate()
+        parent = getParentEvent(self)
+        if parent:
+            return parent.getEndDate()
+        if self.hasSubEvents():
+            subs = self.objectValues(spec='ELEvent')
+            return subs[-1].endDate
 
     def getDefaultStartDate(self):
         return
@@ -369,8 +382,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if venue:
            return venue
         else:
-           if not self.isTopEvent():
-               return self.getParentEvent().getVenueObject()
+           parent = self.getParentEvent()
+           if parent:
+               return parent.getVenueObject()
 
 
 
