@@ -290,6 +290,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         parent = getParentEvent(self)
         if parent:
             return parent.getField('description').get(parent)
+        return ''
 
     def getText(self):
         txt = self.getField('text').get(self)
