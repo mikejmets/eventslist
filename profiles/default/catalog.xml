@@ -1,9 +1,14 @@
 <?xml version="1.0"?>
 <object name="portal_catalog" meta_type="Plone Catalog Tool">
+  <index name="getVenueName" 
+         meta_type="FieldIndex">
+    <indexed_attr value="getVenueName"/>
+  </index>
   <index name="getItemStarts" 
          meta_type="DateIndex">
     <indexed_attr value="getItemStarts"/>
   </index>
+  <column value="getVenueName"/>
 <!-- ##code-section FOOT -->
 <!-- ##/code-section FOOT -->
 </object>
