@@ -179,7 +179,7 @@ class ELEventView(BrowserView):
                     sub.setEndDate(form.get('event_end_date'))
                     sub.reindexObject()
                     return self.index()
-        
+
         # return the page if the form has not been submitted,
         # or there were errors on the form
         return self.index()

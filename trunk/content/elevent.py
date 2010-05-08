@@ -141,6 +141,14 @@ schema = Schema((
         ),
         vocabulary=NamedVocabulary("""event_catagories"""),
     ),
+    ComputedField(
+        name='venueName',
+        widget=ComputedField._properties['widget'](
+            label='Venuename',
+            label_msgid='eventslist_label_venueName',
+            i18n_domain='eventslist',
+        ),
+    ),
     ReferenceField(
         name='venue',
         widget=ReferenceBrowserWidget(
@@ -290,6 +298,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         parent = getParentEvent(self)
         if parent:
             return parent.getField('description').get(parent)
+        #otherwise
         return ''
 
     def getText(self):
@@ -299,6 +308,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         parent = getParentEvent(self)
         if parent:
             return parent.getField('text').get(parent)
+        #otherwise
+        return ''
 
     def getStartDate(self):
         if self.startDate:
@@ -395,6 +406,15 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
            parent = self.getParentEvent()
            if parent:
                return parent.getVenueObject()
+
+    def getVenueName(self):
+        """ Use this to get location name if venue not set ie. other location
+        """
+        venue = self.getVenueObject()
+        if venue:
+            return venue.getName()
+        #otheriwse
+        return self.getLocation()
 
 
 
