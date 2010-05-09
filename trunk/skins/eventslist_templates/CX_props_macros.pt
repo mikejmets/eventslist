@@ -327,7 +327,7 @@ bugfix: eventlister, mMeventlister - class: defaulted to "eventPublished" instea
         tal:condition="python:here.getCXAttribute('showPOPTitle')">
     <div class="inforow">
       <strong i18n:translate="calx_popup_title">Title:</strong>
-      <span tal:replace="eventtitle">Title</span></div></span>
+      <span tal:replace="event/getFullTitle">Title</span></div></span>
   <span tal:omit-tag="" name="Type" 
         tal:condition="python:here.getCXAttribute('showPOPType')">
     <div class="inforow">
@@ -380,7 +380,7 @@ bugfix: eventlister, mMeventlister - class: defaulted to "eventPublished" instea
         tal:condition="python:here.getCXAttribute('showPOPDescription')">
     <div class="inforow">
       <strong>Venue:</strong>
-      <i><span tal:replace="event/getVenueName">Venue</span></i>
+      <span tal:replace="event/getVenueName">Venue</span>
     </div></span>
   <span tal:omit-tag="" name="Description" 
         tal:condition="python:here.getCXAttribute('showPOPDescription')">
@@ -414,7 +414,10 @@ bugfix: eventlister, mMeventlister - class: defaulted to "eventPublished" instea
       </metal:block>
       <img class="eventicon" tal:condition="python: not useSubjectIcons and not useEventTypeIcons"
            tal:replace="structure python:here.getEventIcons(event,'no subject')" />
-        <span tal:replace="structure eventstring">startof event</span>
+        <span tal:condition="event/getParentTitle">
+          <strong><span tal:replace="event/getParentTitle">title</span>&nbsp;-</strong>
+        </span>
+        <span tal:replace="structure eventstring">start/end time</span>
         <i><span tal:replace="event/getVenueName">location</span></i>
       </a>
     </div>
@@ -426,7 +429,6 @@ bugfix: eventlister, mMeventlister - class: defaulted to "eventPublished" instea
 <!-- Generates the div that actually displays the event in each cell -->
 <span tal:omit-tag="" metal:define-macro="mMeventlister" i18n:domain="calendarx">
   <div class="eventlisting">
-    mMEvent
     <a href="#" onmouseover="" onmouseout=""  
          tal:attributes="href eventurl;  
                          class python: test(useETCSS,classeventtype,test(useSubjCSS,classsubject,classstate));  
@@ -441,7 +443,11 @@ bugfix: eventlister, mMeventlister - class: defaulted to "eventPublished" instea
       </metal:block>
       <img class="eventicon" tal:condition="python: not useSubjectIcons and not useEventTypeIcons"
            tal:replace="structure python:here.getEventIcons(event,'no subject')" />
-      <span tal:replace="structure eventstring">startof event</span>
+        <span tal:condition="event/getParentTitle">
+          <strong><span tal:replace="event/getParentTitle">title</span>&nbsp;-</strong>
+        </span>
+        <span tal:replace="structure eventstring">start/end time</span>
+        <i><span tal:replace="event/getVenueName">location</span></i>
     </a>
   </div>
 </span>

@@ -39,6 +39,13 @@ class ELEventView(BrowserView):
 
 
 
+    def getSubEvents(self):
+        """ get the available workflow actions on the object
+        """
+        context = aq_inner(self.context)
+        return context.getSubEvents()
+
+
     def listPackages(self):
         """ list the event packages
         """

@@ -149,6 +149,22 @@ schema = Schema((
             i18n_domain='eventslist',
         ),
     ),
+    ComputedField(
+        name='parentTitle',
+        widget=ComputedField._properties['widget'](
+            label='Parenttitle',
+            label_msgid='eventslist_label_parentTitle',
+            i18n_domain='eventslist',
+        ),
+    ),
+    ComputedField(
+        name='fullTitle',
+        widget=ComputedField._properties['widget'](
+            label='Fulltitle',
+            label_msgid='eventslist_label_fullTitle',
+            i18n_domain='eventslist',
+        ),
+    ),
     ReferenceField(
         name='venue',
         widget=ReferenceBrowserWidget(
@@ -271,7 +287,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return len(self.objectIds(spec='ELEvent')) > 0
 
     def getSubEvents(self):
-        return self.objectValues(spec='ELEvent')
+        subs = self.objectValues(spec='ELEvent')
+        subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
+        return subs
 
     def getDefaultLiabilityClause(self):
         configtool = getToolByName(self, 'portal_eventsconfiglet')
@@ -281,13 +299,25 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         configtool = getToolByName(self, 'portal_eventsconfiglet')
         return configtool.getDeclarationAndConfirmation()
 
-    def Title(self):
+    def getParentTitle(self):
         parent = getParentEvent(self)
         if parent:
-            new_title = '%s - %s' % (
-              parent.getField('title').get(parent),
+            gparent = getParentEvent(parent)
+            if gparent:
+                return '%s - %s' % (
+                    gparent.getParentTitle(),
+                    parent.getField('title').get(parent))
+            else:
+                return parent.getField('title').get(parent)
+        #otherwise
+        return ''
+
+    def getFullTitle(self):
+        parent = getParentEvent(self)
+        if parent:
+            return '%s - %s' % (
+              parent.getFullTitle(),
               self.getField('title').get(self))
-            return new_title
         else:
           	return self.getField('title').get(self)
 
@@ -319,6 +349,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return parent.getStartDate()
         if self.hasSubEvents():
             subs = self.objectValues(spec='ELEvent')
+            subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
             return subs[0].startDate
 
     def getEndDate(self):
@@ -329,6 +360,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return parent.getEndDate()
         if self.hasSubEvents():
             subs = self.objectValues(spec='ELEvent')
+            subs.sort(lambda x, y: cmp(x.getEndDate(), y.getEndDate()))
             return subs[-1].endDate
 
     def getDefaultStartDate(self):
