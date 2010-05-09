@@ -346,11 +346,12 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ()
 
     def getLocation(self):
-        if len(self.location) > 0:
-            return self.location
-        parent = getParentEvent(self)
-        if parent:
-            return parent.getLocation()
+        if hasattr(self,'location'):
+            if len(self.location) > 0:
+                return self.location
+            parent = getParentEvent(self)
+            if parent:
+                return parent.getLocation()
 
     def getContactName(self):
         if len(self.contactName) > 0:
@@ -423,6 +424,8 @@ registerType(ELEvent, PROJECTNAME)
 
 ##code-section module-footer #fill in your manual code here
 def getParentEvent(obj):
+    if obj.id == '':
+        return
     if obj.aq_parent:
         portal_type = obj.aq_parent.get('portal_type', None)
         if portal_type:
