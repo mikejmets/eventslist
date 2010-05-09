@@ -19,7 +19,7 @@
 
   <table class="listing"
       tal:define="
-        subevents python:context.objectValues(spec='ELEvent') or None;
+        subevents context/getSubEvents;
         only_for_editor python:checkPermission('Change portal events', context);">
     <thead>
       <tr>
