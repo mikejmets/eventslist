@@ -32,7 +32,7 @@
           <tr>
               <th i18n:translate="event_when">When</th>
               <td>
-                  <tal:differentday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate() != context.getEndDate()">
+                  <tal:differentday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() != context.getEndDate().Date()">
                       <abbr class="dtstart"
                             tal:attributes="title python:context.getStartDate()"
                             tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
@@ -46,7 +46,7 @@
                       </abbr>
                   </tal:differentday>
 
-                  <tal:sameday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate() == context.getEndDate()"
+                  <tal:sameday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() == context.getEndDate().Date()"
                                tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                       <abbr class="dtstart"
                             style="display: none;"
@@ -608,7 +608,7 @@
                 tal:content="evt/Title">event</a>
             </td>
             <td>
-              <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() != evt.getEndDate()">
+              <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() != evt.getEndDate().Date()">
                   <abbr class="dtstart"
                         tal:attributes="title python:evt.getStartDate()"
                         tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
@@ -622,7 +622,7 @@
                   </abbr>
               </tal:differentday>
 
-              <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() == evt.getEndDate()"
+              <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() == evt.getEndDate().Date()"
                            tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                   <abbr class="dtstart"
                         style="display: none;"

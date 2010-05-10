@@ -342,6 +342,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ''
 
     def getStartDate(self):
+
         if self.startDate:
             return self.startDate
         parent = getParentEvent(self)
@@ -351,6 +352,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             subs = self.objectValues(spec='ELEvent')
             subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
             return subs[0].startDate
+        #otherwise
+        return ''
 
     def getEndDate(self):
         if self.endDate:
@@ -362,6 +365,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             subs = self.objectValues(spec='ELEvent')
             subs.sort(lambda x, y: cmp(x.getEndDate(), y.getEndDate()))
             return subs[-1].endDate
+        #otherwise
+        return ''
 
     def getDefaultStartDate(self):
         return
@@ -384,6 +389,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             parent = getParentEvent(self)
             if parent:
                 return parent.getLocation()
+        #otherwise
+        return ''
 
     def getContactName(self):
         if len(self.contactName) > 0:
@@ -448,7 +455,6 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return venue.getName()
         #otheriwse
         return self.getLocation()
-
 
 
 registerType(ELEvent, PROJECTNAME)
