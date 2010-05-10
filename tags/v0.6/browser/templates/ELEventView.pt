@@ -558,7 +558,7 @@
     <!-- ============================================================= -->
     <tal:events 
         tal:define="subevents view/getSubEvents"
-        tal:condition="subevents">
+        tal:condition="python:subevents or only_for_editor">
     <h3 i18n:translate="external_events">Events within the Parent Event</h3>
     <p tal:condition="only_for_editor" >
         To view only the sub events of this event, 
