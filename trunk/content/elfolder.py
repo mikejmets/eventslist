@@ -22,6 +22,7 @@ from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 from Products.eventslist.config import *
 
 ##code-section module-header #fill in your manual code here
+from DateTime import DateTime
 ##/code-section module-header
 
 schema = Schema((
@@ -55,6 +56,23 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
     ##/code-section class-header
 
     # Methods
+
+    def getEvents(self, filter=None, reverse=False):
+        
+        events = self.objectValues(spec='ELEvent')
+        filtered = events
+        if filter:
+            if filter == 'current':
+                now = DateTime()
+                filtered = [e for e in events if e.getEndDate() >= now]
+            elif filter == 'past':
+                now = DateTime()
+                filtered = [e for e in events if e.getEndDate() < now]
+
+        filtered.sort(
+            key=lambda x: x.getStartDate(),
+            reverse=reverse)
+        return filtered
 
 
 registerType(ELFolder, PROJECTNAME)
