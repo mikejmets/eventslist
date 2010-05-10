@@ -57,22 +57,26 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
 
     # Methods
 
-    def getEvents(self, filter=None, reverse=False):
-        
-        events = self.objectValues(spec='ELEvent')
-        filtered = events
-        if filter:
-            if filter == 'current':
-                now = DateTime()
-                filtered = [e for e in events if e.getEndDate() >= now]
-            elif filter == 'past':
-                now = DateTime()
-                filtered = [e for e in events if e.getEndDate() < now]
+    # Manually created methods
 
-        filtered.sort(
-            key=lambda x: x.getStartDate(),
-            reverse=reverse)
-        return filtered
+    def getEvents(self, filter=None, sort_order='ascending'):
+
+        #Using portal catalog
+        query = {
+            'portal_type':'ELEvent',
+            'sort_on': 'getStartDate',
+            'sort_order': sort_order,
+            'review_state':'published',
+            }
+
+        if filter == 'current':
+          query['getEndDate'] = {'query':DateTime(), 'range':'min'}
+        elif filter == 'past':
+          query['getEndDate'] = {'query':DateTime(), 'range':'max'}
+
+        events = self.getFolderContents(query)
+        return events
+
 
 
 registerType(ELFolder, PROJECTNAME)
