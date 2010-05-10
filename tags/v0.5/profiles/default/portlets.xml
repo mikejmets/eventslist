@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="plone">
+ 
+ <!-- Portlet type registrations -->
+  
+ <portlet 
+   addview="eventslist.ELEvents"
+   title="EventsList Events"
+   description="A portlet which renders a listing of events and EventsList events"
+   i18n:attributes="title; description" >
+   <for interface="plone.app.portlets.interfaces.IColumn" />
+   <for interface="plone.app.portlets.interfaces.IDashboard" />
+ </portlet>
+ <!-- Assign the standard portlets -->
+     
+ <assignment
+     manager="plone.rightcolumn"
+     category="context"
+     key="/"
+     type="eventslist.ELEvents"
+     name="el_events"
+     />
+     
+ <assignment
+     remove="True"
+     manager="plone.rightcolumn"
+     category="context"
+     key="/"
+     type="portlets.Events"
+     name="events"
+     />
+
+</portlets>
