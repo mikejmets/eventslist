@@ -1,0 +1,126 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           xmlns:browser="http://namespaces.zope.org/browser"
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:zcml="http://namespaces.zope.org/zcml"
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           xmlns:plone="http://namespaces.plone.org/plone"
+           i18n_domain="eventslist">
+
+ 
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="view_el_event"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     template="templates/ELEventView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IExternalEvent"
+     name="view_external_event"
+     class="Products.eventslist.browser.externaleventview.ExternalEventView"
+     template="templates/ExternalEventView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IPackage"
+     name="view_package"
+     class="Products.eventslist.browser.packageview.PackageView"
+     template="templates/PackageView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IAgendaItem"
+     name="view_agenda_item"
+     class="Products.eventslist.browser.agendaitemview.AgandaItemView"
+     template="templates/AgandaItemView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IInternalEvent"
+     name="view_internalevent"
+     class="Products.eventslist.browser.internaleventview.InternalEventView"
+     template="templates/InternalEventView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IBooking"
+     name="view_booking"
+     class="Products.eventslist.browser.bookingview.BookingView"
+     template="templates/BookingView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELFolder"
+     name="view_el_folder"
+     class="Products.eventslist.browser.elfolderview.ELFolderView"
+     template="templates/ELFolderView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IVenue"
+     name="VenueView"
+     class="Products.eventslist.browser.VenueView.VenueView"
+     template="templates/VenueView.pt"
+     permission="zope2.View"
+     />
+
+
+
+ 
+
+  
+<!-- ##code-section BROWSER #fill in your manual code here -->
+    <browser:resource
+        name="eventsignup.kss"
+        file="eventsignup.kss"
+        />
+
+    <browser:page
+        for="Products.eventslist.content.interfaces.IELEvent"
+        name="calculate_total"
+        class="Products.eventslist.browser.kssview.Calculations"
+        attribute="calculateTotal"
+        permission="zope2.View"
+        />
+
+    <browser:page
+        for="Products.eventslist.content.interfaces.IELEvent"
+        name="view_registrations"
+        class="Products.eventslist.browser.registrationsview.RegistrationsView"
+        template="templates/RegistrationsView.pt"
+        permission="zope2.View"
+        />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="validate_event"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     template="templates/ELEventValidation.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="sub_event_listing"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     template="templates/SubEventsView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="create-sub-events"
+     class="Products.eventslist.browser.subeventview.SubEventForm"
+     permission="zope2.View"
+     />
+
+<!-- ##/code-section BROWSER -->
+
+</configure>
