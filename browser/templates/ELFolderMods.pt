@@ -63,7 +63,7 @@
             </td>
             <td>
                <select tal:attributes="name python:'%s' % event.UID();">
-                  <tal:loop repeat="opt python:['Show', 'Conference', 'Game', 'Lecture', 'Movie', 'Exhibition', 'Festival', 'Concert']">
+                  <tal:loop repeat="opt python:['Show', 'Conference', 'Sport', 'Lecture', 'Movie', 'Exhibition', 'Festival', 'Concert']">
                     <option 
                        tal:condition="python:opt in event.Subject()"
                        tal:attributes="value opt"
