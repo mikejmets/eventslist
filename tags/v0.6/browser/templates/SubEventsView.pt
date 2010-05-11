@@ -78,7 +78,7 @@
                             venueObj evt/getVenueObject">
             <a tal:condition="venueObj"
                tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
-               tal:content="venueObj/getName">Oslo, Norway
+               tal:content="venueObj/getShortName">Oslo, Norway
             </a>
             <span class="location" 
                 tal:condition="python:not venueObj and locationText"

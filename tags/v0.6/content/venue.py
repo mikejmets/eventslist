@@ -142,11 +142,32 @@ class Venue(BaseFolder, BrowserDefaultMixin):
 
     # Manually created methods
 
-    def getName(self):
+    def getShortName(self):
         if self.isTopVenue():
             return self.title
         else:
             return '%s, %s' % (self.title, self.getParentVenue().Title())
+
+    def getLongName(self):
+        if self.isTopVenue():
+            title = self.title
+        else:
+            title = '%s, %s' % (self.title, self.getParentVenue().Title())
+
+        title += '<br />'
+
+        if self.getSuburb():
+            title = '%s %s' % (title, self.getSuburb())
+
+        if self.getCity():
+            if self.getSuburb():
+                title = '%s, %s' % (title, self.getCity())
+            else:
+                title = '%s %s' % (title, self.getCity())
+
+        #if self.getRegion():
+        #    title = '%s, %s' % (title, self.getRegion())
+        return title
 
     def getCountry(self):
         if len(self.country) > 0:
@@ -154,6 +175,35 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         parent = getParentVenue(self)
         if parent:
             return parent.getCountry()
+        #Otherise
+        return ''
+
+    def getRegion(self):
+        if len(self.region) > 0:
+            return self.region
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getRegion()
+        #Otherise
+        return ''
+
+    def getCity(self):
+        if len(self.city) > 0:
+            return self.city
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getCity()
+        #Otherise
+        return ''
+
+    def getSuburb(self):
+        if len(self.suburb) > 0:
+            return self.suburb
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getSuburb()
+        #Otherise
+        return ''
 
     def isTopVenue(self):
       return not self.getParentVenue()
