@@ -64,6 +64,14 @@
      />
 
   <browser:page
+     for="Products.eventslist.content.interfaces.IELFolder"
+     name="mods_el_folder"
+     class="Products.eventslist.browser.elfolderview.ELFolderView"
+     template="templates/ELFolderMods.pt"
+     permission="cmf.ManagePortal"
+     />
+
+  <browser:page
      for="Products.eventslist.content.interfaces.IVenue"
      name="VenueView"
      class="Products.eventslist.browser.VenueView.VenueView"
