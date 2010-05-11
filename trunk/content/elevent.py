@@ -444,7 +444,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         """
         venue = self.getVenueObject()
         if venue:
-            return venue.getLongName()
+            return venue.getShortName()
         #otheriwse
         return self.getLocation()
 
