@@ -345,11 +345,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def getStartDate(self):
         if self.startDate:
             return self.startDate
-        parent = getParentEvent(self)
-        if parent:
-            return parent.getStartDate()
-        subs = self.getSubEvents()
-        if len(subs) > 0:
+        if self.hasSubEvents():
+            subs = self.getSubEvents()
             return subs[0].startDate
         #otherwise
         return ''
@@ -357,11 +354,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def getEndDate(self):
         if self.endDate:
             return self.endDate
-        parent = getParentEvent(self)
-        if parent:
-            return parent.getEndDate()
-        subs = self.getSubEvents()
-        if len(subs) > 0:
+        if self.hasSubEvents():
+            subs = self.getSubEvents()
             return subs[-1].endDate
         #otherwise
         return ''
