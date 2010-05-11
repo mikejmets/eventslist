@@ -288,7 +288,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
 
     def getSubEvents(self):
         subs = self.objectValues(spec='ELEvent')
-        subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
+        if len(subs) > 1:
+            subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
         return subs
 
     def getDefaultLiabilityClause(self):
@@ -342,15 +343,13 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ''
 
     def getStartDate(self):
-
         if self.startDate:
             return self.startDate
         parent = getParentEvent(self)
         if parent:
             return parent.getStartDate()
-        if self.hasSubEvents():
-            subs = self.objectValues(spec='ELEvent')
-            subs.sort(lambda x, y: cmp(x.getStartDate(), y.getStartDate()))
+        subs = self.getSubEvents()
+        if len(subs) > 0:
             return subs[0].startDate
         #otherwise
         return ''
@@ -361,9 +360,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         parent = getParentEvent(self)
         if parent:
             return parent.getEndDate()
-        if self.hasSubEvents():
-            subs = self.objectValues(spec='ELEvent')
-            subs.sort(lambda x, y: cmp(x.getEndDate(), y.getEndDate()))
+        subs = self.getSubEvents()
+        if len(subs) > 0:
             return subs[-1].endDate
         #otherwise
         return ''
