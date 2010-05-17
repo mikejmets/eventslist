@@ -71,6 +71,10 @@
      permission="zope2.View"
      />
 
+
+
+ 
+
   
 <!-- ##code-section BROWSER #fill in your manual code here -->
     <browser:resource

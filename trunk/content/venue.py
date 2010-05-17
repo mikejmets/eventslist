@@ -304,7 +304,6 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         #Otherise
         return ''
 
-
     def getWebsite(self):
         website = self.getField('website').get(self)
         if len(website) > 0:
