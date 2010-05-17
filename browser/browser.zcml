@@ -64,24 +64,12 @@
      />
 
   <browser:page
-     for="Products.eventslist.content.interfaces.IELFolder"
-     name="mods_el_folder"
-     class="Products.eventslist.browser.elfolderview.ELFolderView"
-     template="templates/ELFolderMods.pt"
-     permission="cmf.ManagePortal"
-     />
-
-  <browser:page
      for="Products.eventslist.content.interfaces.IVenue"
-     name="VenueView"
-     class="Products.eventslist.browser.VenueView.VenueView"
+     name="view_venue"
+     class="Products.eventslist.browser.venueview.VenueView"
      template="templates/VenueView.pt"
      permission="zope2.View"
      />
-
-
-
- 
 
   
 <!-- ##code-section BROWSER #fill in your manual code here -->
@@ -128,6 +116,15 @@
      class="Products.eventslist.browser.subeventview.SubEventForm"
      permission="zope2.View"
      />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELFolder"
+     name="mods_el_folder"
+     class="Products.eventslist.browser.elfolderview.ELFolderView"
+     template="templates/ELFolderMods.pt"
+     permission="cmf.ManagePortal"
+     />
+
 
 <!-- ##/code-section BROWSER -->
 

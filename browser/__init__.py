@@ -43,7 +43,7 @@ import agendaitemview
 import internaleventview
 import bookingview
 import elfolderview
-import VenueView
+import venueview
 
 ##code-section init-module-footer #fill in your manual code here
 ##/code-section init-module-footer

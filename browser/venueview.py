@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-# File: VenueView.py
+# File: venueview.py
 #
 # Copyright (c) 2010 by Webtide (C)2010
 # Generator: ArchGenXML Version 2.4.1
@@ -13,6 +13,8 @@ __author__ = """Mike Metcalfe <mike@webtide.co.za>, Jurgen Blignaut <jurgen@webt
 __docformat__ = 'plaintext'
 
 ##code-section module-header #fill in your manual code here
+import logging
+from Acquisition import aq_inner
 ##/code-section module-header
 
 from zope import interface

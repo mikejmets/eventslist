@@ -91,7 +91,7 @@
                               venueObj context/getVenueObject">
               <th i18n:translate="event_where">Where</th>
               <td>
-                  <a tal:condition="venueObj"
+                  <a tal:condition="python:venueObj"
                      tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
                      tal:content="structure venueObj/getLongName">Oslo, Norway
                   </a>
@@ -645,7 +645,7 @@
             </td>
             <td tal:define="locationText evt/getLocation;
                                 venueObj evt/getVenueObject">
-                <a tal:condition="venueObj"
+                <a tal:condition="python:venueObj"
                    tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
                    tal:content="structure venueObj/getLongName">Oslo, Norway
                 </a>

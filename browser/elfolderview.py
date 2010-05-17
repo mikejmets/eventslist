@@ -35,14 +35,6 @@ class ELFolderView(BrowserView):
     ##/code-section class-header_ELFolderView
 
 
-    def getEventByUID(self, UID):
-        """ fetch an object by uid """
-        pc = getToolByName(self, 'portal_catalog')
-        bs = pc.searchResults(portal_type='ELEvent', UID=UID)
-        if len(bs) == 1 :
-            return bs[0].getObject()
-        else :
-            return None
 
     def __call__(self):
         """ disable the editable border
@@ -70,6 +62,16 @@ class ELFolderView(BrowserView):
             logging.info('Found %s events' % (count))
 
         return self.index()
+
+
+    def getEventByUID(self, UID):
+        """ fetch an object by uid """
+        pc = getToolByName(self, 'portal_catalog')
+        bs = pc.searchResults(portal_type='ELEvent', UID=UID)
+        if len(bs) == 1 :
+            return bs[0].getObject()
+        else :
+            return None
 
 
 ##code-section module-footer #fill in your manual code here
