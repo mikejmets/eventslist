@@ -28,21 +28,30 @@ schema = Schema((
 
     StringField(
         name='country',
-        default="South Africa",
         widget=StringField._properties['widget'](
             label='Country',
             label_msgid='eventslist_label_country',
             i18n_domain='eventslist',
         ),
+        #default_method="getDefaultCountry",
     ),
     StringField(
         name='region',
-        default="Western Cape",
         widget=StringField._properties['widget'](
             label='Region',
             label_msgid='eventslist_label_region',
             i18n_domain='eventslist',
         ),
+        #default_method="getDefaultRegion",
+    ),
+    StringField(
+        name='subRegion',
+        widget=StringField._properties['widget'](
+            label="Sub Region",
+            label_msgid='eventslist_label_subRegion',
+            i18n_domain='eventslist',
+        ),
+        #default_method="getDefaultSubRegion",
     ),
     StringField(
         name='city',
@@ -51,6 +60,7 @@ schema = Schema((
             label_msgid='eventslist_label_city',
             i18n_domain='eventslist',
         ),
+        #default_method="getDefaultCity",
     ),
     StringField(
         name='suburb',
@@ -95,11 +105,10 @@ schema = Schema((
     TextField(
         name='postalAddress',
         widget=TextAreaWidget(
-            label='Postaladdress',
+            label="Full Post Address",
             label_msgid='eventslist_label_postalAddress',
             i18n_domain='eventslist',
         ),
-        label="Full Post Address",
     ),
     StringField(
         name='website',
@@ -169,39 +178,162 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         #    title = '%s, %s' % (title, self.getRegion())
         return title
 
+    #def getDefaultCountry(self):
+    #    if self.isTopVenue():
+    #        return 'South Africa'
+    #    #otherwise
+    #    return ''
+
     def getCountry(self):
-        if len(self.country) > 0:
-            return self.country
+        if self.isTemporary():
+            return ''
+        country = self.getField('country').get(self)
+        if len(country) > 0:
+            return country
         parent = getParentVenue(self)
         if parent:
             return parent.getCountry()
         #Otherise
         return ''
 
+    #def getDefaultRegion(self):
+    #    if self.isTopVenue():
+    #        return 'Western Cape'
+    #    #otherwise
+    #    return ''
+
     def getRegion(self):
-        if len(self.region) > 0:
-            return self.region
+        if self.isTemporary():
+            return ''
+        region = self.getField('region').get(self)
+        if len(region) > 0:
+            return region
         parent = getParentVenue(self)
         if parent:
-            return parent.getRegion()
+            return parent.getField('region').get(parent)
         #Otherise
         return ''
 
-    def getCity(self):
-        if len(self.city) > 0:
-            return self.city
+    #def getDefaultSubRegion(self):
+    #    if self.isTopVenue():
+    #        return 'Cape Town'
+    #    #otherwise
+    #    return ''
+
+    def getSubRegion(self):
+        if self.isTemporary():
+            return ''
+        subRegion = self.getField('subRegion').get(self)
+        if len(subRegion) > 0:
+            return subRegion
         parent = getParentVenue(self)
         if parent:
-            return parent.getCity()
+            return parent.getField('subRegion').get(parent)
+        #Otherise
+        return ''
+
+    #def getDefaultCity(self):
+    #    if self.isTopVenue():
+    #        return 'Cape Town'
+    #    #otherwise
+    #    return ''
+
+    def getCity(self):
+        if self.isTemporary():
+            return ''
+        city = self.getField('city').get(self)
+        if len(city) > 0:
+            return city
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('city').get(parent)
         #Otherise
         return ''
 
     def getSuburb(self):
-        if len(self.suburb) > 0:
-            return self.suburb
+        if self.isTemporary():
+            return ''
+        suburb = self.getField('suburb').get(self)
+        if len(suburb) > 0:
+            return suburb
         parent = getParentVenue(self)
         if parent:
-            return parent.getSuburb()
+            return parent.getField('suburb').get(parent)
+        #Otherise
+        return ''
+
+    def getAddress(self):
+        if self.isTemporary():
+            return ''
+        address = self.getField('address').get(self)
+        if len(address) > 0:
+            return address
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('address').get(parent)
+        #Otherise
+        return ''
+
+    def getPhone(self):
+        if self.isTemporary():
+            return ''
+        phone = self.getField('phone').get(self)
+        if len(phone) > 0:
+            return phone
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('phone').get(parent)
+        #Otherise
+        return ''
+
+    def getLatitude(self):
+        if self.isTemporary():
+            return ''
+        if self.get('latitude', False):
+            latitude = self.getField('latitude').get(self)
+            if len(latitude) > 0:
+                return latitude
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('latitude').get(parent)
+        #Otherise
+        return ''
+
+    def getLongitude(self):
+        if self.isTemporary():
+            return ''
+        if self.get('longitude', False):
+            longitude = self.getField('longitude').get(self)
+            if len(longitude) > 0:
+                return longitude
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('longitude').get(parent)
+        #Otherise
+        return ''
+
+    def getPostalAddress(self):
+        if self.isTemporary():
+            return ''
+        postalAddress = self.getField('postalAddress').get(self)
+        if len(postalAddress) > 0:
+            return postalAddress
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('postalAddress').get(parent)
+        #Otherise
+        return ''
+
+
+    def getWebsite(self):
+        if self.isTemporary():
+            return ''
+        website = self.getField('website').get(self)
+        if len(website) > 0:
+            return website
+        parent = getParentVenue(self)
+        if parent:
+            return parent.getField('website').get(parent)
         #Otherise
         return ''
 
@@ -217,7 +349,7 @@ class Venue(BaseFolder, BrowserDefaultMixin):
     def hasSubVenues(self):
         return len(self.objectIds(spec='Venue')) > 0
 
-    def getSubVenue(self):
+    def getSubVenues(self):
         return self.objectValues(spec='Venue')
 
     def getParentVenue(self):
@@ -245,8 +377,8 @@ def getParentVenue(obj):
                 return
             if portal_type == 'Venue':
                 return obj.aq_parent
-            return getParentEvent(obj.aq_parent)
-        return getParentEvent(obj.aq_parent)
+            return getParentVenue(obj.aq_parent)
+        return getParentVenue(obj.aq_parent)
 ##/code-section module-footer
 
 
