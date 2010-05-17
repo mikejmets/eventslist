@@ -89,7 +89,9 @@ class ELEventView(BrowserView):
 
 
     def __call__(self):
-        """ Handle the signup form submission
+        """ Handle the form submissions
+            * sign up
+            * add event
         """
         # get the context
         context = aq_inner(self.context)

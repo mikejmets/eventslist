@@ -398,6 +398,15 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if parent:
             return parent.contactEmail
 
+    def getContactMobile(self):
+        if self.isTemporary():
+            return ''
+        if len(self.contactMobile) > 0:
+            return self.contactMobile
+        parent = getParentEvent(self)
+        if parent:
+            return parent.contactMobile
+
     def getNextWorkflowActions(self):
         """ get the available workflow actions on the object
         """
@@ -447,6 +456,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return venue.getShortName()
         #otheriwse
         return self.getLocation()
+
 
 
 registerType(ELEvent, PROJECTNAME)

@@ -14,6 +14,12 @@
 
   <p tal:condition="only_for_editor">
   <a href=""
+    tal:attributes="href python:'%s/%s-venues/view' % (
+          context.absolute_url(), context.getId())"
+    i18n:translate="venues">Venues</a>
+  </p>
+  <p tal:condition="only_for_editor">
+  <a href=""
     tal:attributes="href string:${context/absolute_url}/createObject?type_name=ELEvent"
     i18n:translate="create_event">Create a New Event</a>
   </p>
