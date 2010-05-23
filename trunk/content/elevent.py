@@ -366,9 +366,10 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def getDefaultEndDate(self):
         return
 
-    def getSubject(self):
-        if len(self.Subject()) > 0:
-            return self.Subject()
+    def Subject(self):
+        subject = self.getField('subject').get(self)
+        if len(subject) > 0:
+            return subject
         parent = getParentEvent(self)
         if parent:
             return parent.Subject()
