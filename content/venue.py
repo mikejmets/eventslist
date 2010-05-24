@@ -327,7 +327,10 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         return len(self.objectIds(spec='Venue')) > 0
 
     def getSubVenues(self):
-        return self.objectValues(spec='Venue')
+        subs = self.objectValues(spec='Venue')
+        if len(subs) > 1:
+            subs.sort(lambda x, y: cmp(x.Title(), y.Title()))
+        return subs
 
     def getParentVenue(self):
         if self.aq_parent:
