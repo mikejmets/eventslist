@@ -16,6 +16,7 @@ __docformat__ = 'plaintext'
 import logging
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName 
+from DateTime import DateTime
 ##/code-section module-header
 
 from zope import interface
@@ -38,7 +39,14 @@ class VenueView(BrowserView):
         if not refs: 
             return [] 
         else: 
-            return [ref.getSourceObject() for ref in refs]
+            wft = getToolByName(context, 'portal_workflow')
+            current = []
+            for ref in refs:
+                event = ref.getSourceObject() 
+                if wft.getInfoFor(event, 'review_state') == 'published' \
+                    and event.getEndDate() > DateTime():
+                   current.append(event)
+            return current
 
     ##code-section class-header_VenueView #fill in your manual code here
     ##/code-section class-header_VenueView
