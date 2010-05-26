@@ -15,6 +15,7 @@ __docformat__ = 'plaintext'
 ##code-section module-header #fill in your manual code here
 import logging
 from Acquisition import aq_inner
+from Products.CMFCore.utils import getToolByName 
 ##/code-section module-header
 
 from zope import interface
@@ -29,6 +30,15 @@ from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 class VenueView(BrowserView):
     """
     """
+
+    def getEvents(self):
+        context = self.context
+        tool = getToolByName(context, 'reference_catalog') 
+        refs = tool.getBackReferences(context, 'elevent_venue') 
+        if not refs: 
+            return [] 
+        else: 
+            return [ref.getSourceObject() for ref in refs]
 
     ##code-section class-header_VenueView #fill in your manual code here
     ##/code-section class-header_VenueView
