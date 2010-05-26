@@ -83,8 +83,13 @@
                   <span tal:replace="python:ampm and event.getEndDate.AMPMMinutes()or event.getEndDate.TimeMinutes()">End Time</span>
               </tal:sameday>
             </td>
-            <td>
-               <span tal:content="event/getVenueName">event venue</span>
+            <td tal:define="obj event/getObject;
+                            venue obj/getVenue"
+                tal:condition="python:venue">
+               <a 
+                  tal:attributes="href string:${venue/absolute_url}/view"
+                  tal:content="structure venue/getLongName"
+                >event venue</a>
             </td>
             <td tal:define="obj event/getObject;
                             eventview nocall:obj/@@view_el_event"
