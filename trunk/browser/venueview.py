@@ -41,6 +41,11 @@ class VenueView(BrowserView):
         context = self.context
         tool = getToolByName(context, 'reference_catalog')
         refs = tool.getBackReferences(context, 'elevent_venue')
+        subvenues = context.objectValues(spec='Venue')
+        for subvenue in subvenues:
+            subrefs = tool.getBackReferences(subvenue, 'elevent_venue')
+            if subrefs:
+              refs.extend(subrefs)
         if not refs:
             return []
         else:

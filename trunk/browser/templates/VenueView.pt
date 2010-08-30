@@ -130,7 +130,7 @@
       <table class="listing">
         <thead>
           <tr>
-            <th i18n:translate="venue_title">Title</th>
+            <th i18n:translate="venue_name">Name</th>
             <th tal:condition="only_for_editor"
                 i18n:translate="manage">Manage</th>
           </tr>
@@ -172,7 +172,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr tal:repeat="event events">
+        <tal:loop repeat="event events">
+          <tr tal:define="oddrow repeat/event/odd;"
+              tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td>
               <a href=""
                 tal:attributes="href string:${event/absolute_url}/view"
@@ -240,6 +242,7 @@
                 i18n:translate="view_registrations">View and Manage Registrations</a>
             </td>
           </tr>
+        </tal:loop>
       </tbody>
     </table>
 

@@ -27,7 +27,7 @@
   <h2 i18n:translate="event_list">Current Events</h2>
   <tal:events 
       tal:define="events python:context.getEvents(
-                                  filter='current', sort_order='ascending')">
+                                 filter='current', sort_order='ascending')">
     <table tal:condition="events" class="listing">
       <thead>
         <tr>
@@ -41,7 +41,9 @@
         </tr>
       </thead>
       <tbody>
-        <tr tal:repeat="event events">
+        <tal:loop repeat="event events">
+          <tr tal:define="oddrow repeat/event/odd;"
+              tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td>
               <a href=""
                 tal:attributes="href string:${event/getURL}/view"
@@ -84,9 +86,8 @@
               </tal:sameday>
             </td>
             <td tal:define="obj event/getObject;
-                            venue obj/getVenue"
-                tal:condition="python:venue">
-               <a 
+                            venue obj/getVenue">
+               <a tal:condition="python:venue"
                   tal:attributes="href string:${venue/absolute_url}/view"
                   tal:content="structure venue/getLongName"
                 >event venue</a>
@@ -115,6 +116,7 @@
                 i18n:translate="view_registrations">View and Manage Registrations</a>
             </td>
           </tr>
+        </tal:loop>
       </tbody>
     </table>
 
