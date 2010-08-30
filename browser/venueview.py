@@ -15,7 +15,7 @@ __docformat__ = 'plaintext'
 ##code-section module-header #fill in your manual code here
 import logging
 from Acquisition import aq_inner
-from Products.CMFCore.utils import getToolByName 
+from Products.CMFCore.utils import getToolByName
 from DateTime import DateTime
 ##/code-section module-header
 
@@ -32,25 +32,26 @@ class VenueView(BrowserView):
     """
     """
 
+    ##code-section class-header_VenueView #fill in your manual code here
+    ##/code-section class-header_VenueView
+
+
+
     def getEvents(self):
         context = self.context
-        tool = getToolByName(context, 'reference_catalog') 
-        refs = tool.getBackReferences(context, 'elevent_venue') 
-        if not refs: 
-            return [] 
-        else: 
+        tool = getToolByName(context, 'reference_catalog')
+        refs = tool.getBackReferences(context, 'elevent_venue')
+        if not refs:
+            return []
+        else:
             wft = getToolByName(context, 'portal_workflow')
             current = []
             for ref in refs:
-                event = ref.getSourceObject() 
+                event = ref.getSourceObject()
                 if wft.getInfoFor(event, 'review_state') == 'published' \
                     and event.getEndDate() > DateTime():
                    current.append(event)
             return current
-
-    ##code-section class-header_VenueView #fill in your manual code here
-    ##/code-section class-header_VenueView
-
 
 
 ##code-section module-footer #fill in your manual code here

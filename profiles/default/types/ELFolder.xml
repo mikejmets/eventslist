@@ -16,7 +16,6 @@
  <property name="allowed_content_types">
    <element value="ELEvent"/>
    <element value="CalendarXFolder"/>
-   <element value="VenueFolder"/>
  </property>
  <property name="allow_discussion">False</property>
  <property name="default_view">view_el_folder</property>
