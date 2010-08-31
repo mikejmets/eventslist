@@ -165,6 +165,15 @@ schema = Schema((
             i18n_domain='eventslist',
         ),
     ),
+    StringField(
+        name='reviewURL',
+        widget=StringField._properties['widget'](
+            label="URL to review",
+            label_msgid='eventslist_label_reviewURL',
+            i18n_domain='eventslist',
+        ),
+        validators=('isURL',),
+    ),
     ReferenceField(
         name='venue',
         widget=ReferenceBrowserWidget(

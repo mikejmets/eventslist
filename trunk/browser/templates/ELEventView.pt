@@ -173,6 +173,13 @@
          i18n:translate="visit_organiser_website">
          Visit the organiser&apos;s website &hellip;</a>
   </p>
+  <p tal:condition="context/getReviewURL|nothing">
+      <a class="url"
+         href="reviewURL"
+         tal:attributes="href context/getReviewURL"
+         i18n:translate="read_review">
+         Read a review of event ...</a>
+  </p>
 
   </div>
 
