@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object name="portal_css">
+
+ <stylesheet title=""
+   id="++resource++netsightintranet.stylesheets/deplone3.css"
+   remove="True" />
+ <stylesheet title=""
+    id="++resource++netsightintranet.stylesheets/main.css"
+    remove="True" />
+ <stylesheet title=""
+    id="++resource++netsightintranet.stylesheets/lightbox.css"
+    remove="True" />
+ <stylesheet title="" id="netsightintranet.css" remove="True" />
+</object>
