@@ -10,10 +10,10 @@
 #toolbar-holder{
     height:0px;
 }
+
 #portal-column-two {
   padding-top:0px;
 }
-
 
 #navigationTree #title {
   border-top: 1px solid black;
@@ -78,6 +78,7 @@ input.destructive {
     background-color: &dtml-secondaryColor;;
     height: 40px;
 }
+
 #portal-globalnav li a{
 	height: 30px;
 	width: 80px;

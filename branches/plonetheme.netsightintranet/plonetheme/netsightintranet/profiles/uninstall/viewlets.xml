@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<object>
+<!-- first of all remove hiding on the viewlets -->
+  <hidden manager="plone.portaltop" skinname="*" purge="True" />
+  <hidden manager="plone.portalheader" skinname="*" purge="True" />
+  <hidden manager="plone.portalfooter" skinname="*" purge="True" />
+  <hidden manager="plone.contentviews" skinname="*" purge="True" />
+  <hidden manager="plone.belowcontentbody" skinname="*" purge="True" />
+
+</object>
