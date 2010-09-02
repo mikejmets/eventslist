@@ -5,14 +5,14 @@
 <body>
 
 <div metal:fill-slot="main"
-     tal:define="only_for_editor python:checkPermission('Change portal events', context);" > 
+     tal:define="user_can_edit python:view.userCanEdit(user);">
 
   <h1 tal:content="context/Title" class="documentFirstHeading summary">
       Title or id
   </h1>
 
 
-  <tal:byline tal:condition="only_for_editor">
+  <tal:byline tal:condition="user_can_edit">
     <div metal:use-macro="context/document_byline/macros/byline">
         Get the byline - contains details about author and modification date.
     </div>
@@ -101,7 +101,7 @@
   <!-- ****************************************************************** -->
 
   <tal:packages 
-      tal:condition="only_for_editor">
+      tal:condition="user_can_edit">
     <h2 i18n:translate="manage_the_package">Manage the Package</h2>
 
     <div>
@@ -120,10 +120,10 @@
 
   <tal:subvenues 
       tal:define="subvenues context/getSubVenues;"
-      tal:condition="python:subvenues or only_for_editor">
+      tal:condition="python:subvenues or user_can_edit">
     <h3 i18n:translate="venues_within_venue">Venues within the venue complex</h3>
     <a href="#"
-      tal:condition="only_for_editor"
+      tal:condition="user_can_edit"
       tal:attributes="href string:${context/absolute_url}/createObject?type_name=Venue"
       i18n:translate="add_sub_venue">Add an sub-venue</a>
     <div tal:condition="subvenues">
@@ -131,7 +131,7 @@
         <thead>
           <tr>
             <th i18n:translate="venue_name">Name</th>
-            <th tal:condition="only_for_editor"
+            <th tal:condition="user_can_edit"
                 i18n:translate="manage">Manage</th>
           </tr>
         </thead>
@@ -142,7 +142,7 @@
                 tal:attributes="href string:${sub/absolute_url}/view"
                 tal:content="sub/Title">View</a>
             </td>
-            <td  tal:condition="only_for_editor">
+            <td  tal:condition="user_can_edit">
               <a href="#"
                 tal:attributes="href string:${sub/absolute_url}/edit"
                 i18n:translate="venue_edit">Edit</a><br />
@@ -165,9 +165,9 @@
           <th i18n:translate="event_title">Title</th>
           <th i18n:translate="event_date">Dates</th>
           <th i18n:translate="event_venue">Venue</th>
-          <th tal:condition="only_for_editor"
+          <th tal:condition="user_can_edit"
               i18n:translate="manage_event">Manage Event</th>
-          <th tal:condition="only_for_editor"
+          <th tal:condition="user_can_edit"
               i18n:translate="registrations">Registrations</th>
         </tr>
       </thead>
@@ -220,7 +220,7 @@
                <span tal:content="event/getVenueName">event venue</span>
             </td>
             <td tal:define="eventview nocall:event/@@view_el_event"
-                tal:condition="only_for_editor">
+                tal:condition="user_can_edit">
               <a href="edit"
                 tal:attributes="href string:${event/absolute_url}/edit"
                 i18n:translate="edit_event">Edit</a>
@@ -236,7 +236,7 @@
                 <br />
               </tal:actions>
             </td>
-            <td tal:condition="only_for_editor">
+            <td tal:condition="user_can_edit">
               <a href=""
                 tal:attributes="href string:${event/absolute_url}/@@view_registrations"
                 i18n:translate="view_registrations">View and Manage Registrations</a>

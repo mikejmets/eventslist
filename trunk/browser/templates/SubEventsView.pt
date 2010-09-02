@@ -4,7 +4,8 @@
       i18n:domain="plone">
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
 
   <h1 tal:content="context/Title">Sub-Event View</h1>
 
@@ -18,15 +19,13 @@
     i18n:translate="add_internal_event">Add sub-event</a>
 
   <table class="listing"
-      tal:define="
-        subevents context/getSubEvents;
-        only_for_editor python:checkPermission('Change portal events', context);">
+      tal:define="subevents context/getSubEvents;">
     <thead>
       <tr>
         <th i18n:translate="title">Title</th>
         <th i18n:translate="when_events">When</th>
         <th i18n:translate="where_events">Where</th>
-        <th tal:condition="only_for_editor"
+        <th tal:condition="user_can_edit"
             i18n:translate="item_manage">Manage</th>
       </tr>
     </thead>
@@ -86,7 +85,7 @@
             </span>
         </td>
         </metal:events>
-        <td  tal:condition="only_for_editor">
+        <td  tal:condition="user_can_edit">
           <a href="#"
             tal:attributes="href string:${evt/absolute_url}/edit"
             i18n:translate="agenda_edit">Edit</a><br />

@@ -64,6 +64,17 @@ class ELFolderView(BrowserView):
         return self.index()
 
 
+    def userCanEdit(self, user):
+        context = aq_inner(self.context)
+        roles = user.getRolesInContext(context)
+        logging.info('Folder: user has roles: %s' % roles)
+        #if user has role
+        if 'EventManager' in roles or 'EventContributor' in roles:
+            #user has local access
+            return 'Contributor' in roles
+        return False
+
+
     def getEventByUID(self, UID):
         """ fetch an object by uid """
         pc = getToolByName(self, 'portal_catalog')

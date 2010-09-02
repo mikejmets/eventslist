@@ -49,7 +49,7 @@ ADD_CONTENT_PERMISSIONS = {
     'VenueFolder': 'eventslist: Add VenueFolder',
 }
 
-setDefaultRoles('eventslist: Add ELEvent', ('Manager','Owner'))
+setDefaultRoles('eventslist: Add ELEvent', ('Manager', 'EventContributor', 'EventManager'))
 setDefaultRoles('eventslist: Add Booking', ('Manager','Owner'))
 setDefaultRoles('eventslist: Add ExternalEvent', ('Manager','Owner'))
 setDefaultRoles('eventslist: Add Payment', ('Manager','Owner'))

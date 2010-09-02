@@ -5,7 +5,6 @@
 <body>
 
 <div metal:fill-slot="main">
-  <div  tal:define="only_for_editor python:checkPermission('Change portal events', context);">
   <h1 tal:content="python:'SPECIAL EDIT VIEW for %s' % context.Title()">Events</h1>
 
   <p i18n:translate="">
@@ -87,7 +86,6 @@
              class="standalone"/>
   </form>
 
-  </div>
 </div>
 
 </body>

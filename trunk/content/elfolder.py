@@ -23,6 +23,7 @@ from Products.eventslist.config import *
 
 ##code-section module-header #fill in your manual code here
 from DateTime import DateTime
+import logging
 ##/code-section module-header
 
 schema = Schema((
@@ -59,21 +60,27 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
 
     # Manually created methods
 
-    def getEvents(self, filter=None, sort_order='ascending'):
+    def getEvents(self,
+           filter=None, sort_order='ascending', review_state='published'):
 
         #Using portal catalog
         query = {
             'portal_type':'ELEvent',
             'sort_on': 'getStartDate',
             'sort_order': sort_order,
-            'review_state':'published',
             }
+
+        if review_state == 'all':
+          query['review_state'] = ['draft', 'submitted', 'published']
+        else:
+          query['review_state'] = review_state
 
         if filter == 'current':
           query['getEndDate'] = {'query':DateTime(), 'range':'min'}
         elif filter == 'past':
           query['getEndDate'] = {'query':DateTime(), 'range':'max'}
 
+        logging.info('getEvents: %s' % query)
         events = self.getFolderContents(query)
         return events
 
