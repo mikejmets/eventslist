@@ -4,7 +4,8 @@
       i18n:domain="plone">
 <body>
 
-<div metal:fill-slot="main">
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
 
   <div class="vevent">
 
@@ -97,7 +98,7 @@
 
   <!-- ****************************************************************** -->
 
-  <tal:byline tal:condition="python:checkPermission('Change portal events', context)">
+  <tal:byline tal:condition="user_can_edit">
   <div metal:use-macro="context/document_byline/macros/byline">
       Get the byline - contains details about author and modification date.
   </div>
@@ -163,7 +164,7 @@
   </tal:only_for_member>
 
   <tal:only_for_editor 
-      tal:condition="python:checkPermission('Change portal events', context)">
+      tal:condition="user_can_edit">
     <h2 i18n:translate="manage_the_event">Manage the Event</h2>
 
     <div>

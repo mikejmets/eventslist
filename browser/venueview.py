@@ -37,6 +37,16 @@ class VenueView(BrowserView):
 
 
 
+    def userCanEdit(self, user):
+        context = aq_inner(self.context)
+        roles = user.getRolesInContext(context)
+        #if user has role
+        if 'EventManager' in roles or 'EventContributor' in roles:
+            #user has local access
+            return 'Contributor' in roles
+        return False
+
+
     def getEvents(self):
         context = self.context
         tool = getToolByName(context, 'reference_catalog')

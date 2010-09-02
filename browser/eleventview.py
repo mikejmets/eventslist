@@ -39,6 +39,17 @@ class ELEventView(BrowserView):
 
 
 
+    def userCanEdit(self, user):
+        context = aq_inner(self.context)
+        roles = user.getRolesInContext(context)
+        logging.info('Folder: user has roles: %s' % roles)
+        #if user has role
+        if 'EventManager' in roles or 'EventContributor' in roles:
+            #user has local access
+            return 'Contributor' in roles
+        return False
+
+
     def getSubEvents(self):
         """ get the available workflow actions on the object
         """
@@ -67,6 +78,14 @@ class ELEventView(BrowserView):
         if parent and parent.portal_type == 'ELEvent':
             return parent
         return None
+
+
+    def eventIsValid(self):
+        """ test if event is valid
+        """
+        context = aq_inner(self.context)
+        et = getToolByName(context, 'portal_eventstool')
+        return len(et.validateEvent(event=context)) == 0
 
 
     def listAgendaItems(self):
