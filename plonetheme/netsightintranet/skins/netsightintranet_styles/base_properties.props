@@ -45,7 +45,7 @@ globalNavFontColor:string=#fff
 globalNavFontSelectedColor:string=#fff
 globalNavBorderColor:string=#fff
 
-primaryColor:string=#8CACBB
+primaryColor:string=#8ABDD4
 secondaryColor:string=#999
 tertiaryColor:string=
 
@@ -66,5 +66,5 @@ linkHoverColor:string=#000
 linkActiveColor:string=#476C79
 linkDecoration:string=none
 
-notifyBorderColor:String=#8CACBB
+#notifyBorderColor:String=#8CACBB
 notifyBackgroundColor:string=#fff
