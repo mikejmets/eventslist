@@ -1,0 +1,210 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
+
+  <div class="vevent">
+
+  <h1 tal:content="object_title" class="documentFirstHeading summary">
+      Title or id
+  </h1>
+
+  <!-- ****************************************************************** -->
+
+  <div class="eventDetails vcard"
+       tal:define="eventparent view/getELEventParent|nothing">
+  <table class="vertical listing"
+         summary="Event details" i18n:attributes="summary summary_event_details;">
+
+      <tbody>
+          <tr>
+              <th i18n:translate="event_when">When</th>
+              <td>
+                <abbr class="dtstart"
+                      tal:attributes="title python:context.getItemStarts()"
+                      tal:content="python:here.toLocalizedTime(context.getItemStarts(), long_format=1)">
+                    Start Date Time
+                </abbr>
+              </td>
+          </tr>
+          <tr tal:condition="context/getLocation | nothing">
+              <th i18n:translate="event_where">Where</th>
+              <td class="location" tal:content="context/getLocation">Oslo, Norway</td>
+          </tr>
+          <tr tal:condition="eventparent/contact_name">
+              <th i18n:translate="contact_name">Contact Name</th>
+              <td class="fn"
+                  tal:content="eventparent/contact_name">John Smith</td>
+          </tr>
+          <tr tal:define="contact_email eventparent/contact_email"
+              tal:condition="eventparent/contact_email">
+              <th i18n:translate="contact_email">Contact Email</th>
+              <td class="email">
+                  <a tal:replace="structure python: here.spamProtect(contact_email)" />
+              </td>
+          </tr>
+          <tr tal:condition="eventparent/contact_phone">
+              <th i18n:translate="contact_phone">Contact Phone</th>
+              <td class="tel"
+                  tal:content="eventparent/contact_phone">555-GET-PLONE</td>
+          </tr>
+          <tr tal:condition="eventparent/getContactMobile">
+              <th i18n:translate="contact_mobile">Contact Mobile</th>
+              <td class="tel"
+                  tal:content="eventparent/getContactMobile">555-GET-PLONE</td>
+          </tr>
+          <tr tal:condition="eventparent/getContactFax">
+              <th i18n:translate="contact_fax">Contact Fax</th>
+              <td class="tel"
+                  tal:content="eventparent/getContactFax">555-GET-PLONE</td>
+          </tr>
+      </tbody>
+  </table>
+  </div>
+
+  <!-- ****************************************************************** -->
+
+  <tal:byline tal:condition="user_can_edit>
+  <div metal:use-macro="context/document_byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+  </div>
+  </tal:byline>
+
+  <p class="documentDescription description"
+     tal:content="context/Description"
+     tal:condition="context/Description">
+      Description
+  </p>
+
+  <p tal:condition="context/getItemCost">
+  <label i18n:translate="cost_per_attendee">Cost per Attendee</label>:
+  <span tal:content="context/getItemCost">R50.00</span>
+  </p>
+
+  </div>
+
+  <!-- ****************************************************************** -->
+  <tal:only_for_member
+      tal:condition="context/canSignup">
+
+    <tal:comment tal:replace="nothing">
+    <h3 i18n:translate="packages">Packages</h3>
+    <div>
+      <table class="listing vertical">
+        <tbody>
+          <tr>
+            <th i18n:translate="packages">Package</th>
+            <th i18n:translate="unit_price">Unit Cost</th>
+            <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
+            <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
+            <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+          </tr>
+          <tal:package 
+              tal:define="pkg context/getPackageInfo|nothing"
+              tal:condition="pkg">
+            <tr> 
+              <td tal:content="pkg/Title">event</td>
+              <metal:package metal:define-macro="package_details">
+              <td>
+                <span metal:use-macro="python:pkg.widget('unitPrice', mode='view')" />
+              </td>
+
+              <td>
+                <span metal:use-macro="python:pkg.widget('earlyBirdRebate', mode='view')" />
+              </td>
+
+              <td>
+                <span metal:use-macro="python:pkg.widget('lateComerPenalty', mode='view')" />
+              </td>
+
+              <td>
+                <span metal:use-macro="python:pkg.widget('cancellationRebate', mode='view')" />
+              </td>
+              </metal:package>
+            </tr>
+          </tal:package>
+        </tbody>
+      </table>
+    </div>
+    </tal:comment>
+  </tal:only_for_member>
+
+  <tal:only_for_editor 
+      tal:condition="user_can_edit>
+    <h2 i18n:translate="manage_the_event">Manage the Event</h2>
+
+    <div>
+      <a href="edit"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        i18n:translate="edit_event">Edit this event</a>
+      &nbsp;&nbsp;
+      <tal:actions tal:repeat="action view/getNextWorkflowActions">
+        <a tal:attributes="href action/url"
+           tal:condition="python:action['category'] == 'workflow'"
+           tal:content="action/name">workflow action</a>
+      </tal:actions>
+      &nbsp;&nbsp;
+      <a tal:define="eventparent view/getELEventParent|nothing"
+         tal:condition="python:eventparent"
+         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
+        <span i18n:translate="up_to">Up to</span>
+        <span tal:content="eventparent/Title">parent</span>
+      </a>
+    </div>
+
+    <tal:comment tal:replace="nothing">
+    <h3 i18n:translate="packages">Packages</h3>
+    <div>
+      <a href="#"
+        tal:attributes="href string:${context/absolute_url}/createObject?type_name=Package"
+        i18n:translate="add_package">Add a cost option package</a>
+      <table class="listing vertical">
+        <tbody>
+          <tal:package 
+              tal:define="pkg context/getPackageInfo|nothing"
+              tal:condition="pkg">
+            <tr>
+              <th i18n:translate="packages">Package</th>
+              <th i18n:translate="unit_price">Unit Cost</th>
+              <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
+              <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
+              <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+              <th i18n:translate="manage">Manage</th>
+            </tr>
+            <tr>
+              <td>
+                <a href="#"
+                  tal:attributes="href string:${pkg/absolute_url}/view"
+                  tal:content="pkg/Title">event</a>
+              </td>
+              <metal:package metal:use-macro="template/macros/package_details" />
+              <td tal:define="pkgview nocall:pkg/@@view_package">
+                <a href="#"
+                  tal:attributes="href string:${pkg/absolute_url}/edit"
+                  i18n:translate="agenda_edit">Edit</a><br />
+                <a href="#"
+                  tal:attributes="href string:${pkg/absolute_url}/delete_confirmation"
+                  i18n:translate="agenda_delete">Delete</a><br />
+                <tal:actions 
+                      tal:repeat="action pkgview/getNextWorkflowActions">
+                  <a tal:attributes="href action/url"
+                     tal:condition="python:action['category'] == 'workflow'"
+                     tal:content="action/name">workflow action</a><br />
+                </tal:actions>
+              </td>
+            </tr>
+          </tal:package>
+        </tbody>
+      </table>
+    </div>
+    </tal:comment>
+  </tal:only_for_editor>
+
+</div>
+
+</body>
+</html>
