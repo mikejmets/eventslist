@@ -71,6 +71,14 @@
      permission="zope2.View"
      />
 
+  <browser:page
+     for="Products.eventslist.content.interfaces.IVenueFolder"
+     name="view_venuefolder"
+     class="Products.eventslist.browser.venuefolderview.VenueFolderView"
+     template="templates/VenueFolderView.pt"
+     permission="zope2.View"
+     />
+
 
 
  
