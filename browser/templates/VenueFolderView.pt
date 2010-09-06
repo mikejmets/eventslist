@@ -17,8 +17,9 @@
   <table class="listing">
     <thead>
       <tr>
-        <th i18n:translate="title">Title</th>
+        <th i18n:translate="title">Name</th>
         <th i18n:translate="where_venues">Where</th>
+        <th i18n:translate="phone_venues">Phone</th>
         <th tal:condition="user_can_edit"
             i18n:translate="item_manage">Manage</th>
       </tr>
@@ -32,7 +33,12 @@
         </td>
         <td>
           <a tal:attributes="href python:'%s/view' % venue.absolute_url()" 
-             tal:content="venue/getShortName">Oslo, Norway
+             tal:content="python:view.getWhere(venue)">Overberg
+          </a>
+        </td>
+        <td>
+          <a tal:attributes="href python:'%s/view' % venue.absolute_url()" 
+             tal:content="venue/phone">98768976
           </a>
         </td>
         <td  tal:condition="user_can_edit">
