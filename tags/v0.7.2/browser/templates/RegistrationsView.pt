@@ -1,0 +1,81 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main">
+
+  <h1 tal:content="context/Title">Event</h1>
+  <p i18n:translate="">
+  View and manage event registrations for this event.
+  </p>
+
+  <tal:bookings_states tal:define="states view/getBookingWorkflowStates">
+  <div tal:repeat="state states">
+    <h2 i18n:translate="registrations">Registrations:
+      <span tal:content="state">state</span>
+    </h2>
+    <tal:bookings tal:define="bookings python:view.getEventBookingsInState(state) or None">
+    <table tal:condition="bookings" class="listing">
+      <thead>
+        <th i18n:translate="bookings">Bookings</th>
+        <th i18n:translate="phone">Phone Number</th>
+        <th i18n:translate="email">Email</th>
+        <th i18n:translate="signded_up_for">Signed up for:</th>
+        <th i18n:translate="total">Total</th>
+        <th i18n:translate="manage">Manage</th>
+      </thead>
+      <tbody>
+        <tr tal:repeat="booking bookings">
+          <td tal:define="person booking/getElmembers">
+            <a href=""
+              tal:attributes="href string:${booking/absolute_url}/view"
+              tal:content="person/getFullname">john doe</a>
+          </td>
+          <td tal:content="booking/getPhone">phone</td>
+          <td>
+            <a href=""
+              tal:attributes="href string:mailto:${booking/getEmail}"
+              tal:content="booking/getEmail">email</a>
+          </td>
+          <td tal:define="package booking/getPackages;
+                          ext_evts booking/getExternalevents|nothing;
+                          int_evts booking/getInternalevents|nothing">
+            <label i18n:translate="package">Package</label>:
+            <span tal:content="package/Title">package</span><br />
+            <tal:int tal:condition="int_evts"
+                     tal:repeat="evt int_evts">
+              <label i18n:translate="int_evt">Internal Event</label>:
+              <span tal:content="evt/Title">event</span><br />
+            </tal:int>
+            <tal:ext tal:condition="ext_evts"
+                     tal:repeat="evt ext_evts">
+              <label i18n:translate="ext_evt">External Event</label>:
+              <span tal:content="evt/Title">event</span><br />
+            </tal:ext>
+          </td>
+          <td tal:content="booking/getTotalCost">cost</td>
+          <td tal:define="bkngview nocall:booking/@@view_booking">
+            <tal:actions tal:repeat="action bkngview/getNextWorkflowActions">
+              <a tal:attributes="href action/url"
+                 tal:condition="python:action['category'] == 'workflow'"
+                 tal:content="action/name">workflow action</a><br />
+            </tal:actions>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <p tal:condition="not:bookings" i18n:translate="">
+    There are no bookings in this workflow state.
+    </p>
+    </tal:bookings>
+    <br />
+  </div>
+  
+  </tal:bookings_states>
+
+</div>
+
+</body>
+</html>
