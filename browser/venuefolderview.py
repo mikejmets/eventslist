@@ -57,7 +57,15 @@ class VenueFolderView(BrowserView):
             return 'Contributor' in roles
         return False
 
-  
+
+    def getVenues(self):
+        """ Pull all venues in this folder"""
+        context = aq_inner(self.context)
+        obs = context.objectValues(spec='Venue')
+        obs.sort(lambda x, y: cmp(x.Title().upper(), y.Title().upper()))
+        return obs
+
+
     def getWhere(self, venue):
         """ Contract where from address"""
         where = ""
@@ -70,13 +78,7 @@ class VenueFolderView(BrowserView):
         if where and where[-2] == ',':
           where = where[:-2]
         return where
-  
-    def getVenues(self):
-        """ Pull all venues in this folder"""
-        context = aq_inner(self.context)
-        obs = context.objectValues(spec='Venue')
-        obs.sort(lambda x, y: cmp(x.Title().upper(), y.Title().upper()))
-        return obs
+
 
     def getNextWorkflowActions(self):
         """ get the available workflow actions on the object
@@ -84,6 +86,7 @@ class VenueFolderView(BrowserView):
         context = aq_inner(self.context)
         wft = getToolByName(context, 'portal_workflow')
         return wft.listActions(object=context)
+
 
 ##code-section module-footer #fill in your manual code here
 ##/code-section module-footer

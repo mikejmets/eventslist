@@ -71,7 +71,7 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
             }
 
         if review_state == 'all':
-          query['review_state'] = ['draft', 'submitted', 'published']
+          query['review_state'] = ['private', 'submitted', 'published']
         else:
           query['review_state'] = review_state
 
