@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<rolemap>
-  <roles>
-    <role name="EventContributor"/>
-    <role name="EventManager"/>
-  </roles>
-  <permissions>
-  </permissions>
-</rolemap>
