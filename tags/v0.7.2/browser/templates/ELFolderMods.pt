@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main">
+  <h1 tal:content="python:'SPECIAL EDIT VIEW for %s' % context.Title()">Events</h1>
+
+  <p i18n:translate="">
+  In this context, you can create, edit and manage event workflow. You can also navigate to event registrations to accept or reject applications.
+  </p>
+
+  <h2 i18n:translate="event_list">ALL Events</h2>
+  <form action="update"
+          tal:attributes="action string:${context/absolute_url}/${view/__name__}"
+          method="post">
+
+      <input type="hidden" name="form.submitted" value="1" />
+
+  <tal:events 
+      tal:define="events python:context.objectValues(spec='ELEvent')">
+    <p tal:content="python:'Found %s Events' % len(events)"/>
+    <table tal:condition="events" class="listing">
+      <thead>
+        <tr>
+          <th i18n:translate="event_title">Title</th>
+          <th i18n:translate="event_date">Dates</th>
+          <th i18n:translate="event_venue">Venue</th>
+          <th i18n:translate="event_subject">Old</th>
+          <th i18n:translate="event_subject">New</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr tal:repeat="event events">
+            <td>
+              <a href=""
+                tal:attributes="href string:${event/absolute_url}/view"
+                tal:content="event/Title">event title</a>
+            </td>
+            <td>
+              <tal:differentday>
+                  <abbr class="dtstart"
+                        tal:attributes="title python:event.getStartDate()"
+                        tal:content="python:context.toLocalizedTime(event.getStartDate(), long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <span i18n:translate="event_to">to</span> <br />
+                  <abbr class="dtend"
+                        tal:attributes="title python:event.getEndDate()"
+                        tal:content="python:context.toLocalizedTime(event.getEndDate(), long_format=1)">
+                      End Date Time
+                  </abbr>
+              </tal:differentday>
+
+            </td>
+            <td>
+               <span tal:content="event/getVenueName">event venue</span>
+            </td>
+            <td>
+               <span tal:content="event/Subject"/>
+            </td>
+            <td>
+               <select tal:attributes="name python:'%s' % event.UID();">
+                  <tal:loop repeat="opt python:['Show', 'Conference', 'Sport', 'Lecture', 'Movie', 'Exhibition', 'Festival', 'Concert']">
+                    <option 
+                       tal:condition="python:opt in event.Subject()"
+                       tal:attributes="value opt"
+                       tal:content="opt"
+                       SELECTED
+                      >opt</option>
+                    <option 
+                       tal:condition="python:opt not in event.Subject()"
+                       tal:attributes="value opt"
+                       tal:content="opt"
+                      >opt</option>
+                  </tal:loop>
+                </select>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+  </tal:events>
+      <input type="submit" name="form.button.submit" value="Update"
+             class="standalone"/>
+  </form>
+
+</div>
+
+</body>
+</html>
