@@ -196,6 +196,8 @@
       <a tal:attributes="href string:${context/absolute_url}/delete_confirmation"
         i18n:translate="delete_event">Delete</a>
       &nbsp;&nbsp;
+      <span tal:content="view/getReviewState">Draft</span>
+      &nbsp;&nbsp;
       <a tal:condition="not:isValid"
          tal:attributes="href string:${context/absolute_url}/validate_event"
          i18n:translate="validate_event">Validate</a>

@@ -2,7 +2,7 @@
 <dc-workflow workflow_id="elevent_workflow"
              title="elevent_workflow"
              state_variable="review_state"
-             initial_state="draft"
+             initial_state="private"
              xmlns:i18n="http://xml.zope.org/namespaces/i18n"
              i18n:domain="plone">
  <permission>View</permission>
@@ -11,13 +11,16 @@
  <permission>Delete objects</permission>
  <permission>Modify portal content</permission>
  <permission>Access contents information</permission>
- <state state_id="draft"
-        title="Draft"
+ <state state_id="private"
+        title="Private"
         i18n:attributes="title">
   <exit-transition transition_id="submit"/>
   <exit-transition transition_id="publish"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>EventContributor</permission-role>
+   <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
@@ -44,7 +47,10 @@
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="View"
-                  acquired="True">
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>EventContributor</permission-role>
+   <permission-role>EventManager</permission-role>
   </permission-map>
  </state>
  <state state_id="published"
@@ -81,7 +87,10 @@
   <exit-transition transition_id="accept"/>
   <exit-transition transition_id="reject"/>
   <permission-map name="Access contents information"
-                  acquired="True">
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>EventContributor</permission-role>
+   <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
@@ -101,7 +110,10 @@
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="View"
-                  acquired="True">
+                  acquired="False">
+   <permission-role>Manager</permission-role>
+   <permission-role>EventContributor</permission-role>
+   <permission-role>EventManager</permission-role>
   </permission-map>
  </state>
  <transition transition_id="accept"
@@ -130,19 +142,20 @@
  </transition>
  <transition transition_id="reject"
              title="Reject"
-             new_state="draft"
+             new_state="private"
              trigger="USER"
              before_script=""
              after_script=""
              i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=reject" category="workflow" i18n:translate="">Reject</action>
   <guard>
+    <guard-role>EventContributor</guard-role>
     <guard-role>EventManager</guard-role>
   </guard>
  </transition>
  <transition transition_id="retract"
              title="Retract"
-             new_state="draft"
+             new_state="private"
              trigger="USER"
              before_script=""
              after_script=""
@@ -163,6 +176,7 @@
   <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" i18n:translate="">Submit for publication</action>
   <guard>
     <guard-role>EventContributor</guard-role>
+    <guard-role>EventManager</guard-role>
   </guard>
  </transition>
  <worklist worklist_id="submissions_list" 

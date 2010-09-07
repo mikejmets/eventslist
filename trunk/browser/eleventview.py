@@ -213,6 +213,15 @@ class ELEventView(BrowserView):
         return self.index()
 
 
+    def getReviewState(self):
+        """ get the current workflow state of the object
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        state = wft.getInfoFor(context, 'review_state')
+        return "%s%s:" % (state[0].upper(), state[1:])
+
+
     def validate_event(self):
         """ get the available workflow actions on the object
         """
