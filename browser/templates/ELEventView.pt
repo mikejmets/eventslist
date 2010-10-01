@@ -146,8 +146,8 @@
           </tr>
           <tr>
               <th i18n:translate="facebook_like">Facebook</th>
-              <td tal:define="fb_url python:'http://www.facebook.com/plugins/like.php?href=%s&amp;layout=button_count&amp;show_faces=true&amp;width=50&amp;action=like&amp;colorscheme=light&amp;height=21' % context.absolute_url()" >
-    <iframe tal:attributes="src fb_url" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:50px; height:21px;" allowTransparency="true"></iframe>
+              <td tal:define="fb_url python:'http://www.facebook.com/plugins/like.php?href=%s&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21' % context.absolute_url()" >
+                <iframe tal:attributes="src fb_url" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
               </td>
           </tr>
 
