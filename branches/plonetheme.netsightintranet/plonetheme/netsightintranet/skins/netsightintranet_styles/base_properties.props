@@ -66,5 +66,5 @@ linkHoverColor:string=#000
 linkActiveColor:string=#476C79
 linkDecoration:string=none
 
-#notifyBorderColor:String=#8CACBB
+notifyBorderColor:String=#8CACBB
 notifyBackgroundColor:string=#fff
