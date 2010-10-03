@@ -20,12 +20,12 @@
   <order manager="plone.portalheader" skinname="*" >
     <viewlet name="plone.skip_links"/>
     <viewlet name="plone.logo"/>
+    <viewlet name="plone.searchbox"/>
     <viewlet name="plone.global_sections"/>
   </order>
   <hidden manager="plone.portalheader" skinname="*" >
     <viewlet name="plone.personal_bar"/>
     <viewlet name="plone.site_actions"/>
-    <viewlet name="plone.searchbox"/>
   </hidden>
 
   <order manager="plone.contentviews" skinname="*" >
