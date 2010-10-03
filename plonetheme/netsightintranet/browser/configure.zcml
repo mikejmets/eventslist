@@ -25,7 +25,7 @@
   <!-- the personal bar -->
   <browser:viewlet
      name="plone.personal_bar"
-     manager="plone.app.layout.viewlets.interfaces.IPortalHeader"
+     manager="plone.app.layout.viewlets.interfaces.IPortalFooter"
      class=".viewlets.IntranetPersonalBarViewlet"
      layer=".interfaces.IThemeSpecific"
      permission="zope2.View" 
