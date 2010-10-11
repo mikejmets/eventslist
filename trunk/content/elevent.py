@@ -474,9 +474,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         try:
           if len(self.Description()) > 0:
             txt += "<b>%s</b><br />" % self.Description()
-        except UnicodeDecodeError:
-          msg = 'unicodeerror in description of event %s(%s)' % (
-            self.getparenttitle(), self.getid())
+        except UnicodeDecodeError, e:
+          msg = 'unicodeerror in description of event %s (%s): [%s]' % (
+            self.getparenttitle(), self.absolute_url(), e)
           self.MailHost.send(msg, 'info@webtide.co.za', 
               'mike@webtide.co.za', 'Unicode error in content')
         txt += "%s at %s<br />" % (
@@ -485,16 +485,16 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         try:
           txt += "%s<br />" % self.getVenueName()
         except UnicodeDecodeError:
-          msg = 'UnicodeError in venue of event %s(%s)' % (
-            self.getParentTitle(), self.getId())
+          msg = 'UnicodeError in venue of event %s (%s): [%s]' % (
+            self.getparenttitle(), self.absolute_url(), e)
           self.MailHost.send(msg, 'info@webtide.co.za', 
               'mike@webtide.co.za', 'Unicode error in content')
         try:
           if len(self.getText()) > 0:
             txt += "%s" % self.getText()
         except UnicodeDecodeError:
-          msg = 'UnicodeError in body of event %s(%s)' % (
-            self.getParentTitle(), self.getId())
+          msg = 'UnicodeError in body of event %s (%s): [%s]' % (
+            self.getparenttitle(), self.absolute_url(), e)
           self.MailHost.send(msg, 'info@webtide.co.za', 
               'mike@webtide.co.za', 'Unicode error in content')
           #Ignore event
