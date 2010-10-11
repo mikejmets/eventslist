@@ -474,14 +474,22 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         try:
           if len(self.Description()) > 0:
             txt += "<b>%s</b><br />" % self.Description()
-          txt += "%s at %s<br />" % (
-            self.getStartDate().Date(), 
-            self.getStartDate().Time()[:-3])
+        except UnicodeDecodeError:
+          logging.warn('UnicodeError in description of event %s(%s)' % (
+            self.getParentTitle(), self.getId()))
+        txt += "%s at %s<br />" % (
+          self.getStartDate().Date(), 
+          self.getStartDate().Time()[:-3])
+        try:
           txt += "%s<br />" % self.getVenueName()
+        except UnicodeDecodeError:
+          logging.warn('UnicodeError in venue of event %s(%s)' % (
+            self.getParentTitle(), self.getId()))
+        try:
           if len(self.getText()) > 0:
             txt += "%s" % self.getText()
         except UnicodeDecodeError:
-          logging.warn('UnicodeError in event %s(%s)' % (
+          logging.warn('UnicodeError in body of event %s(%s)' % (
             self.getParentTitle(), self.getId()))
           #Ignore event
         return txt
