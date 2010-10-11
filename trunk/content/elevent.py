@@ -481,7 +481,8 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
           if len(self.getText()) > 0:
             txt += "%s" % self.getText()
         except UnicodeDecodeError:
-          logging.warn('UnicodeError in event %s' % self.getId())
+          logging.warn('UnicodeError in event %s(%s)' % (
+            self.getParentTitle(), self.getId()))
           #Ignore event
         return txt
 
