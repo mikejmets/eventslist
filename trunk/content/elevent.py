@@ -476,7 +476,12 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         txt += "%s at %s<br />" % (
           self.getStartDate().Date(), 
           self.getStartDate().Time()[:-3])
-        txt += "%s<br />" % self.getVenueName()
+        try:
+          txt += "%s<br />" % self.getVenueName()
+        except UnicodeDecodeError:
+          logging.warn('UnicodeError in venue of event %s' % self.getId())
+          #Ignore venue
+          pass
         if len(self.getText()) > 0:
           txt += "%s" % self.getText()
         return txt
