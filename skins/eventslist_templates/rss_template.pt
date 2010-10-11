@@ -57,17 +57,16 @@
 <tal:block repeat="brain python: objects">    
   <item rdf:about="" tal:attributes="rdf:about obj_item/getURL|obj_item/absolute_url" 
         tal:define="obj_item brain/getObject|nocall:brain">
-        <title tal:condition="python:obj_item.portal_type == 'ELEvent'" tal:content="obj_item/getParentTitle">Title</title>
+        <title tal:condition="python:obj_item.portal_type == 'ELEvent'" tal:content="obj_item/getFullTitle">Title</title>
         <title tal:condition="python:obj_item.portal_type != 'ELEvent'" tal:content="obj_item/pretty_title_or_id">Title</title>
         <link tal:content="obj_item/Identifier">Identifier</link>
-        <description tal:content="obj_item/Description">Description</description>
+        <description tal:content="obj_item/getRSSText">Description</description>
         <dc:publisher tal:content="obj_item/Publisher">Publisher</dc:publisher>
         <dc:creator tal:content="obj_item/Creator">Creator</dc:creator>
         <dc:rights tal:content="obj_item/Rights">Rights</dc:rights>
         <tal:block tal:repeat="item obj_item/Subject">
             <dc:subject tal:content="item">Item</dc:subject>
         </tal:block>
-        <dc:date tal:content="python: obj_item.modified().HTML4()">Modification date</dc:date>
         <dc:type tal:content="obj_item/Type">Type</dc:type>
     </item></tal:block>
 
