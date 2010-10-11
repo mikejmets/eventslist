@@ -471,19 +471,18 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         """ Return the text that will go out on the RSS Feed for an elevent
         """
         txt = ""
-        if len(self.Description()) > 0:
-          txt += "<b>%s</b><br />" % self.Description()
-        txt += "%s at %s<br />" % (
-          self.getStartDate().Date(), 
-          self.getStartDate().Time()[:-3])
         try:
+          if len(self.Description()) > 0:
+            txt += "<b>%s</b><br />" % self.Description()
+          txt += "%s at %s<br />" % (
+            self.getStartDate().Date(), 
+            self.getStartDate().Time()[:-3])
           txt += "%s<br />" % self.getVenueName()
+          if len(self.getText()) > 0:
+            txt += "%s" % self.getText()
         except UnicodeDecodeError:
-          logging.warn('UnicodeError in venue of event %s' % self.getId())
-          #Ignore venue
-          pass
-        if len(self.getText()) > 0:
-          txt += "%s" % self.getText()
+          logging.warn('UnicodeError in event %s' % self.getId())
+          #Ignore event
         return txt
 
 
