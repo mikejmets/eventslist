@@ -60,6 +60,7 @@
                             tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
                           End Date Time
                       </abbr>
+                      <span tal:replace="python:context.getStartDate().Day()">DOW</span>
                       <span tal:replace="python:context.toLocalizedTime(context.getStartDate())">Start Date Time</span> <br />
                       <span i18n:translate="event_from">from</span>
                       <span tal:replace="python:ampm and context.getStartDate().AMPMMinutes() or context.getStartDate().TimeMinutes()">Start Time</span>
@@ -654,6 +655,7 @@
                         tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
                       End Date Time
                   </abbr>
+                  <span tal:replace="python:evt.getStartDate().Day()">DOW</span>
                   <span tal:replace="python:context.toLocalizedTime(evt.getStartDate())">Start Date Time</span> <br />
                   <span i18n:translate="event_from">from</span>
                   <span tal:replace="python:ampm and evt.getStartDate().AMPMMinutes() or evt.getStartDate().TimeMinutes()">Start Time</span>

@@ -83,6 +83,7 @@
                         tal:content="python:context.toLocalizedTime(event.getEndDate, long_format=1)">
                       End Date Time
                   </abbr>
+                  <span tal:replace="python:event.getStartDate.Day()">DOW</span>
                   <span tal:replace="python:context.toLocalizedTime(event.getStartDate)">Start Date Time</span> <br />
                   <span i18n:translate="event_from">from</span>
                   <span tal:replace="python:ampm and event.getStartDate.AMPMMinutes() or event.getStartDate.TimeMinutes()">Start Time</span>
