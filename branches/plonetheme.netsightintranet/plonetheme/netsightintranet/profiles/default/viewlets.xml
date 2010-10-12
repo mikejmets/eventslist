@@ -20,6 +20,7 @@
   <order manager="plone.portalheader" skinname="*" >
     <viewlet name="plone.skip_links"/>
     <viewlet name="plone.logo"/>
+    <viewlet name="plone.top_banner"/>
     <viewlet name="plone.searchbox"/>
     <viewlet name="plone.global_sections"/>
   </order>
