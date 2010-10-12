@@ -16,7 +16,11 @@
   <h3 i18n:translate="sub_events">Events within the Parent Event</h3>
   <a href="#"
     tal:attributes="href string:${context/absolute_url}/create-sub-events"
-    i18n:translate="add_internal_event">Add sub-event</a>
+    i18n:translate="add_internal_event">Add sub event</a>
+  <br />
+  <a href="#"
+    tal:attributes="href string:${context/absolute_url}/generate-sub-events"
+    i18n:translate="generate_internal_event">Generate multiple sub events</a>
 
   <table class="listing"
       tal:define="subevents context/getSubEvents;">
@@ -38,7 +42,7 @@
             tal:content="evt/Title">event</a>
         </td>
         <td>
-          <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() != evt.getEndDate()">
+          <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() != evt.getEndDate().Date()">
               <abbr class="dtstart"
                     tal:attributes="title python:evt.getStartDate()"
                     tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
@@ -52,7 +56,7 @@
               </abbr>
           </tal:differentday>
 
-          <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate() == evt.getEndDate()"
+          <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() == evt.getEndDate().Date()"
                        tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
               <abbr class="dtstart"
                     style="display: none;"
@@ -66,7 +70,9 @@
                     tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
                   End Date Time
               </abbr>
-              <span tal:replace="python:context.toLocalizedTime(evt.getStartDate())">Start Date Time</span> <br />
+              <span tal:replace="python:evt.getStartDate().Day()">DOW</span>
+              <span tal:replace="python:context.toLocalizedTime(evt.getStartDate())">Start Date Time</span>
+              <br />
               <span i18n:translate="event_from">from</span>
               <span tal:replace="python:ampm and evt.getStartDate().AMPMMinutes() or evt.getStartDate().TimeMinutes()">Start Time</span>
               <span i18n:translate="event_to">to</span>
