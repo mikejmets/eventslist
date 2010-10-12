@@ -144,6 +144,21 @@
      permission="cmf.ManagePortal"
      />
 
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="publish-all"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     attribute="publish_all"
+     permission="cmf.ManagePortal"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELEvent"
+     name="retract-all"
+     class="Products.eventslist.browser.eleventview.ELEventView"
+     attribute="retract_all"
+     permission="cmf.ManagePortal"
+     />
 
 <!-- ##/code-section BROWSER -->
 

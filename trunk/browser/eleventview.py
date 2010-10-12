@@ -42,7 +42,6 @@ class ELEventView(BrowserView):
     def userCanEdit(self, user):
         context = aq_inner(self.context)
         roles = user.getRolesInContext(context)
-        logging.info('Folder: user has roles: %s' % roles)
         #if user has role
         if 'EventManager' in roles or 'EventContributor' in roles:
             #user has local access
@@ -106,6 +105,13 @@ class ELEventView(BrowserView):
         wft = getToolByName(context, 'portal_workflow')
         return wft.listActions(object=context)
 
+    def isActionAllowed(self, action_name):
+        """ test if the action provided is allowed
+        """
+        for action in self.getNextWorkflowActions():
+          if action_name == action['name']:
+            return True
+        return False
 
     def __call__(self):
         """ Handle the form submissions
@@ -228,6 +234,36 @@ class ELEventView(BrowserView):
         context = aq_inner(self.context)
         et = getToolByName(context, 'portal_eventstool')
         return et.validateEvent(event=context)
+
+    def publish_all(self):
+        """ publish event and all subevents
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        wft.doActionFor(context, 'publish')
+        #publuh all subevents
+        for sub in context.getSubEvents():
+          try:
+            wft.doActionFor(sub, 'publish')
+          except:
+            pass
+        self.request.response.redirect(context.absolute_url() + "/view")
+        return ''
+
+    def retract_all(self):
+        """ retract event and all subevents
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        wft.doActionFor(context, 'retract')
+        #retract all subevents
+        for sub in context.getSubEvents():
+          try:
+            wft.doActionFor(sub, 'retract')
+          except:
+            pass
+        self.request.response.redirect(context.absolute_url() + "/view")
+        return ''
 
 
 ##code-section module-footer #fill in your manual code here
