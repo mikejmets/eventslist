@@ -1,3 +1,4 @@
+from datetime import timedelta
 from zope.interface import Interface
 from zope import schema
 from zope.formlib import form
@@ -35,10 +36,10 @@ class IGenEventForm(Interface):
     include_count = schema.Bool(title=_(u"Include Counter In Title?"),
           default=False)
     start_date = schema.Datetime(title=_(u"Start Date"),
-          description=_(u"Use format CCYY-MM-DD"),
+        description=_(u"Use format CCYY-MM-DD HH:MM"),
           required=True)
     end_date = schema.Datetime(title=_(u"End Date"),
-          description=_(u"Use format CCYY-MM-DD"),
+          description=_(u"Use format CCYY-MM-DD HH:MM"),
           required=True)
 
 
@@ -59,9 +60,13 @@ class GenEventForm(formbase.PageForm):
 
         context = aq_inner(self.context)
 
-        event_date = dt2DT(data['start_date'])
-        end_date = dt2DT(data['end_date'])
-        end_time = end_date.time
+        event_date = data['start_date']
+        start_delta = timedelta(
+            hours=event_date.hour, minutes=event_date.minute)
+        event_date = event_date - start_delta
+        end_date = data['end_date']
+        end_delta = timedelta(
+            hours=end_date.hour, minutes=end_date.minute)
         dows = data['dows']
         title = data['title']
         include_count = data['include_count']
@@ -70,7 +75,7 @@ class GenEventForm(formbase.PageForm):
         while True:
           if event_date > end_date:
             break
-          if event_date.dow() in dows:
+          if event_date.isoweekday() in dows:
             id = context.generateUniqueId('ELEvent')
             obj = ELEvent(id)
             notify(ObjectCreatedEvent(obj))
@@ -79,15 +84,17 @@ class GenEventForm(formbase.PageForm):
             sub_title = title
             if include_count:
               sub_title = "%s - %s" % (title, cnt)
+            sub_start_date = event_date + start_delta
+            sub_end_date = event_date + end_delta
             kwargs = {
                 'title': sub_title,
-                'startDate': event_date,
-                'endDate': event_date - event_date.time + end_time,
+                'startDate': dt2DT(sub_start_date),
+                'endDate': dt2DT(sub_end_date),
                 }
             obj.initializeArchetype(**kwargs)
             notify(ObjectModifiedEvent(obj))
             cnt += 1
-          event_date += 1
+          event_date += timedelta(1)
 
         # Issue a status message
         confirm = _(u"Generated events")
