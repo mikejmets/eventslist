@@ -50,7 +50,6 @@ class VenueFolderView(BrowserView):
     def userCanEdit(self, user):
         context = aq_inner(self.context)
         roles = user.getRolesInContext(context)
-        logging.info('Folder: user has roles: %s' % roles)
         #if user has role
         if 'EventManager' in roles or 'EventContributor' in roles:
             #user has local access

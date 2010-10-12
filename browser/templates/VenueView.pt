@@ -100,9 +100,9 @@
 
   <!-- ****************************************************************** -->
 
-  <tal:packages 
+  <tal:venue 
       tal:condition="user_can_edit">
-    <h2 i18n:translate="manage_the_package">Manage the Package</h2>
+    <h2 i18n:translate="manage_the_venue">Manage the Venue</h2>
 
     <div>
       <a href="edit"
@@ -116,7 +116,7 @@
         <span tal:content="parentvenue/Title">parent</span>
       </a>
     </div>
-  </tal:packages>
+  </tal:venue>
 
   <tal:subvenues 
       tal:define="subvenues context/getSubVenues;"
