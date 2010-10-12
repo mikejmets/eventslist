@@ -1,0 +1,100 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
+
+  <div>
+
+    <h1 tal:content="object_title" class="documentFirstHeading summary">
+        Title or id
+    </h1>
+
+    <tal:byline tal:condition="user_can_edit">
+    <div metal:use-macro="context/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+    </div>
+    </tal:byline>
+
+    <table class="listing vertical">
+      <tbody>
+        <tr>
+          <th i18n:translate="description">Details</th>
+          <td>
+            <span metal:use-macro="python:context.widget('description', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getPresenters">
+          <th i18n:translate="presenters">Presenters</th>
+          <td>
+            <span metal:use-macro="python:context.widget('presenters', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getItemStarts">
+          <th i18n:translate="starts_at">Starts at</th>
+          <td>
+            <span metal:use-macro="python:context.widget('itemStarts', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getDuration">
+          <th i18n:translate="duration">Duration in minutes</th>
+          <td>
+            <span metal:use-macro="python:context.widget('duration', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getBuilding">
+          <th i18n:translate="building">Building</th>
+          <td>
+            <span metal:use-macro="python:context.widget('building', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getRoom">
+          <th i18n:translate="room">Room</th>
+          <td>
+            <span metal:use-macro="python:context.widget('room', mode='view')" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- ****************************************************************** -->
+
+  <tal:only_for_editor 
+      tal:condition="user_can_edit">
+    <h2 i18n:translate="manage_the_package">Manage the Agenda Item</h2>
+
+    <div>
+      <a href="edit"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        i18n:translate="edit_item">Edit this Item</a>
+      &nbsp;&nbsp;
+      <tal:actions tal:repeat="action view/getNextWorkflowActions">
+        <a tal:attributes="href action/url"
+           tal:condition="python:action['category'] == 'workflow'"
+           tal:content="action/name">workflow action</a>
+      </tal:actions>
+      &nbsp;&nbsp;
+      <a tal:define="eventparent view/getELEventParent|nothing"
+         tal:condition="python:eventparent"
+         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
+        <span i18n:translate="up_to">Up to</span>
+        <span tal:content="eventparent/Title">parent</span>
+      </a>
+    </div>
+  </tal:only_for_editor>
+
+
+</div>
+
+</body>
+</html>

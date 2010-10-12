@@ -1,0 +1,85 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
+
+  <div>
+
+  <h1 tal:content="context/Title" class="documentFirstHeading summary">
+      Title or id
+  </h1>
+
+  <tal:byline tal:condition="user_can_edit">
+  <div metal:use-macro="context/document_byline/macros/byline">
+      Get the byline - contains details about author and modification date.
+  </div>
+  </tal:byline>
+
+    <table class="listing vertical">
+      <tbody>
+        <tr tal:condition="context/getUnitPrice">
+          <th i18n:translate="unit_price">Price</th>
+          <td>
+            <span metal:use-macro="python:context.widget('unitPrice', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getEarlyBirdRebate">
+          <th i18n:translate="early_bird_rebate">Early Bird Rebate</th>
+          <td>
+            <span metal:use-macro="python:context.widget('earlyBirdRebate', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getLateComerPenalty">
+          <th i18n:translate="latecomer_penalty">Latecomer Penalty</th>
+          <td>
+            <span metal:use-macro="python:context.widget('lateComerPenalty', mode='view')" />
+          </td>
+        </tr>
+
+        <tr tal:condition="context/getCancellationRebate">
+          <th i18n:translate="cancellation_rebate">Cancellation Rebate</th>
+          <td>
+            <span metal:use-macro="python:context.widget('cancellationRebate', mode='view')" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <!-- ****************************************************************** -->
+
+  <tal:only_for_editor 
+      tal:condition="user_can_edit">
+    <h2 i18n:translate="manage_the_package">Manage the Package</h2>
+
+    <div>
+      <a href="edit"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        i18n:translate="edit_event">Edit this package</a>
+      &nbsp;&nbsp;
+      <tal:actions tal:repeat="action view/getNextWorkflowActions">
+        <a tal:attributes="href action/url"
+           tal:condition="python:action['category'] == 'workflow'"
+           tal:content="action/name">workflow action</a>
+      </tal:actions>
+      &nbsp;&nbsp;
+      <a tal:define="eventparent view/getMyParent|nothing"
+         tal:condition="python:eventparent"
+         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
+        <span i18n:translate="up_to">Up to</span>
+        <span tal:content="eventparent/Title">parent</span>
+      </a>
+    </div>
+  </tal:only_for_editor>
+
+</div>
+
+</body>
+</html>
