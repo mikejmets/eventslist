@@ -80,7 +80,7 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
         elif filter == 'past':
           query['getEndDate'] = {'query':DateTime(), 'range':'max'}
 
-        logging.info('getEvents: %s' % query)
+        #logging.info('getEvents: %s' % query)
         events = self.getFolderContents(query)
         return events
 
