@@ -14,10 +14,11 @@ from zope.event import notify
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
 
 def _getDOWVocab():
-  dows = ['Sun', 'Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat']
+  days = ['Mon', 'Tues', 'Wed', 'Thur', 'Fri', 'Sat', 'Sun']
   terms = []
-  for dow in dows:
-    term = SimpleTerm(value=dows.index(dow), token=str(dows.index(dow)), title=dow)
+  for day in days:
+    val = days.index(day) + 1
+    term = SimpleTerm(value=val, token=str(val), title=day)
     yield term
 
 dow_vocab = SimpleVocabulary(list(_getDOWVocab()))
@@ -75,7 +76,8 @@ class GenEventForm(formbase.PageForm):
         while True:
           if event_date > end_date:
             break
-          if event_date.isoweekday() in dows:
+          dow = event_date.isoweekday()
+          if dow in dows:
             id = context.generateUniqueId('ELEvent')
             obj = ELEvent(id)
             notify(ObjectCreatedEvent(obj))
