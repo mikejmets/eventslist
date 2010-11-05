@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<metadata>
+  <version>1.0.190</version>
+  <!-- ##code-section METADATA -->
+  <dependencies>
+    <dependency>profile-membrane:default</dependency>
+    <dependency>profile-remember:default</dependency>
+    <dependency>profile-FinanceFields:default</dependency>
+  </dependencies>
+  <!-- ##/code-section METADATA -->
+</metadata>
