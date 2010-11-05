@@ -66,6 +66,7 @@ class ELEventView(BrowserView):
         for sub in context.getSubEvents():
           try:
             wft.doActionFor(sub, 'publish')
+            sub.reindexObject()
           except:
             pass
         self.request.response.redirect(context.absolute_url() + "/view")
