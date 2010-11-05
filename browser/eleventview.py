@@ -56,6 +56,22 @@ class ELEventView(BrowserView):
         return context.getSubEvents()
 
 
+    def publish_all(self):
+        """ publish event and all subevents
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        wft.doActionFor(context, 'publish')
+        #publuh all subevents
+        for sub in context.getSubEvents():
+          try:
+            wft.doActionFor(sub, 'publish')
+          except:
+            pass
+        self.request.response.redirect(context.absolute_url() + "/view")
+        return ''
+
+
     def listPackages(self):
         """ list the event packages
         """
@@ -98,12 +114,21 @@ class ELEventView(BrowserView):
         return [item.getObject() for item in brains]
 
 
-    def getNextWorkflowActions(self):
-        """ get the available workflow actions on the object
+    def retract_all(self):
+        """ retract event and all subevents
         """
         context = aq_inner(self.context)
         wft = getToolByName(context, 'portal_workflow')
-        return wft.listActions(object=context)
+        wft.doActionFor(context, 'retract')
+        #retract all subevents
+        for sub in context.getSubEvents():
+          try:
+            wft.doActionFor(sub, 'retract')
+          except:
+            pass
+        self.request.response.redirect(context.absolute_url() + "/view")
+        return ''
+
 
     def isActionAllowed(self, action_name):
         """ test if the action provided is allowed
@@ -112,6 +137,15 @@ class ELEventView(BrowserView):
           if action_name == action['name']:
             return True
         return False
+
+
+    def getNextWorkflowActions(self):
+        """ get the available workflow actions on the object
+        """
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        return wft.listActions(object=context)
+
 
     def __call__(self):
         """ Handle the form submissions
@@ -234,36 +268,6 @@ class ELEventView(BrowserView):
         context = aq_inner(self.context)
         et = getToolByName(context, 'portal_eventstool')
         return et.validateEvent(event=context)
-
-    def publish_all(self):
-        """ publish event and all subevents
-        """
-        context = aq_inner(self.context)
-        wft = getToolByName(context, 'portal_workflow')
-        wft.doActionFor(context, 'publish')
-        #publuh all subevents
-        for sub in context.getSubEvents():
-          try:
-            wft.doActionFor(sub, 'publish')
-          except:
-            pass
-        self.request.response.redirect(context.absolute_url() + "/view")
-        return ''
-
-    def retract_all(self):
-        """ retract event and all subevents
-        """
-        context = aq_inner(self.context)
-        wft = getToolByName(context, 'portal_workflow')
-        wft.doActionFor(context, 'retract')
-        #retract all subevents
-        for sub in context.getSubEvents():
-          try:
-            wft.doActionFor(sub, 'retract')
-          except:
-            pass
-        self.request.response.redirect(context.absolute_url() + "/view")
-        return ''
 
 
 ##code-section module-footer #fill in your manual code here
