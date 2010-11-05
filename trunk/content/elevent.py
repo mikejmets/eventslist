@@ -478,10 +478,10 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
           msg = 'unicodeerror in description of event %s (%s): [%s]' % (
             self.getParentTitle(), self.absolute_url(), e)
           logging.warn(msg)
-          #self.MailHost.send(msg, 'info@webtide.co.za', 
+          #self.MailHost.send(msg, 'info@webtide.co.za',
           #    'mike@webtide.co.za', 'Unicode error in content')
         txt += "%s at %s<br />" % (
-          self.getStartDate().Date(), 
+          self.getStartDate().Date(),
           self.getStartDate().Time()[:-3])
         try:
           txt += "%s<br />" % self.getVenueName()
@@ -489,7 +489,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
           msg = 'UnicodeError in venue of event %s (%s): [%s]' % (
             self.getParentTitle(), self.absolute_url(), e)
           logging.warn(msg)
-          #self.MailHost.send(msg, 'info@webtide.co.za', 
+          #self.MailHost.send(msg, 'info@webtide.co.za',
           #    'mike@webtide.co.za', 'Unicode error in content')
         try:
           if len(self.getText()) > 0:
@@ -498,10 +498,11 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
           msg = 'UnicodeError in body of event %s (%s): [%s]' % (
             self.getParentTitle(), self.absolute_url(), e)
           logging.warn(msg)
-          #self.MailHost.send(msg, 'info@webtide.co.za', 
+          #self.MailHost.send(msg, 'info@webtide.co.za',
           #    'mike@webtide.co.za', 'Unicode error in content')
           #Ignore event
         return txt
+
 
 
 registerType(ELEvent, PROJECTNAME)
