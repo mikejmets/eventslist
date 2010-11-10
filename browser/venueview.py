@@ -16,7 +16,7 @@ __docformat__ = 'plaintext'
 import logging
 from Acquisition import aq_inner
 from Products.CMFCore.utils import getToolByName
-from DateTime import DateTime
+from DateTime.DateTime import DateTime
 ##/code-section module-header
 
 from zope import interface
@@ -49,6 +49,20 @@ class VenueView(BrowserView):
 
     def getEvents(self):
         context = self.context
+        """
+        pc = getToolByName(context, 'portal_catalog')
+        brains = pc.searchResults(
+            portal_type='ELEvent',
+            getVenue=context,
+            review_state='published',
+            getEndDate={'query': DateTime(),
+                        'range': 'min'},
+            sort_on='getStartDate',
+            )
+
+        return brains
+
+        """
         tool = getToolByName(context, 'reference_catalog')
         refs = tool.getBackReferences(context, 'elevent_venue')
         subvenues = context.objectValues(spec='Venue')
@@ -59,14 +73,20 @@ class VenueView(BrowserView):
         if not refs:
             return []
         else:
-            wft = getToolByName(context, 'portal_workflow')
-            current = []
-            for ref in refs:
-                event = ref.getSourceObject()
-                if wft.getInfoFor(event, 'review_state') == 'published' \
-                    and event.getEndDate() > DateTime():
-                   current.append(event)
-            return current
+            ids = [r.sourceUID for r in refs]
+            pc = getToolByName(context, 'portal_catalog')
+            #today = DateTime('2010/06/06')
+            #logging.info('TODAY HAS BEEN HACKED!!!!!!!!!!!!!!!!!!!!!!!')
+            today = DateTime()
+            brains = pc.searchResults(
+                portal_type='ELEvent',
+                UID=ids,
+                review_state='published',
+                getEndDate={'query': today,
+                            'range': 'min'},
+                sort_on='getStartDate',
+                )
+            return brains
 
 
 ##code-section module-footer #fill in your manual code here
