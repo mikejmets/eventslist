@@ -125,6 +125,7 @@ class ELEventView(BrowserView):
         for sub in context.getSubEvents():
           try:
             wft.doActionFor(sub, 'retract')
+            sub.reindexObject()
           except:
             pass
         self.request.response.redirect(context.absolute_url() + "/view")
