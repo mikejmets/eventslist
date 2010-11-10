@@ -18,7 +18,22 @@
     </div>
   </tal:byline>
 
-  <table class="listing vertical">
+  <div style="float:right;">
+    <script type="text/javascript"><!--
+      google_ad_client = "pub-0376216002411660";
+      /* EventsList Venue Ad */
+      google_ad_slot = "6613012155";
+      google_ad_width = 300;
+      google_ad_height = 250;
+      //-->
+    </script>
+    <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+  </div>
+
+
+  <table class="listing vertical" style="width:400px">
     <tbody>
       <tr tal:condition="context/Description">
         <th i18n:translate="description">Description</th>
@@ -177,58 +192,58 @@
               tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td>
               <a href=""
-                tal:attributes="href string:${event/absolute_url}/view"
+                tal:attributes="href string:${event/getPath}/view"
                 tal:content="event/Title">event title</a>
             </td>
             <td>
-              <tal:differentday tal:condition="python:event.getStartDate() and event.getEndDate() and event.getStartDate().Date() != event.getEndDate().Date()">
+              <tal:differentday tal:condition="python:event.getStartDate and event.getEndDate and event.getStartDate.Date() != event.getEndDate.Date()">
                   <abbr class="dtstart"
-                        tal:attributes="title python:event.getStartDate()"
-                        tal:content="python:context.toLocalizedTime(event.getStartDate(), long_format=1)">
+                        tal:attributes="title python:event.getStartDate"
+                        tal:content="python:context.toLocalizedTime(event.getStartDate, long_format=1)">
                       Start Date Time
                   </abbr>
                   <span i18n:translate="event_to">to</span> <br />
                   <abbr class="dtend"
-                        tal:attributes="title python:event.getEndDate()"
-                        tal:content="python:context.toLocalizedTime(event.getEndDate(), long_format=1)">
+                        tal:attributes="title python:event.getEndDate"
+                        tal:content="python:context.toLocalizedTime(event.getEndDate, long_format=1)">
                       End Date Time
                   </abbr>
               </tal:differentday>
 
-              <tal:sameday tal:condition="python:event.getStartDate() and event.getEndDate() and event.getStartDate().Date() == event.getEndDate().Date()"
+              <tal:sameday tal:condition="python:event.getStartDate and event.getEndDate and event.getStartDate.Date() == event.getEndDate.Date()"
                            tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
                   <abbr class="dtstart"
                         style="display: none;"
-                        tal:attributes="title python:event.getStartDate()"
-                        tal:content="python:context.toLocalizedTime(event.getStartDate(), long_format=1)">
+                        tal:attributes="title python:event.getStartDate"
+                        tal:content="python:context.toLocalizedTime(event.getStartDate, long_format=1)">
                       Start Date Time
                   </abbr>
                   <abbr class="dtend"
                         style="display: none;"
-                        tal:attributes="title python:event.getEndDate()"
-                        tal:content="python:context.toLocalizedTime(event.getEndDate(), long_format=1)">
+                        tal:attributes="title python:event.getEndDate"
+                        tal:content="python:context.toLocalizedTime(event.getEndDate, long_format=1)">
                       End Date Time
                   </abbr>
-                  <span tal:replace="python:context.toLocalizedTime(event.getStartDate())">Start Date Time</span> <br />
+                  <span tal:replace="python:context.toLocalizedTime(event.getStartDate)">Start Date Time</span> <br />
                   <span i18n:translate="event_from">from</span>
-                  <span tal:replace="python:ampm and event.getStartDate().AMPMMinutes() or event.getStartDate().TimeMinutes()">Start Time</span>
+                  <span tal:replace="python:ampm and event.getStartDate.AMPMMinutes() or event.getStartDate.TimeMinutes()">Start Time</span>
                   <span i18n:translate="event_to">to</span>
-                  <span tal:replace="python:ampm and event.getEndDate().AMPMMinutes()or event.getEndDate().TimeMinutes()">End Time</span>
+                  <span tal:replace="python:ampm and event.getEndDate.AMPMMinutes()or event.getEndDate.TimeMinutes()">End Time</span>
               </tal:sameday>
             </td>
             <td>
                <span tal:content="event/getVenueName">event venue</span>
             </td>
-            <td tal:define="eventview nocall:event/@@view_el_event"
-                tal:condition="user_can_edit">
+            <td tal:condition="user_can_edit">
               <a href="edit"
-                tal:attributes="href string:${event/absolute_url}/edit"
+                tal:attributes="href string:${event/getPath}/edit"
                 i18n:translate="edit_event">Edit</a>
               <br />
-              <a tal:attributes="href string:${event/absolute_url}/delete_confirmation"
+              <a tal:attributes="href string:${event/getPath}/delete_confirmation"
                 i18n:translate="delete_event">Delete</a>
               <br />
               <tal:actions 
+                  tal:define="eventview nocall:event/@@view_el_event"
                   tal:repeat="action eventview/getNextWorkflowActions">
                 <a tal:attributes="href action/url"
                    tal:condition="python:action['category'] == 'workflow'"
@@ -238,7 +253,7 @@
             </td>
             <td tal:condition="user_can_edit">
               <a href=""
-                tal:attributes="href string:${event/absolute_url}/@@view_registrations"
+                tal:attributes="href string:${event/getPath}/@@view_registrations"
                 i18n:translate="view_registrations">View and Manage Registrations</a>
             </td>
           </tr>
