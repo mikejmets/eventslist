@@ -48,11 +48,13 @@
           <a href="#"
             tal:attributes="href string:${venue/absolute_url}/delete_confirmation"
             i18n:translate="agenda_delete">Delete</a><br />
+          <tal:comment tal:condition="python:0">
           <tal:actions tal:repeat="action view/getNextWorkflowActions">
             <a tal:attributes="href action/url"
                tal:condition="python:action['category'] == 'workflow'"
                tal:content="action/name">workflow action</a><br />
           </tal:actions>
+          </tal:comment>
         </td>
       </tr>
     </tbody>
