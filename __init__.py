@@ -3,7 +3,7 @@
 # File: eventslist.py
 #
 # Copyright (c) 2010 by Webtide (C)2010
-# Generator: ArchGenXML Version 2.4.1
+# Generator: ArchGenXML Version 2.5
 #            http://plone.org/products/archgenxml
 #
 # GNU General Public License (GPL)

@@ -3,7 +3,11 @@
   <roles>
     <role name="EventContributor"/>
     <role name="EventManager"/>
+<!-- ##code-section roles -->
+<!-- ##/code-section roles -->
   </roles>
   <permissions>
+<!-- ##code-section permissions -->
+<!-- ##/code-section permissions -->
   </permissions>
 </rolemap>
