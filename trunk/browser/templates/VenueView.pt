@@ -182,7 +182,7 @@
           <th i18n:translate="event_venue">Venue</th>
           <th tal:condition="user_can_edit"
               i18n:translate="manage_event">Manage Event</th>
-          <th tal:condition="user_can_edit"
+          <th tal:condition="python: 0 and user_can_edit"
               i18n:translate="registrations">Registrations</th>
         </tr>
       </thead>
@@ -242,6 +242,7 @@
               <a tal:attributes="href string:${event/getPath}/delete_confirmation"
                 i18n:translate="delete_event">Delete</a>
               <br />
+              <tal:comment tal:condition="nothing"> 
               <tal:actions 
                   tal:define="eventview nocall:event/@@view_el_event"
                   tal:repeat="action eventview/getNextWorkflowActions">
@@ -250,8 +251,9 @@
                    tal:content="action/name">workflow action</a>
                 <br />
               </tal:actions>
+              </tal:comment>
             </td>
-            <td tal:condition="user_can_edit">
+            <td tal:condition="python: 0 and user_can_edit">
               <a href=""
                 tal:attributes="href string:${event/getPath}/@@view_registrations"
                 i18n:translate="view_registrations">View and Manage Registrations</a>
