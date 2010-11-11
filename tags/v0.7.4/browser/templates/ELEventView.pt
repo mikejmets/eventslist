@@ -5,19 +5,8 @@
 <body>
 
 <div metal:fill-slot="main">
- <div tal:define="user_can_edit python:view.userCanEdit(user);">
-  <div class="vevent">
-
-  <h1 tal:content="context/getFullTitle" class="documentFirstHeading summary">
-      Title or id
-  </h1>
-
-  <p tal:condition="request/input_errors|nothing"
-     tal:content="request/input_errors"
-     style="color: red; font-weight: bold;">correct the indicated errors</p>
-
   <!-- ****************************************************************** -->
-  <div style="text-align:center;">
+  <div style="text-align:center;border-width:1px;">
     <script type="text/javascript"><!--
       google_ad_client = "pub-0376216002411660";
       /* EventsList Event Add */
@@ -29,7 +18,21 @@
     <script type="text/javascript"
       src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
     </script>
+    <br />
+    <br />
   </div>
+  <!-- ****************************************************************** -->
+
+ <div tal:define="user_can_edit python:view.userCanEdit(user);">
+  <div class="vevent">
+
+  <h1 tal:content="context/getFullTitle" class="documentFirstHeading summary">
+      Title or id
+  </h1>
+
+  <p tal:condition="request/input_errors|nothing"
+     tal:content="request/input_errors"
+     style="color: red; font-weight: bold;">correct the indicated errors</p>
 
   <div class="eventDetails vcard">
   <table class="vertical listing"
