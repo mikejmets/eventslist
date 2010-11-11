@@ -58,10 +58,10 @@ Visit the link below to view the details of your booking, as well as the cost in
 %s/view
 
 Kind regards,
-The PPECB Events Team
+The EventsList Team
     """ % (attendee_name, obj.Title(), obj.absolute_url())
     mailhost.send(attendee_msg, mto=attendee_email, mfrom=sender_email, 
-                  subject='PPECB Event Attendance Request', encode=None)
+                  subject='Event Attendance Request', encode=None)
 
     # send an email to the organiser
     event = obj.getElevents()
@@ -76,12 +76,12 @@ Click the link below to view the event registration screen page and accept or re
 %s
 
 Kind regards,
-The PPECB Events Team
+The EventsList Team
     """ % (organiser_name, attendee_name, obj.Title(), '%s/events_folder' % pu())
     #logger.info('Send email from %s to %s' % (
     #    organiser_email, sender_email))
     mailhost.send(organiser_msg, mto=organiser_email, mfrom=sender_email, 
-                  subject='PPECB Event Attendance Request', encode=None)
+                  subject='Event Attendance Request', encode=None)
 
     logger.info('Email sent to attendee and organiser')
 
@@ -113,9 +113,9 @@ Visit the link below to view the details of your booking, as well as the cost in
 %s/view
 
 Kind regards,
-The PPECB Events Team
+The EventsList Team
     """ % (attendee_name, obj.Title(), notification.new_state.title, obj.absolute_url())
     mailhost.send(attendee_msg, mto=attendee_email, mfrom=sender_email, 
-                  subject='PPECB Event Attendance Notification', encode=None)
+                  subject='Event Attendance Notification', encode=None)
 
     logger.info('Status change Email sent to attendee')
