@@ -3,7 +3,7 @@
 # File: venuefolderview.py
 #
 # Copyright (c) 2010 by Webtide (C)2010
-# Generator: ArchGenXML Version 2.4.1
+# Generator: ArchGenXML Version 2.5
 #            http://plone.org/products/archgenxml
 #
 # GNU General Public License (GPL)
@@ -57,6 +57,14 @@ class VenueFolderView(BrowserView):
         return False
 
 
+    def getVenues(self):
+        """ Pull all venues in this folder"""
+        context = aq_inner(self.context)
+        obs = context.objectValues(spec='Venue')
+        obs.sort(lambda x, y: cmp(x.Title().upper(), y.Title().upper()))
+        return obs
+
+
     def getWhere(self, venue):
         """ Contract where from address"""
         where = ""
@@ -71,14 +79,6 @@ class VenueFolderView(BrowserView):
         return where
 
 
-    def getVenues(self):
-        """ Pull all venues in this folder"""
-        context = aq_inner(self.context)
-        obs = context.objectValues(spec='Venue')
-        obs.sort(lambda x, y: cmp(x.Title().upper(), y.Title().upper()))
-        return obs
-
-
     def getNextWorkflowActions(self):
         """ get the available workflow actions on the object
         """
@@ -89,5 +89,3 @@ class VenueFolderView(BrowserView):
 
 ##code-section module-footer #fill in your manual code here
 ##/code-section module-footer
-
-
