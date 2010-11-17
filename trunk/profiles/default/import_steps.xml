@@ -5,26 +5,17 @@
     id="eventslist-Hide-Tools-From-Navigation" 
     handler="Products.eventslist.setuphandlers.setupHideToolsFromNavigation"
     title="Hide Custom tools from Navigation for eventslist"
-    version="2010-11-11T13:34:29.818846">
+    version="2010-11-11T18:33:59.755278">
    <dependency step="eventslist-QI-dependencies"/>
    Hides custom tools from navigation tree for eventslist
  </import-step>
 
  
  <import-step 
-    id="eventslist-Install-Vocabularies" 
-    handler="Products.eventslist.setuphandlers.installVocabularies"
-    title="Install Vocabularies for eventslist"
-    version="2010-11-11T13:34:29.818846">
-   <dependency step="eventslist-QI-dependencies"/>
-   Installs the vocabulary files into vocabulary library for eventslist
- </import-step>
-
- <import-step 
     id="eventslist-Setup-Member-Types" 
     handler="Products.eventslist.setuphandlers.setupMemberTypes"
     title="setup Remember(Membrane) types for eventslist"
-    version="2010-11-11T13:34:29.818846">
+    version="2010-11-11T18:33:59.755278">
    <dependency step="eventslist-QI-dependencies"/>
    setup Remember(Membrane) types for eventslist
  </import-step>
@@ -35,7 +26,7 @@
     id="eventslist-Update-RoleMappings" 
     handler="Products.eventslist.setuphandlers.updateRoleMappings"
     title="Update Workflow role mappings for eventslist"
-    version="2010-11-11T13:34:29.818846">
+    version="2010-11-11T18:33:59.755278">
    <dependency step="eventslist-QI-dependencies"/>
    updates the workflow role mappings for eventslist
  </import-step>
@@ -44,7 +35,7 @@
     id="eventslist-postInstall" 
     handler="Products.eventslist.setuphandlers.postInstall"
     title="manual coded post-install for eventslist"
-    version="2010-11-11T13:34:29.818846">
+    version="2010-11-11T18:33:59.755278">
    <dependency step="eventslist-QI-dependencies"/>
    manual coded post-install for eventslist
  </import-step>

@@ -64,7 +64,6 @@ class VenueFolderView(BrowserView):
         obs.sort(lambda x, y: cmp(x.Title().upper(), y.Title().upper()))
         return obs
 
-
     def getWhere(self, venue):
         """ Contract where from address"""
         where = ""

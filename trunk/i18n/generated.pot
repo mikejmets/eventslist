@@ -1,0 +1,355 @@
+# archgenxml generated POT File
+# Mike Metcalfe, Jurgen Blignaut <mike@webtide.co.za, jurgen@webtide.co.za>, 2010.
+msgid ""
+msgstr ""
+"Project-Id-Version: eventslist\n"
+"POT-Creation-Date: Thu Nov 11 13:33:37 2010\n"
+"PO-Revision-Date: Thu Nov 11 13:33:37 2010\n"
+"Last-Translator: Mike Metcalfe, Jurgen Blignaut <mike@webtide.co.za, jurgen@webtide.co.za>\n"
+"Language-Team: Mike Metcalfe, Jurgen Blignaut <mike@webtide.co.za, jurgen@webtide.co.za>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"Language-Code: en\n"
+"Language-Name: English\n"
+"Preferred-Encodings: latin1 utf-8\n"
+"Domain: eventslist\n"
+
+#. Default: "Enable online bookings"
+#: content/ELEvent.py
+msgid "eventslist_help_isBookable"
+msgstr ""
+
+#. Default: "Indicate Your Meal Preference if Applicable"
+#: content/Booking.py
+msgid "eventslist_help_mealPreference"
+msgstr ""
+
+#. Default: "Describe any other meal preference if you selected Other above"
+#: content/Booking.py
+msgid "eventslist_help_otherMealPreference"
+msgstr ""
+
+#. Default: "Address"
+#: content/Venue.py
+msgid "eventslist_label_address"
+msgstr ""
+
+#. Default: "Bookings"
+#: content/payment_booking.py
+msgid "eventslist_label_bookings"
+msgstr ""
+
+#. Default: "Building housing the event"
+#: content/AgendaItem.py
+msgid "eventslist_label_building"
+msgstr ""
+
+#. Default: "Last Date for Cancellation"
+#: content/ELEvent.py
+msgid "eventslist_label_cancelEndDate"
+msgstr ""
+
+#. Default: "Cancellation Rebate"
+#: content/Package.py
+msgid "eventslist_label_cancellationRebate"
+msgstr ""
+
+#. Default: "Category"
+#: content/ELEvent.py
+msgid "eventslist_label_category"
+msgstr ""
+
+#. Default: "City"
+#: content/Venue.py
+msgid "eventslist_label_city"
+msgstr ""
+
+#. Default: "Company / Employer"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_company"
+msgstr ""
+
+#. Default: "Contact Person Fax Number"
+#: content/ELEvent.py
+msgid "eventslist_label_contactFax"
+msgstr ""
+
+#. Default: "Contact Person Mobile Number"
+#: content/ELEvent.py
+msgid "eventslist_label_contactMobile"
+msgstr ""
+
+#. Default: "Country"
+#: content/Booking.py
+#: content/EventAttendance.py
+#: content/Venue.py
+msgid "eventslist_label_country"
+msgstr ""
+
+#. Default: "Declaration and Confirmation Text"
+#: content/ELEvent.py
+#: utilities/EventsConfiglet.py
+msgid "eventslist_label_declarationAndConfirmation"
+msgstr ""
+
+#. Default: "Duration in minutes"
+#: content/AgendaItem.py
+msgid "eventslist_label_duration"
+msgstr ""
+
+#. Default: "Early Bird Rebate"
+#: content/Package.py
+msgid "eventslist_label_earlyBirdRebate"
+msgstr ""
+
+#. Default: "Last Date for Early Bird Registration"
+#: content/ELEvent.py
+msgid "eventslist_label_earlybirdEndDate"
+msgstr ""
+
+#. Default: "Elevents"
+#: content/booking_elevent.py
+msgid "eventslist_label_elevents"
+msgstr ""
+
+#. Default: "Elmembers"
+#: content/booking_elmember.py
+msgid "eventslist_label_elmembers"
+msgstr ""
+
+#. Default: "Email Address"
+#: content/Booking.py
+msgid "eventslist_label_email"
+msgstr ""
+
+#. Default: "Externalevents"
+#: content/booking_externalevent.py
+msgid "eventslist_label_externalevents"
+msgstr ""
+
+#. Default: "Fax Number"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_fax"
+msgstr ""
+
+#. Default: "First Names"
+#: content/Booking.py
+#: content/ELMember.py
+msgid "eventslist_label_firstname"
+msgstr ""
+
+#. Default: "Fulltitle"
+#: content/ELEvent.py
+msgid "eventslist_label_fullTitle"
+msgstr ""
+
+#. Default: "Job Title"
+#: content/Booking.py
+msgid "eventslist_label_function"
+msgstr ""
+
+#. Default: "Emergency Number"
+#: content/EventAttendance.py
+msgid "eventslist_label_iceNumber"
+msgstr ""
+
+#. Default: "Emergency Number"
+#: content/Booking.py
+msgid "eventslist_label_icenumber"
+msgstr ""
+
+#. Default: "Initials"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_initials"
+msgstr ""
+
+#. Default: "Internalevents"
+#: content/booking_internalevent.py
+msgid "eventslist_label_internalevents"
+msgstr ""
+
+#. Default: "Bookable event?"
+#: content/ELEvent.py
+msgid "eventslist_label_isBookable"
+msgstr ""
+
+#. Default: "Hosted with EventsList?"
+#: content/ELEvent.py
+msgid "eventslist_label_isInternal"
+msgstr ""
+
+#. Default: "Itemcost"
+#: content/ExternalEvent.py
+#: content/InternalEvent.py
+msgid "eventslist_label_itemCost"
+msgstr ""
+
+#. Default: "Event End Time"
+#: content/ExternalEvent.py
+msgid "eventslist_label_itemEnds"
+msgstr ""
+
+#. Default: "Event Start Time"
+#: content/AgendaItem.py
+#: content/ExternalEvent.py
+#: content/InternalEvent.py
+msgid "eventslist_label_itemStarts"
+msgstr ""
+
+#. Default: "Job Title"
+#: content/EventAttendance.py
+msgid "eventslist_label_jobTitle"
+msgstr ""
+
+#. Default: "Late Registration Penalty"
+#: content/Package.py
+msgid "eventslist_label_lateComerPenalty"
+msgstr ""
+
+#. Default: "Latitude"
+#: content/Venue.py
+msgid "eventslist_label_latitude"
+msgstr ""
+
+#. Default: "Liability Clause Text"
+#: content/ELEvent.py
+#: utilities/EventsConfiglet.py
+msgid "eventslist_label_liabilityClause"
+msgstr ""
+
+#. Default: "Longitude"
+#: content/Venue.py
+msgid "eventslist_label_longitude"
+msgstr ""
+
+#. Default: "Meal Preference"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_mealPreference"
+msgstr ""
+
+#. Default: "Mobile Number"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_mobile"
+msgstr ""
+
+#. Default: "Other Meal Preference"
+#: content/Booking.py
+#: content/EventAttendance.py
+msgid "eventslist_label_otherMealPreference"
+msgstr ""
+
+#. Default: "Packages"
+#: content/booking_package.py
+msgid "eventslist_label_packages"
+msgstr ""
+
+#. Default: "Parenttitle"
+#: content/ELEvent.py
+msgid "eventslist_label_parentTitle"
+msgstr ""
+
+#. Default: "Telephone Number"
+#: content/Booking.py
+#: content/Venue.py
+msgid "eventslist_label_phone"
+msgstr ""
+
+#. Default: "Full Post Address"
+#: content/Venue.py
+msgid "eventslist_label_postalAddress"
+msgstr ""
+
+#. Default: "Presenters"
+#: content/AgendaItem.py
+msgid "eventslist_label_presenters"
+msgstr ""
+
+#. Default: "Region"
+#: content/Venue.py
+msgid "eventslist_label_region"
+msgstr ""
+
+#. Default: "Registration is Open"
+#: content/ELEvent.py
+msgid "eventslist_label_registrationIsOpen"
+msgstr ""
+
+#. Default: "URL to review"
+#: content/ELEvent.py
+msgid "eventslist_label_reviewURL"
+msgstr ""
+
+#. Default: "Room number or name"
+#: content/AgendaItem.py
+msgid "eventslist_label_room"
+msgstr ""
+
+#. Default: "Salutation"
+#: content/Booking.py
+#: content/ELMember.py
+msgid "eventslist_label_salutation"
+msgstr ""
+
+#. Default: "Registration End Date"
+#: content/ELEvent.py
+msgid "eventslist_label_signupEndDate"
+msgstr ""
+
+#. Default: "Registration Start Date"
+#: content/ELEvent.py
+msgid "eventslist_label_signupStartDate"
+msgstr ""
+
+#. Default: "Sub Region"
+#: content/Venue.py
+msgid "eventslist_label_subRegion"
+msgstr ""
+
+#. Default: "Suburb"
+#: content/Venue.py
+msgid "eventslist_label_suburb"
+msgstr ""
+
+#. Default: "Surname"
+#: content/Booking.py
+#: content/ELMember.py
+msgid "eventslist_label_surname"
+msgstr ""
+
+#. Default: "Telephone"
+#: content/EventAttendance.py
+msgid "eventslist_label_telephone"
+msgstr ""
+
+#. Default: "Totalcost"
+#: content/Booking.py
+msgid "eventslist_label_totalCost"
+msgstr ""
+
+#. Default: "Unit Cost Price"
+#: content/Package.py
+msgid "eventslist_label_unitPrice"
+msgstr ""
+
+#. Default: "Venue"
+#: content/elevent_venue.py
+msgid "eventslist_label_venue"
+msgstr ""
+
+#. Default: "Venuename"
+#: content/ELEvent.py
+msgid "eventslist_label_venueName"
+msgstr ""
+
+#. Default: "Website"
+#: content/Venue.py
+msgid "eventslist_label_website"
+msgstr ""
+

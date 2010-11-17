@@ -70,7 +70,7 @@ class ELFolderView(BrowserView):
         #if user has role
         if 'EventManager' in roles or 'EventContributor' in roles:
             #user has local access
-            return 'Contributor' in roles
+            return 'Contributor' in roles or 'Owner' in roles
         return False
 
 

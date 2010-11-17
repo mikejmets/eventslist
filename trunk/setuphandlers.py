@@ -18,9 +18,6 @@ logger = logging.getLogger('eventslist: setuphandlers')
 from Products.eventslist.config import PROJECTNAME
 from Products.eventslist.config import DEPENDENCIES
 import os
-from config import product_globals
-from Globals import package_home
-from Products.ATVocabularyManager.config import TOOL_NAME as ATVOCABULARYTOOL
 from Products.CMFCore.utils import getToolByName
 import transaction
 ##code-section HEAD
@@ -49,39 +46,6 @@ def setupHideToolsFromNavigation(context):
                 current.append(toolname)
                 kwargs = {'idsNotToList': current}
                 navtreeProperties.manage_changeProperties(**kwargs)
-
-def installVocabularies(context):
-    """creates/imports the atvm vocabs."""
-    if isNoteventslistProfile(context): return 
-    site = context.getSite()
-    # Create vocabularies in vocabulary lib
-    atvm = getToolByName(site, ATVOCABULARYTOOL)
-    vocabmap = {'event_catagories': ('SimpleVocabulary', 'SimpleVocabularyTerm'),
-        }
-    for vocabname in vocabmap.keys():
-        if not vocabname in atvm.contentIds():
-            atvm.invokeFactory(vocabmap[vocabname][0], vocabname)
-
-        if len(atvm[vocabname].contentIds()) < 1:
-            if vocabmap[vocabname][0] == "VdexVocabulary":
-                vdexpath = os.path.join(
-                    package_home(product_globals), 'data', '%s.vdex' % vocabname)
-                if not (os.path.exists(vdexpath) and os.path.isfile(vdexpath)):
-                    logger.warn('No VDEX import file provided at %s.' % vdexpath)
-                    continue
-                try:
-                    #read data
-                    f = open(vdexpath, 'r')
-                    data = f.read()
-                    f.close()
-                except:
-                    logger.warn("Problems while reading VDEX import file "+\
-                                "provided at %s." % vdexpath)
-                    continue
-                # this might take some time!
-                atvm[vocabname].importXMLBinding(data)
-            else:
-                pass
 
 
 from Products.membrane.interfaces import ICategoryMapper

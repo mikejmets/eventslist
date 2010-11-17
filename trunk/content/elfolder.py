@@ -66,12 +66,13 @@ class ELFolder(BaseFolder, BrowserDefaultMixin):
         #Using portal catalog
         query = {
             'portal_type':'ELEvent',
-            'sort_on': 'getStartDate',
-            'sort_order': sort_order,
+            #'sort_on': 'getStartDate',
+            #'sort_order': sort_order,
             }
 
         if review_state == 'all':
-          query['review_state'] = ['private', 'submitted', 'published']
+          #query['review_state'] = ['private', 'submitted', 'published']
+          pass
         else:
           query['review_state'] = review_state
 
