@@ -40,7 +40,7 @@ def venue_vocabulary(context):
   #create vocab
   terms = []
   terms.append(SimpleTerm(
-      value=0, token=0, title='--Other--'))
+      value=0, token=0, title='---------'))
   for venue in venues:
     terms.append(SimpleTerm(
       value=venue.UID(), token=venue.UID(), title=venue.getFullTitle()))

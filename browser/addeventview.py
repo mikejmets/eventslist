@@ -22,11 +22,11 @@ class IAddEventForm(Interface):
     """Define the fields of our form
     """
     title = schema.TextLine(title=_(u"Event Title"),
-          description=u"Submit you event title. Please keep it short",
-          required=True)
+        description=u"Submit your event title. Please keep it short",
+        required=True)
     event_type = schema.Choice(
           title=_(u"Event Type"),
-          description=u"Select event catagory",
+          description=u"Select one event catagory",
           source='Products.eventslist.vocabularies.EventTypeVocabulary',
           )
     description = schema.Text(title=_(u"Short Event Description"),
@@ -34,14 +34,6 @@ class IAddEventForm(Interface):
           required=False) #MJM HACK
     text = RichText(title=_(u"Long Event Description"),
           description=u"Enter the full details of your event",
-          required=False)
-    venue = schema.Choice(
-          title=_(u"Venue"),
-          description=u"Select a venue. If it is not in the list enter it into the field below 'Other Venue'",
-          source='Products.eventslist.vocabularies.VenueVocabulary',
-          )
-    other_venue = schema.TextLine(title=_(u"Other Venue"),
-          description=u"If the venue is not in the list above",
           required=False)
     event_url = schema.URI(title=_(u"Performer URL"),
           description=u"Provide the URL of performer's website",
@@ -52,21 +44,42 @@ class IAddEventForm(Interface):
     ticket_url = schema.URI(title=_(u"Ticket URL"),
           description=u"Provide the URL of where a ticket for the event can be purchased online",
           required=False)
+    venue = schema.Choice(
+          title=_(u"Venue"),
+          description=u"Select a venue. Note: if your venue is not in the list, enter it the 'New Venue' field below",
+          source='Products.eventslist.vocabularies.VenueVocabulary',
+          )
+    new_venue = schema.TextLine(title=_(u"New Venue"),
+          description=u"Sumbit a new venue and we'll add it for you",
+          required=False)
     start_date = schema.Datetime(title=_(u"Start Date"),
-          description=_(u"Use format DD-MM-CCYY HH:MM"),
+          description=_(u"Enter the first date of the event and it's starting time (DD/MM/CCYY HH:MM)"),
           default=datetime.now() + timedelta(hours=1)- timedelta(minutes=datetime.now().minute),
           required=False) #MJM HACK
     end_date = schema.Datetime(title=_(u"End Date"),
-          description=_(u"Use format DD-MM-CCYY HH:MM"),
+          description=_(u"Enter the last date of the event and it's ending time (DD/MM/CCYY HH:MM)"),
           default=datetime.now() + timedelta(hours=2)- timedelta(minutes=datetime.now().minute),
           required=False) # MJM HACK
     dows = schema.List(
-          title=_(u"D.O.W"),
-          description=u"Days of the week",
+          title=_(u"Days of the Week"),
+          description=u"iSelect the day(s) of the week the event is on",
           required=False,
           value_type=schema.Choice(
             source='Products.eventslist.vocabularies.DOWVocabulary',),
-          )
+           )
+    price_range = schema.TextLine(title=_(u"Price Range"),
+        description=u"Enter the ticket price range. Eg. R100 - R250",
+        required=False)
+    cantact_name = schema.TextLine(title=_(u"Contact Name"),
+        required=False)
+    contact_email = schema.TextLine(title=_(u"Contact Email"),
+        required=False)
+    contact_phone = schema.TextLine(title=_(u"Contact Phone"),
+        required=False)
+    contact_mobile_number = schema.TextLine(title=_(u"Contact Mobile Number"),
+        required=False)
+    terms = schema.Bool(title=_(u"Terms and Conditions"),
+        required=True)
 
 
 class AddEventForm(form.Form):
@@ -105,7 +118,7 @@ class AddEventForm(form.Form):
         description = data['description']
         text = data['text']
         venue_uid = data['venue']
-        other_venue = data['other_venue']
+        new_venue = data['new_venue']
         
         #Create parent
         id = context.generateUniqueId('ELEvent')
@@ -119,8 +132,8 @@ class AddEventForm(form.Form):
             'text': text.raw,
             'eventType': (event_type,),
             }
-        if venue_uid == 0 and other_venue:
-          kwargs['location'] = other_venue
+        if venue_uid == 0 and new_venue:
+          kwargs['location'] = new_venue
         if venue_uid != 0:
           obj.setVenue(venue_uid)
         if not mulitple_events:
