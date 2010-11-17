@@ -157,6 +157,12 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         else:
             return '%s, %s' % (self.title, self.getParentVenue().Title())
 
+    def getFullTitle(self):
+        if self.isTopVenue():
+            return self.title
+        else:
+            return '%s - %s' % (self.getParentVenue().Title(), self.title)
+
     def getLongName(self):
         if self.isTopVenue():
             title = self.title

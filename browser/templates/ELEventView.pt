@@ -6,7 +6,8 @@
 
 <div metal:fill-slot="main">
   <!-- ****************************************************************** -->
-  <div style="text-align:center;border-width:1px;">
+  <div tal:condition="nothing"
+       style="text-align:center;border-width:1px;">
     <script type="text/javascript"><!--
       google_ad_client = "pub-0376216002411660";
       /* EventsList Event Add */

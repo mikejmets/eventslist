@@ -21,7 +21,6 @@ from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 
 from Products.ATReferenceBrowserWidget.ATReferenceBrowserWidget import \
     ReferenceBrowserWidget
-from Products.ATVocabularyManager.namedvocabulary import NamedVocabulary
 from Products.eventslist.config import *
 
 # additional imports from tagged value 'import'
@@ -132,15 +131,6 @@ schema = Schema((
             i18n_domain='eventslist',
         ),
     ),
-    LinesField(
-        name='category',
-        widget=InAndOutWidget(
-            label='Category',
-            label_msgid='eventslist_label_category',
-            i18n_domain='eventslist',
-        ),
-        vocabulary=NamedVocabulary("""event_catagories"""),
-    ),
     ComputedField(
         name='venueName',
         widget=ComputedField._properties['widget'](
@@ -199,8 +189,7 @@ ELEvent_schema = BaseFolderSchema.copy() + \
 ##code-section after-schema #fill in your manual code here
 ELEvent_schema.moveField('isInternal', after='title')
 ELEvent_schema.moveField('isBookable', after='isInternal')
-ELEvent_schema.moveField('category', after='isInternal')
-ELEvent_schema.moveField('eventType', after='category')
+ELEvent_schema.moveField('eventType', after='isBookable')
 ELEvent_schema.moveField('text', after='description')
 ELEvent_schema.moveField('eventUrl', after='text')
 ELEvent_schema.moveField('venue', after='eventUrl')
@@ -233,10 +222,15 @@ ELEvent_schema['startDate'].default_method = 'getDefaultStartDate'
 ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
 
-#Change field labels and descriptions
 ELEvent_schema['venue'].widget.startup_directory_method = 'getVenueFolder'
+
+#Change field labels and descriptions
+ELEvent_schema['eventType'].widget.label = 'Categories'
 ELEvent_schema['location'].widget.label = 'Other Location'
 ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
+
+#Change permissions
+ELEvent_schema['isBookable'].read_permission = 'EventManager'
 
 ##/code-section after-schema
 
@@ -445,9 +439,10 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return parent.getEventFolder()
 
     def getVenueFolder(self):
-        ef = self.getEventFolder()
-        if ef:
-            return '/'.join(ef.getPhysicalPath()) + '/%s-venues' % ef.__name__
+        urltool = getToolByName(self, 'portal_url')
+        portal = urltool.getPortalObject()
+        folder = portal['eventslists-venues']
+        return folder.absolute_url()
 
     def getVenueObject(self):
         venue = self.getVenue()

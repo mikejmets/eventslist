@@ -138,6 +138,13 @@
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELFolder"
+     name="edit-event-form"
+     class="Products.eventslist.browser.editeventview.EditEventView"
+     permission="zope2.View"
+     />
+
+  <browser:page
+     for="Products.eventslist.content.interfaces.IELFolder"
      name="mods_el_folder"
      class="Products.eventslist.browser.elfolderview.ELFolderView"
      template="templates/ELFolderMods.pt"
