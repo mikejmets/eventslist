@@ -22,7 +22,7 @@
   </p>
   <p tal:condition="user_can_edit">
     <a href=""
-      tal:attributes="href string:${context/absolute_url}/edit-event-form"
+      tal:attributes="href string:${context/absolute_url}/add-event-form"
       i18n:translate="create_event">Create a New Event</a>
   </p>
 

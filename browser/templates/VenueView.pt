@@ -33,7 +33,7 @@
   </div>
 
 
-  <table class="listing vertical" style="width:400px">
+  <table class="listing vertical" style="width:350px">
     <tbody>
       <tr tal:condition="context/Description">
         <th i18n:translate="description">Description</th>
@@ -106,7 +106,7 @@
         <td>
           <a 
             tal:attributes="href context/getWebsite"
-            tal:content="context/getWebsite">url</a>
+            tal:content="python:'Link to website'">url</a>
         </td>
       </tr>
 
