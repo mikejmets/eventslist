@@ -18,7 +18,7 @@ from plone.app.textfield import RichText
 from Products.eventslist.content.elevent import ELEvent
 from Products.eventslist.content.interfaces import IELEvent
 
-class IEditEventForm(Interface):
+class IAddEventForm(Interface):
     """Define the fields of our form
     """
     title = schema.TextLine(title=_(u"Event Title"),
@@ -69,9 +69,9 @@ class IEditEventForm(Interface):
           )
 
 
-class EditEventForm(form.Form):
+class AddEventForm(form.Form):
     ignoreContext = True
-    fields = field.Fields(IEditEventForm)
+    fields = field.Fields(IAddEventForm)
 
     def updateWidgets(self):
       form.Form.updateWidgets(self)
@@ -172,4 +172,4 @@ class EditEventForm(form.Form):
             "%s" % context.absolute_url())
         return ''
 
-EditEventView = wrap_form(EditEventForm)
+AddEventView = wrap_form(AddEventForm)

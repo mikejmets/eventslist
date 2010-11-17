@@ -138,8 +138,8 @@
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELFolder"
-     name="edit-event-form"
-     class="Products.eventslist.browser.editeventview.EditEventView"
+     name="add-event-form"
+     class="Products.eventslist.browser.addeventview.AddEventView"
      permission="zope2.View"
      />
 
