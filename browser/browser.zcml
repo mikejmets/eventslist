@@ -156,15 +156,15 @@
      name="publish-all"
      class="Products.eventslist.browser.eleventview.ELEventView"
      attribute="publish_all"
-     permission="cmf.ManagePortal"
+     permission="eventslist.ManageEvents"
      />
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELEvent"
-     name="retract-all"
+     name="do-action-on-all"
      class="Products.eventslist.browser.eleventview.ELEventView"
-     attribute="retract_all"
-     permission="cmf.ManagePortal"
+     attribute="do_action_on_all"
+     permission="eventslist.ContributeEvents"
      />
 
 <!-- ##/code-section BROWSER -->

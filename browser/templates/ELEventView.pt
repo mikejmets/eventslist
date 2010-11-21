@@ -24,7 +24,10 @@
   </div>
   <!-- ****************************************************************** -->
 
- <div tal:define="user_can_edit python:view.userCanEdit(user);">
+ <div tal:define="
+    user_can_manage python:view.userCanManage(user);
+    user_can_edit python:view.userCanEdit(user);
+  ">
   <div class="vevent">
 
   <h1 tal:content="context/getFullTitle" class="documentFirstHeading summary">
@@ -198,10 +201,10 @@
          i18n:translate="visit_organiser_website">
          Visit the organiser&apos;s website &hellip;</a>
   </p>
-  <p tal:condition="context/getReviewURL|nothing">
+  <p tal:condition="context/getReviewUrl|nothing">
       <a class="url"
-         href="reviewURL"
-         tal:attributes="href context/getReviewURL"
+         href="reviewUrl"
+         tal:attributes="href context/getReviewUrl"
          i18n:translate="read_review">
          Read a review of event ...</a>
   </p>
@@ -233,7 +236,7 @@
          i18n:translate="publish_all">Publish All</a>
       &nbsp;&nbsp;
       <a tal:condition="python:not eventparent and view.isActionAllowed('Retract')"
-         tal:attributes="href string:${context/absolute_url}/retract-all"
+         tal:attributes="href string:${context/absolute_url}/do-action-on-all?action=retract"
          i18n:translate="retract_all">Retract All</a>
       &nbsp;&nbsp;
       <tal:actions 
@@ -255,12 +258,11 @@
   <!-- ****************************************************************** -->
 
   <tal:event_details
-      tal:define="
-        packages view/listPackages|nothing">
+      tal:define="packages view/listPackages|nothing">
     <!-- ============================================================= -->
     <tal:items 
       tal:define="items view/listAgendaItems|nothing"
-        tal:condition="python:user_can_edit or items">
+        tal:condition="python:user_can_manage or items">
     <h3 i18n:translate="event_agenda">Event Agenda</h3>
       <a href="#"
         tal:condition="user_can_edit"
@@ -334,7 +336,7 @@
 
     <!-- ============================================================= -->
     <tal:packages
-        tal:condition="python: user_can_edit or packages">
+        tal:condition="python: user_can_manage or packages">
     <h3 i18n:translate="pricing_options">Pricing Options</h3>
     <tal:if tal:condition="context/isBookable">
     </tal:if>
@@ -415,7 +417,7 @@
     <!-- ============================================================= -->
     <tal:events 
         tal:define="internals python:context.objectValues(spec='InternalEvent') or None"
-        tal:condition="python:user_can_edit or internals">
+        tal:condition="python:user_can_manage or internals">
     <h3 i18n:translate="internal_events">Optional Events During the Main Event</h3>
     <a href="#"
       tal:condition="user_can_edit"
@@ -494,7 +496,7 @@
     <!-- ============================================================= -->
     <tal:events 
         tal:define="externals python:context.objectValues(spec='ExternalEvent') or None"
-        tal:condition="python:user_can_edit or externals">
+        tal:condition="python:user_can_manage or externals">
     <h3 i18n:translate="external_events">Optional Events Outside the Main Event</h3>
     <a href="#"
       tal:condition="user_can_edit"
@@ -608,7 +610,13 @@
         To view only the sub events of this event, 
         <a href="#"
           tal:attributes="href string:${context/absolute_url}/sub_event_listing"
-          i18n:translate="add_internal_event">click here</a></p>
+          i18n:translate="add_internal_event">click here</a>
+    </p>
+    <p tal:condition="user_can_edit" >
+      <a href="#"
+        tal:attributes="href string:${context/absolute_url}/generate-sub-events"
+        i18n:translate="generate_internal_event">Generate multiple sub events</a>
+    </p>
     <a href="#"
       tal:condition="user_can_edit"
       tal:attributes="href string:${context/absolute_url}/createObject?type_name=ELEvent"

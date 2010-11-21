@@ -31,6 +31,7 @@ import logging
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
+from Products.eventslist.vocabularies import event_type_vocabulary
 ##/code-section module-header
 
 schema = Schema((
@@ -43,6 +44,8 @@ schema = Schema((
             label_msgid='eventslist_label_isInternal',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     BooleanField(
         name='isBookable',
@@ -54,6 +57,8 @@ schema = Schema((
             description_msgid='eventslist_help_isBookable',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     DateTimeField(
         name='earlybirdEndDate',
@@ -62,6 +67,8 @@ schema = Schema((
             label_msgid='eventslist_label_earlybirdEndDate',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     DateTimeField(
         name='cancelEndDate',
@@ -70,11 +77,13 @@ schema = Schema((
             label_msgid='eventslist_label_cancelEndDate',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     StringField(
         name='contactMobile',
         widget=StringField._properties['widget'](
-            label="Contact Person Mobile Number",
+            label="Contact Mobile Number",
             label_msgid='eventslist_label_contactMobile',
             i18n_domain='eventslist',
         ),
@@ -86,6 +95,8 @@ schema = Schema((
             label_msgid='eventslist_label_contactFax',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     TextField(
         name='liabilityClause',
@@ -96,6 +107,8 @@ schema = Schema((
             i18n_domain='eventslist',
         ),
         default_output_type='text/html',
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     TextField(
         name='declarationAndConfirmation',
@@ -106,6 +119,8 @@ schema = Schema((
             i18n_domain='eventslist',
         ),
         default_output_type='text/html',
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     DateTimeField(
         name='signupStartDate',
@@ -114,6 +129,8 @@ schema = Schema((
             label_msgid='eventslist_label_signupStartDate',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     DateTimeField(
         name='signupEndDate',
@@ -122,6 +139,8 @@ schema = Schema((
             label_msgid='eventslist_label_signupEndDate',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     BooleanField(
         name='registrationIsOpen',
@@ -130,6 +149,8 @@ schema = Schema((
             label_msgid='eventslist_label_registrationIsOpen',
             i18n_domain='eventslist',
         ),
+        read_permission="EventsList: Manage Events",
+        write_permission="EventsList: Manage Events",
     ),
     ComputedField(
         name='venueName',
@@ -156,10 +177,31 @@ schema = Schema((
         ),
     ),
     StringField(
-        name='reviewURL',
+        name='reviewUrl',
         widget=StringField._properties['widget'](
-            label="URL to review",
-            label_msgid='eventslist_label_reviewURL',
+          label="Review URL",
+          description=u"Provide the URL of where this event has been reviewed",
+          label_msgid='eventslist_label_reviewUrl',
+          i18n_domain='eventslist',
+        ),
+        validators=('isURL',),
+    ),
+    StringField(
+        name='ticketUrl',
+        widget=StringField._properties['widget'](
+            label="Ticket URL",
+            description=u"Provide the URL of where a ticket for the event can be purchased online",
+            label_msgid='eventslist_label_ticketURL',
+            i18n_domain='eventslist',
+        ),
+        validators=('isURL',),
+    ),
+    StringField(
+        name='priceRange',
+        widget=StringField._properties['widget'](
+            label="Price Range",
+            description=u"Enter the ticket price range. Eg. R100 - R250",
+            label_msgid='eventslist_label_priceRange',
             i18n_domain='eventslist',
         ),
         validators=('isURL',),
@@ -168,12 +210,22 @@ schema = Schema((
         name='venue',
         widget=ReferenceBrowserWidget(
             label='Venue',
+            description=u"Select a venue. Note: if your venue is not in the list, enter it the 'New Venue' field below",
             label_msgid='eventslist_label_venue',
             i18n_domain='eventslist',
         ),
         allowed_types=('Venue',),
         multiValued=0,
         relationship='elevent_venue',
+    ),
+    BooleanField(
+        name='terms',
+        widget=BooleanField._properties['widget'](
+            label="Terms and Conditions",
+            label_msgid='eventslist_label_terms',
+            i18n_domain='eventslist',
+        ),
+        validators=('isTrue',),
     ),
 
 ),
@@ -192,11 +244,14 @@ ELEvent_schema.moveField('isBookable', after='isInternal')
 ELEvent_schema.moveField('eventType', after='isBookable')
 ELEvent_schema.moveField('text', after='description')
 ELEvent_schema.moveField('eventUrl', after='text')
-ELEvent_schema.moveField('venue', after='eventUrl')
+ELEvent_schema.moveField('ticketUrl', after='eventUrl')
+ELEvent_schema.moveField('reviewUrl', after='ticketUrl')
+ELEvent_schema.moveField('venue', after='reviewUrl')
 ELEvent_schema.moveField('location', after='venue')
 ELEvent_schema.moveField('startDate', after='location')
 ELEvent_schema.moveField('endDate', after='startDate')
-ELEvent_schema.moveField('registrationIsOpen', after='endDate')
+ELEvent_schema.moveField('priceRange', after='endDate')
+ELEvent_schema.moveField('registrationIsOpen', after='priceRange')
 ELEvent_schema.moveField('signupStartDate', after='registrationIsOpen')
 ELEvent_schema.moveField('earlybirdEndDate', after='signupStartDate')
 ELEvent_schema.moveField('signupEndDate', after='earlybirdEndDate')
@@ -219,19 +274,37 @@ ELEvent_schema['declarationAndConfirmation'].default_method = \
 #Set dates fields to NOT be required
 ELEvent_schema['startDate'].required = False
 ELEvent_schema['startDate'].default_method = 'getDefaultStartDate'
+ELEvent_schema['startDate'].widget.description=_(u"Enter the first date of the event and it's starting time (DD/MM/CCYY HH:MM)")
 ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
-
+ELEvent_schema['endDate'].widget.description=_(u"Enter the last date of the event and it's ending time (DD/MM/CCYY HH:MM)")
 ELEvent_schema['venue'].widget.startup_directory_method = 'getVenueFolder'
 
 #Change field labels and descriptions
-ELEvent_schema['eventType'].widget.label = 'Categories'
-ELEvent_schema['location'].widget.label = 'Other Location'
-ELEvent_schema['location'].widget.description = 'Venue not found? Add it here.'
+ELEvent_schema['title'].widget.label = 'Event Title'
+ELEvent_schema['title'].widget.description=u"Submit your event title. Please keep it short"
+ELEvent_schema['eventType'].widget.label = 'Event Type'
+ELEvent_schema['eventType'].widget.description=u"Select one event catagory"
+ELEvent_schema['eventType'].widget =  \
+      SelectionWidget(
+            label="Event Type",
+            label_msgid='eventslist_label_eventtype',
+            i18n_domain='eventslist',
+            description=u"Select one event catagory",
+            format='select',)
+ELEvent_schema['eventType'].vocabulary = "getEventTypeVocab"
 
-#Change permissions
-ELEvent_schema['isBookable'].read_permission = 'EventManager'
+ELEvent_schema['description'].widget.label = 'Short Event Description'
+ELEvent_schema['description'].widget.description=u"Enter a short description on your event. Note that this is important as it is used in our RSS feed"
+ELEvent_schema['text'].widget.label = 'Long Event Description'
+ELEvent_schema['text'].widget.description=u"Enter the full details of your event"
+ELEvent_schema['location'].widget.label = 'New Venue'
+ELEvent_schema['location'].widget.description=u"Sumbit a new venue and we'll add it for you"
+ELEvent_schema['eventUrl'].widget.label = 'Performer URL'
+ELEvent_schema['eventUrl'].widget.description=u"Provide the URL of performer's website"
 
+ELEvent_schema['attendees'].read_permission="EventsList: Manage Events,"
+ELEvent_schema['attendees'].write_permission="EventsList: Manage Events,"
 ##/code-section after-schema
 
 class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
@@ -462,6 +535,12 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         #otheriwse
         return self.getLocation()
 
+    def getEventTypeVocab(self):
+      vocab = event_type_vocabulary(self).by_value.keys()
+      vocab.sort()
+      return vocab
+
+
     def getRSSText(self):
         """ Return the text that will go out on the RSS Feed for an elevent
         """
@@ -499,11 +578,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return txt
 
 
-
 registerType(ELEvent, PROJECTNAME)
 # end of class ELEvent
 
-##code-section module-footer #fill in your manual code here
 def getParentEvent(obj):
     if obj.id == '':
         return
@@ -516,6 +593,4 @@ def getParentEvent(obj):
                 return obj.aq_parent
             return getParentEvent(obj.aq_parent)
         return getParentEvent(obj.aq_parent)
-
-##/code-section module-footer
 

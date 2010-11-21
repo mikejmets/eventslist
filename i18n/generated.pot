@@ -283,7 +283,7 @@ msgstr ""
 
 #. Default: "URL to review"
 #: content/ELEvent.py
-msgid "eventslist_label_reviewURL"
+msgid "eventslist_label_reviewUrl"
 msgstr ""
 
 #. Default: "Room number or name"
