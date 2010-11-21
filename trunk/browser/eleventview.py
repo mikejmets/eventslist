@@ -39,6 +39,14 @@ class ELEventView(BrowserView):
 
 
 
+    def userCanManage(self, user):
+        context = aq_inner(self.context)
+        roles = user.getRolesInContext(context)
+        #if user has role
+        if 'EventManager' in roles:
+            return True
+        return False
+
     def userCanEdit(self, user):
         context = aq_inner(self.context)
         roles = user.getRolesInContext(context)
@@ -64,10 +72,30 @@ class ELEventView(BrowserView):
         context = aq_inner(self.context)
         wft = getToolByName(context, 'portal_workflow')
         wft.doActionFor(context, 'publish')
+        context.reindexObject()
         #publuh all subevents
         for sub in context.getSubEvents():
           try:
             wft.doActionFor(sub, 'publish')
+            sub.reindexObject()
+          except:
+            pass
+        self.request.response.redirect(context.absolute_url() + "/view")
+        return ''
+
+    def do_action_on_all(self, action):
+        """ perform action on event and all subevents
+        """
+        if not action:
+          return
+        context = aq_inner(self.context)
+        wft = getToolByName(context, 'portal_workflow')
+        wft.doActionFor(context, action)
+        context.reindexObject()
+        #perform on all subevents
+        for sub in context.getSubEvents():
+          try:
+            wft.doActionFor(sub, action)
             sub.reindexObject()
           except:
             pass
@@ -116,22 +144,6 @@ class ELEventView(BrowserView):
                     sort_on='getItemStarts')
         return [item.getObject() for item in brains]
 
-
-    def retract_all(self):
-        """ retract event and all subevents
-        """
-        context = aq_inner(self.context)
-        wft = getToolByName(context, 'portal_workflow')
-        wft.doActionFor(context, 'retract')
-        #retract all subevents
-        for sub in context.getSubEvents():
-          try:
-            wft.doActionFor(sub, 'retract')
-            sub.reindexObject()
-          except:
-            pass
-        self.request.response.redirect(context.absolute_url() + "/view")
-        return ''
 
 
     def isActionAllowed(self, action_name):

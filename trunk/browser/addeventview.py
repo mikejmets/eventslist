@@ -38,11 +38,11 @@ class IAddEventForm(Interface):
     event_url = schema.URI(title=_(u"Performer URL"),
           description=u"Provide the URL of performer's website",
           required=False)
-    review_url = schema.URI(title=_(u"Review URL"),
-          description=u"Provide the URL of where this event has been reviewed",
-          required=False)
     ticket_url = schema.URI(title=_(u"Ticket URL"),
           description=u"Provide the URL of where a ticket for the event can be purchased online",
+          required=False)
+    review_url = schema.URI(title=_(u"Review URL"),
+          description=u"Provide the URL of where this event has been reviewed",
           required=False)
     venue = schema.Choice(
           title=_(u"Venue"),
@@ -175,7 +175,7 @@ class AddEventForm(form.Form):
                  confirm, type='info')
 
         self.request.response.redirect(
-            "%s" % context.absolute_url())
+            "%s/view" % obj.absolute_url())
         return ''
 
     @button.buttonAndHandler(u'Cancel')

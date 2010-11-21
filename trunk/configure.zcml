@@ -2,7 +2,6 @@
            xmlns:browser="http://namespaces.zope.org/browser" 
            xmlns:five="http://namespaces.zope.org/five"
            xmlns:i18n="http://namespaces.zope.org/i18n"
-           xmlns:grok="http://namespaces.zope.org/grok"
            i18n_domain="eventslist">
   
   <i18n:registerTranslations directory="locales" />
@@ -11,13 +10,12 @@
 
   <include file="generatedsubscribers.zcml"/>
 
+  <include file="permissions.zcml" />
   <include file="browser/browser.zcml"/>
 
-  <!-- ##code-section configure.zcml -->
 
   <include file="handlers/configure.zcml" />
 
-  <grok:grok package="." />
   <include package="plone.app.z3cform" />
   <include package="plone.directives.form" file="meta.zcml" />
   <include package="plone.directives.form" />
@@ -35,6 +33,5 @@
            name="Products.eventslist.vocabularies.VenueVocabulary"
            provides="zope.schema.interfaces.IVocabularyFactory" />
 
-  <!-- ##/code-section configure.zcml -->
 
 </configure>
