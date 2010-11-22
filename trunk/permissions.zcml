@@ -1,0 +1,10 @@
+<configure xmlns="http://namespaces.zope.org/zope"
+           i18n_domain="eventslist">
+
+  <permission id="eventslist.ManageEvents"
+              title="EventsList: Manage Events" />
+  <permission id="eventslist.ContributeEvents"
+              title="EventsList: Contribute Events" />
+
+</configure>
+
