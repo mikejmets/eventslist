@@ -13,7 +13,8 @@ from collective.z3cform.datetimewidget import DatetimeWidget
 from Products.statusmessages.interfaces import IStatusMessage
 from Products.ATContentTypes.utils import dt2DT
 from Products.CMFPlone import PloneMessageFactory as _
-from plone.app.textfield import RichText
+#from plone.app.textfield import RichText
+
 
 from Products.eventslist.content.elevent import ELEvent
 from Products.eventslist.content.interfaces import IELEvent
@@ -32,10 +33,11 @@ class IAddEventForm(Interface):
     description = schema.Text(title=_(u"Short Event Description"),
           description=u"Enter a short description on your event. Note that this is important as it is used in our RSS feed",
           required=False) #MJM HACK
-    text = RichText(title=_(u"Long Event Description"),
+    text = schema.Text(title=_(u"Long Event Description"),
           description=u"Enter the full details of your event",
           required=False)
     event_url = schema.URI(title=_(u"Performer URL"),
+
           description=u"Provide the URL of performer's website",
           required=False)
     ticket_url = schema.URI(title=_(u"Ticket URL"),
@@ -129,7 +131,7 @@ class AddEventForm(form.Form):
         kwargs = {
             'title': title,
             'description': description,
-            'text': text.raw,
+            'text': text,
             'eventType': (event_type,),
             }
         if venue_uid == 0 and new_venue:

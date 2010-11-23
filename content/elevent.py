@@ -31,7 +31,8 @@ import logging
 from DateTime import DateTime
 from Products.CMFCore.utils import getToolByName
 from Products.CMFPlone import PloneMessageFactory as _
-from Products.eventslist.vocabularies import event_type_vocabulary
+from Products.eventslist.vocabularies \
+    import event_type_vocabulary, venue_vocabulary
 ##/code-section module-header
 
 schema = Schema((
@@ -208,7 +209,8 @@ schema = Schema((
     ),
     ReferenceField(
         name='venue',
-        widget=ReferenceBrowserWidget(
+        vocabulary='getVenueVocab',
+        widget=SelectionWidget(
             label='Venue',
             description=u"Select a venue. Note: if your venue is not in the list, enter it the 'New Venue' field below",
             label_msgid='eventslist_label_venue',
@@ -231,8 +233,6 @@ schema = Schema((
 ),
 )
 
-##code-section after-local-schema #fill in your manual code here
-##/code-section after-local-schema
 
 ELEvent_schema = BaseFolderSchema.copy() + \
     getattr(ATEvent, 'schema', Schema(())).copy() + \
@@ -278,7 +278,6 @@ ELEvent_schema['startDate'].widget.description=_(u"Enter the first date of the e
 ELEvent_schema['endDate'].required = False
 ELEvent_schema['endDate'].default_method = 'getDefaultEndDate'
 ELEvent_schema['endDate'].widget.description=_(u"Enter the last date of the event and it's ending time (DD/MM/CCYY HH:MM)")
-ELEvent_schema['venue'].widget.startup_directory_method = 'getVenueFolder'
 
 #Change field labels and descriptions
 ELEvent_schema['title'].widget.label = 'Event Title'
@@ -538,6 +537,10 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def getEventTypeVocab(self):
       vocab = event_type_vocabulary(self).by_value.keys()
       vocab.sort()
+      return vocab
+
+    def getVenueVocab(self):
+      vocab = [(i.value, i.title) for i in venue_vocabulary(self)]
       return vocab
 
 
