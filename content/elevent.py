@@ -205,7 +205,6 @@ schema = Schema((
             label_msgid='eventslist_label_priceRange',
             i18n_domain='eventslist',
         ),
-        validators=('isURL',),
     ),
     ReferenceField(
         name='venue',
@@ -461,14 +460,14 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return ''
 
     def getContactName(self):
-        if len(self.contactName) > 0:
+        if self.contactName and len(self.contactName) > 0:
             return self.contactName
         parent = getParentEvent(self)
         if parent:
             return parent.contactName
 
     def getContactEmail(self):
-        if len(self.contactEmail) > 0:
+        if self.contactEmail and len(self.contactEmail) > 0:
             return self.contactEmail
         parent = getParentEvent(self)
         if parent:
@@ -477,7 +476,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def getContactMobile(self):
         if self.isTemporary():
             return ''
-        if len(self.contactMobile) > 0:
+        if self.contactMobile and len(self.contactMobile) > 0:
             return self.contactMobile
         parent = getParentEvent(self)
         if parent:
