@@ -36,15 +36,17 @@ class IAddEventForm(Interface):
     text = schema.Text(title=_(u"Long Event Description"),
           description=u"Enter the full details of your event",
           required=False)
-    event_url = schema.URI(title=_(u"Performer URL"),
-
-          description=u"Provide the URL of performer's website",
+    performer_url = schema.URI(title=_(u"Performer URL"),
+          description=u"Provide the URL of performer's website.",
+          default="http://",
           required=False)
     ticket_url = schema.URI(title=_(u"Ticket URL"),
           description=u"Provide the URL of where a ticket for the event can be purchased online",
+          default="http://",
           required=False)
     review_url = schema.URI(title=_(u"Review URL"),
           description=u"Provide the URL of where this event has been reviewed",
+          default="http://",
           required=False)
     venue = schema.Choice(
           title=_(u"Venue"),
@@ -72,13 +74,13 @@ class IAddEventForm(Interface):
     price_range = schema.TextLine(title=_(u"Price Range"),
         description=u"Enter the ticket price range. Eg. R100 - R250",
         required=False)
-    cantact_name = schema.TextLine(title=_(u"Contact Name"),
+    contact_name = schema.TextLine(title=_(u"Contact Name"),
         required=False)
     contact_email = schema.TextLine(title=_(u"Contact Email"),
         required=False)
     contact_phone = schema.TextLine(title=_(u"Contact Phone"),
         required=False)
-    contact_mobile_number = schema.TextLine(title=_(u"Contact Mobile Number"),
+    contact_mobile = schema.TextLine(title=_(u"Contact Mobile Number"),
         required=False)
     terms = schema.Bool(title=_(u"Terms and Conditions"),
         required=True)
@@ -121,6 +123,12 @@ class AddEventForm(form.Form):
         text = data['text']
         venue_uid = data['venue']
         new_venue = data['new_venue']
+        eventUrl = data['performer_url']
+        if eventUrl == 'http://': eventUrl = None
+        reviewUrl = data['review_url']
+        if reviewUrl == 'http://': reviewUrl = None
+        ticketUrl = data['ticket_url']
+        if ticketUrl == 'http://': ticketUrl = None
         
         #Create parent
         id = context.generateUniqueId('ELEvent')
@@ -133,6 +141,14 @@ class AddEventForm(form.Form):
             'description': description,
             'text': text,
             'eventType': (event_type,),
+            'priceRange': data['price_range'],
+            'contactName': data['contact_name'],
+            'contactEmail': data['contact_email'],
+            'contactPhone': data['contact_phone'],
+            'contactMobile': data['contact_mobile'],
+            'eventUrl': eventUrl,
+            'reviewUrl': reviewUrl,
+            'ticketUrl': ticketUrl,
             }
         if venue_uid == 0 and new_venue:
           kwargs['location'] = new_venue
