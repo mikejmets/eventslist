@@ -87,7 +87,8 @@
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="View"
-                  acquired="True">
+                  acquired="False">
+   <permission-role>Anonymous</permission-role>
   </permission-map>
  </state>
  <state state_id="submitted"
