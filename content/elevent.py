@@ -525,13 +525,20 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
                return parent.getVenueObject()
 
     def getVenueName(self):
-        """ Use this to get location name if venue not set ie. other location
+        """ Use this to get location name. if venue not set use other location
         """
         venue = self.getVenueObject()
         if venue:
-            return venue.getShortName()
+            return venue.getLongName()
         #otheriwse
         return self.getLocation()
+
+    def getVenuePath(self):
+        """ Use this to get the path to the venue
+        """
+        venue = self.getVenueObject()
+        if venue:
+            return "/".join(venue.getPhysicalPath())
 
     def getEventTypeVocab(self):
       vocab = event_type_vocabulary(self).by_value.keys()
