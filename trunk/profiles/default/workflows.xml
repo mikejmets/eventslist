@@ -2,8 +2,6 @@
 <object name="portal_workflow" meta_type="Plone Workflow Tool">
  <object name="booking_workflow" meta_type="Workflow"/>
  <object name="elevent_workflow" meta_type="Workflow"/>
-<!-- ##code-section workflowobjects -->
-<!-- ##/code-section workflowobjects -->
  <bindings>
   <type type_id="EventsConfiglet" />
   <type type_id="EventsTool" />
@@ -16,7 +14,8 @@
   <type type_id="ELMember">
    <bound-workflow workflow_id="member_auto_workflow" />
   </type>
-<!-- ##code-section workflowbindings -->
-<!-- ##/code-section workflowbindings -->
+  <type type_id="ELFolder">
+   <bound-workflow workflow_id="one_state_workflow" />
+  </type>
  </bindings>
 </object>

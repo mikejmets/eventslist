@@ -20,42 +20,36 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Add portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="View"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
  </state>
@@ -70,14 +64,12 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
@@ -100,21 +92,18 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Delete objects"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="List folder contents"
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
   <permission-map name="Modify portal content"
@@ -127,7 +116,6 @@
                   acquired="False">
    <permission-role>Manager</permission-role>
    <permission-role>Owner</permission-role>
-   <permission-role>EventContributor</permission-role>
    <permission-role>EventManager</permission-role>
   </permission-map>
  </state>
@@ -164,7 +152,7 @@
              i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=reject" category="workflow" i18n:translate="">Reject</action>
   <guard>
-    <guard-role>EventContributor</guard-role>
+    <guard-role>Owner</guard-role>
     <guard-role>EventManager</guard-role>
   </guard>
  </transition>
@@ -177,7 +165,7 @@
              i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=retract" category="workflow" i18n:translate="">Retract</action>
   <guard>
-    <guard-role>EventContributor</guard-role>
+    <guard-role>Owner</guard-role>
     <guard-role>EventManager</guard-role>
   </guard>
  </transition>
@@ -190,7 +178,7 @@
              i18n:attributes="title">
   <action url="%(content_url)s/content_status_modify?workflow_action=submit" category="workflow" i18n:translate="">Submit for publication</action>
   <guard>
-    <guard-role>EventContributor</guard-role>
+    <guard-role>Owner</guard-role>
     <guard-role>EventManager</guard-role>
   </guard>
  </transition>
