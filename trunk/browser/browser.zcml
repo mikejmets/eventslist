@@ -56,6 +56,14 @@
      />
 
   <browser:page
+     for="*"
+     name="view_listing"
+     class="Products.eventslist.browser.listingview.ListingView"
+     template="templates/ListingView.pt"
+     permission="zope2.View"
+     />
+
+  <browser:page
      for="Products.eventslist.content.interfaces.IELFolder"
      name="view_el_folder"
      class="Products.eventslist.browser.elfolderview.ELFolderView"
