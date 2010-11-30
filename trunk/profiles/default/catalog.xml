@@ -4,6 +4,10 @@
          meta_type="DateIndex">
     <indexed_attr value="getItemStarts"/>
   </index>
+  <index name="isTopEvent" 
+         meta_type="FieldIndex">
+      <indexed_attr value="isTopEvent"/>
+  </index>
   <column value="getVenueName"/>
   <column value="getVenuePath"/>
   <column value="getParentTitle"/>

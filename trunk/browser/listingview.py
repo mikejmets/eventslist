@@ -76,7 +76,8 @@ class ListingView(BrowserView):
 
         #Using portal catalog
         query = {
-            'portal_type':'ELEvent',
+            'portal_type': 'ELEvent',
+            'isTopEvent': True,
             'sort_on': 'getStartDate',
             'sort_order': sort_order,
             }
@@ -91,7 +92,7 @@ class ListingView(BrowserView):
         elif filter == 'past':
           query['getEndDate'] = {'query':DateTime(), 'range':'max'}
 
-        logging.info('getEvents: %s' % query)
+        #logging.info('getEvents: %s' % query)
         pc = getToolByName(self, 'portal_catalog')
         events = pc.searchResults(query)
         return events
