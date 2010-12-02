@@ -86,7 +86,7 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
         #Validate top event first
         """ Contact name requried for bookings
         """
-        if top.terms == False:
+        if hasattr(top, 'terms') and top.terms == False:
           errors.append({'objects': (top,),
             'msg':'You must assent to the terms and conditions of EventsList'})
 
@@ -137,7 +137,10 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
 
             """ Venue required for subs if top doesn't exist
             """
-            if sub.venue is None and top.venue is None:
+            if hasattr(top, 'venue') and hasattr(top, 'location') \
+               and hasattr(sub, 'venue') and hasattr(sub, 'venue') \
+               and top.venue is None and top.location is None \
+               and sub.venue is None and sub.location is None:
                 errors.append({'objects': (sub, top,),
                   'msg':'Either top or sub event requires a Venue '})
         #The End
