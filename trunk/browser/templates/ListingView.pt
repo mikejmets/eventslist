@@ -8,9 +8,9 @@
   <div  
     tal:define="
       user_can_edit python:view.userCanEdit(user);">
-  <h1 tal:content="context/Title">Events</h1>
+  <h1 i18n:translate="listing_title">Listing</h1>
 
-  <p i18n:translate="">
+  <p i18n:translate="" tal:condition="nothing">
   In this context, you can create, edit and manage event workflow. You can also navigate to event registrations to accept or reject applications.
   </p>
 
