@@ -258,7 +258,7 @@ class ELEventView(BrowserView):
         context = aq_inner(self.context)
         wft = getToolByName(context, 'portal_workflow')
         state = wft.getInfoFor(context, 'review_state')
-        return "%s%s:" % (state[0].upper(), state[1:])
+        return "%s%s" % (state[0].upper(), state[1:])
 
 
     def validate_event(self):
