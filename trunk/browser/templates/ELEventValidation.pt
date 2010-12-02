@@ -27,10 +27,13 @@
           <td>
               <span tal:content='error/msg'>Message</span>
           </td>
-          <td tal:repeat="obj error/objects">
-            <a href=""
-              tal:attributes="href string:${obj/absolute_url}/edit"
-              tal:content="obj/Title">event title</a>
+          <td>
+            <span tal:repeat="obj error/objects">
+              <span tal:condition="repeat/obj/odd">,</span>
+              <a href=""
+                tal:attributes="href string:${obj/absolute_url}/edit"
+                tal:content="obj/Title">event title</a>
+            </span>
           </td>
         </tr>
       </tbody>

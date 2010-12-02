@@ -161,15 +161,15 @@
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELEvent"
-     name="publish-all"
+     name="do-manager-action-on-all"
      class="Products.eventslist.browser.eleventview.ELEventView"
-     attribute="publish_all"
+     attribute="do_action_on_all"
      permission="eventslist.ManageEvents"
      />
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELEvent"
-     name="do-action-on-all"
+     name="do-contributor-action-on-all"
      class="Products.eventslist.browser.eleventview.ELEventView"
      attribute="do_action_on_all"
      permission="eventslist.ContributeEvents"

@@ -86,6 +86,10 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
         #Validate top event first
         """ Contact name requried for bookings
         """
+        if top.terms == False:
+          errors.append({'objects': (top,),
+            'msg':'You must assent to the terms and conditions of EventsList'})
+
         if top.isBookable:
             if len(top.contactName) == 0:
                 errors.append({'objects': (top,),
@@ -111,6 +115,12 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
                 errors.append({'objects': (top,),
                   'msg':'event requires a end date '})
 
+            """ Venue required for top if no subs exist
+            """
+            if top.venue is None:
+                errors.append({'objects': (top,),
+                  'msg':'event requires a venue '})
+
         #Validate all subevents
         for sub in top.getSubEvents():
             """ Start date required for subs if top doesn't exist
@@ -124,6 +134,12 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
             if sub.endDate is None and top.endDate is None:
                 errors.append({'objects': (sub, top,),
                   'msg':'Either top or sub event requires a end date '})
+
+            """ Venue required for subs if top doesn't exist
+            """
+            if sub.venue is None and top.venue is None:
+                errors.append({'objects': (sub, top,),
+                  'msg':'Either top or sub event requires a Venue '})
         #The End
         return errors
 
