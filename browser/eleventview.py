@@ -66,23 +66,6 @@ class ELEventView(BrowserView):
         return context.getSubEvents()
 
 
-    def publish_all(self):
-        """ publish event and all subevents
-        """
-        context = aq_inner(self.context)
-        wft = getToolByName(context, 'portal_workflow')
-        wft.doActionFor(context, 'publish')
-        context.reindexObject()
-        #publuh all subevents
-        for sub in context.getSubEvents():
-          try:
-            wft.doActionFor(sub, 'publish')
-            sub.reindexObject()
-          except:
-            pass
-        self.request.response.redirect(context.absolute_url() + "/view")
-        return ''
-
     def do_action_on_all(self, action):
         """ perform action on event and all subevents
         """

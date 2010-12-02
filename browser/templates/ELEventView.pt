@@ -218,6 +218,14 @@
 
     <div tal:define="isValid view/eventIsValid;
                      eventparent view/getEventParent|nothing">
+      <p>
+        <a tal:condition="python:eventparent"
+         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
+          <span i18n:translate="up_to">Go up to</span>
+          <span tal:content="eventparent/Title">parent</span>
+        </a>
+      </p>
+      <strong><span>Actions:&nbsp; </span></strong>
       <a href="edit"
         tal:attributes="href string:${context/absolute_url}/edit"
         i18n:translate="edit_event">Edit</a>
@@ -225,33 +233,45 @@
       <a tal:attributes="href string:${context/absolute_url}/delete_confirmation"
         i18n:translate="delete_event">Delete</a>
       &nbsp;&nbsp;
-      <span tal:content="view/getReviewState">Draft</span>
+      <strong><span tal:content="view/getReviewState">Draft</span></strong>
       &nbsp;&nbsp;
-      <a tal:condition="not:isValid"
-         tal:attributes="href string:${context/absolute_url}/validate_event"
+      <span tal:condition="not:isValid">
+        <a tal:attributes="href string:${context/absolute_url}/validate_event"
          i18n:translate="validate_event">Validate</a>
-      &nbsp;&nbsp;
-      <a tal:condition="python:not eventparent and isValid and view.isActionAllowed('Publish')"
-         tal:attributes="href string:${context/absolute_url}/publish-all"
+        &nbsp;&nbsp;
+      </span>
+      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Publish')">
+        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=publish"
          i18n:translate="publish_all">Publish All</a>
-      &nbsp;&nbsp;
-      <a tal:condition="python:not eventparent and view.isActionAllowed('Retract')"
-         tal:attributes="href string:${context/absolute_url}/do-action-on-all?action=retract"
+        &nbsp;&nbsp;
+      </span>
+      <span tal:condition="python:not eventparent and view.isActionAllowed('Retract')">
+        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=retract"
          i18n:translate="retract_all">Retract All</a>
-      &nbsp;&nbsp;
+        &nbsp;&nbsp;
+      </span>
+      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Accept')">
+        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=accept"
+         i18n:translate="accept_all">Accept All</a>
+        &nbsp;&nbsp;
+      </span>
+      <span tal:condition="python:not eventparent and view.isActionAllowed('Reject')">
+        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=reject"
+         i18n:translate="reject_all">Reject All</a>
+        &nbsp;&nbsp;
+      </span>
+      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Submit for publication')">
+        <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=submit"
+         i18n:translate="submit_all">Submit All</a>
+        &nbsp;&nbsp;
+      </span>
       <tal:actions 
-        condition="isValid"
+        condition="python: isValid"
         repeat="action view/getNextWorkflowActions">
         <a tal:attributes="href action/url"
            tal:condition="python:action['category'] == 'workflow'"
            tal:content="action/name">workflow action</a>
       </tal:actions>
-      &nbsp;&nbsp;
-      <a tal:condition="python:eventparent"
-         href="#" tal:attributes="href string:${eventparent/absolute_url}/view">
-        <span i18n:translate="up_to">Up to</span>
-        <span tal:content="eventparent/Title">parent</span>
-      </a>
     </div>
   </tal:manage>
 
@@ -315,7 +335,9 @@
                 <a href="#"
                   tal:attributes="href string:${item/absolute_url}/delete_confirmation"
                   i18n:translate="agenda_delete">Delete</a><br />
-                <tal:actions tal:repeat="action item/@@view_agenda_item/getNextWorkflowActions">
+                <tal:actions 
+                    tal:condition="nothing"
+                    tal:repeat="action item/@@view_agenda_item/getNextWorkflowActions">
                   <a tal:attributes="href action/url"
                      tal:condition="python:action['category'] == 'workflow'"
                      tal:content="action/name">workflow action</a><br />
@@ -402,7 +424,8 @@
                     tal:attributes="href string:${pkg/absolute_url}/delete_confirmation"
                     i18n:translate="agenda_delete">Delete</a><br />
                   <tal:actions 
-                        tal:repeat="action pkg/@@view_package/getNextWorkflowActions">
+                    tal:condition="nothing"
+                    tal:repeat="action pkg/@@view_package/getNextWorkflowActions">
                     <a tal:attributes="href action/url"
                        tal:condition="python:action['category'] == 'workflow'"
                        tal:content="action/name">workflow action</a><br />
@@ -481,7 +504,9 @@
                 <a href="#"
                   tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
                   i18n:translate="agenda_delete">Delete</a><br />
-                <tal:actions tal:repeat="action evtview/getNextWorkflowActions">
+                <tal:actions 
+                  tal:condition="nothing"
+                  tal:repeat="action evtview/getNextWorkflowActions">
                   <a tal:attributes="href action/url"
                      tal:condition="python:action['category'] == 'workflow'"
                      tal:content="action/name">workflow action</a><br />
@@ -589,7 +614,9 @@
                 <a href="#"
                   tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
                   i18n:translate="agenda_delete">Delete</a><br />
-                <tal:actions tal:repeat="action evtview/getNextWorkflowActions">
+                <tal:actions 
+                    tal:condition="nothing"
+                    tal:repeat="action evtview/getNextWorkflowActions">
                   <a tal:attributes="href action/url"
                      tal:condition="python:action['category'] == 'workflow'"
                      tal:content="action/name">workflow action</a><br />
@@ -631,6 +658,8 @@
             <th i18n:translate="when_events">When</th>
             <th i18n:translate="where_events">Where</th>
             <!--<th i18n:translate="cost_events">Cost per Attendee</th>-->
+            <th tal:condition="user_can_edit"
+                i18n:translate="review_state">State</th>
             <th tal:condition="user_can_edit"
                 i18n:translate="item_manage">Manage</th>
           </tr>
@@ -716,13 +745,18 @@
             -->
             </metal:events>
             <td  tal:condition="user_can_edit">
+              <span tal:content="evt/getReviewState">Draft</span>
+            </td>
+            <td  tal:condition="user_can_edit">
               <a href="#"
                 tal:attributes="href string:${evt/absolute_url}/edit"
                 i18n:translate="agenda_edit">Edit</a><br />
               <a href="#"
                 tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
                 i18n:translate="agenda_delete">Delete</a><br />
-              <tal:actions tal:repeat="action evt/getNextWorkflowActions">
+              <tal:actions 
+                  tal:condition="nothing"
+                  tal:repeat="action evt/getNextWorkflowActions">
                 <a tal:attributes="href action/url"
                    tal:condition="python:action['category'] == 'workflow'"
                    tal:content="action/name">workflow action</a><br />

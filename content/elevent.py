@@ -488,6 +488,12 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         wft = getToolByName(self, 'portal_workflow')
         return wft.listActions(object=self)
 
+    def getReviewState(self):
+        """ get workflow state
+        """
+        wft = getToolByName(self, 'portal_workflow')
+        return wft.getInfoFor(self, 'review_state')
+
     def getParentEvent(self):
         if self.aq_parent:
             portal_type = self.aq_parent.get('portal_type', None)
@@ -532,6 +538,18 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
             return venue.getLongName()
         #otheriwse
         return self.getLocation()
+
+    def setVenue(self, value):
+        """ Set the venue
+        """
+        rc = getToolByName(self, 'reference_catalog')
+        if value == '0':
+          self.venue = None
+          rc.deleteReferences(self, relationship='elevent_venue')
+          return
+        self.venue = value
+        venue = rc.lookupObject(value)
+        rc.addReference(self, venue, relationship='elevent_venue')
 
     def getVenuePath(self):
         """ Use this to get the path to the venue
