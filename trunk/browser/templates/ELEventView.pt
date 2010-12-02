@@ -225,15 +225,17 @@
           <span tal:content="eventparent/Title">parent</span>
         </a>
       </p>
-      <strong><span>Actions:&nbsp; </span></strong>
-      <a href="edit"
-        tal:attributes="href string:${context/absolute_url}/edit"
-        i18n:translate="edit_event">Edit</a>
+      <strong><span>State:&nbsp; </span></strong>
+      <span tal:content="view/getReviewState">Draft</span>
       &nbsp;&nbsp;
+      <strong><span>Actions:&nbsp; </span></strong>
+      <span tal:condition="python: view.getReviewState() != 'Published'">
+        <a tal:attributes="href string:${context/absolute_url}/edit"
+           i18n:translate="edit_event">Edit</a>
+        &nbsp;&nbsp;
+      </span>
       <a tal:attributes="href string:${context/absolute_url}/delete_confirmation"
         i18n:translate="delete_event">Delete</a>
-      &nbsp;&nbsp;
-      <strong><span tal:content="view/getReviewState">Draft</span></strong>
       &nbsp;&nbsp;
       <span tal:condition="not:isValid">
         <a tal:attributes="href string:${context/absolute_url}/validate_event"
@@ -246,7 +248,7 @@
         &nbsp;&nbsp;
       </span>
       <span tal:condition="python:not eventparent and view.isActionAllowed('Retract')">
-        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=retract"
+        <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=retract"
          i18n:translate="retract_all">Retract All</a>
         &nbsp;&nbsp;
       </span>
@@ -256,7 +258,7 @@
         &nbsp;&nbsp;
       </span>
       <span tal:condition="python:not eventparent and view.isActionAllowed('Reject')">
-        <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=reject"
+        <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=reject"
          i18n:translate="reject_all">Reject All</a>
         &nbsp;&nbsp;
       </span>
@@ -748,9 +750,11 @@
               <span tal:content="evt/getReviewState">Draft</span>
             </td>
             <td  tal:condition="user_can_edit">
-              <a href="#"
-                tal:attributes="href string:${evt/absolute_url}/edit"
-                i18n:translate="agenda_edit">Edit</a><br />
+              <span tal:condition="python:evt.getReviewState() != 'published'">
+                <a tal:attributes="href string:${evt/absolute_url}/edit"
+                i18n:translate="agenda_edit">Edit</a>
+                <br />
+              </span>
               <a href="#"
                 tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
                 i18n:translate="agenda_delete">Delete</a><br />
