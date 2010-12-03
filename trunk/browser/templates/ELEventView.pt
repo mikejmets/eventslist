@@ -194,19 +194,34 @@
       <div tal:replace="structure context/getText" />
   </div>
 
-  <p tal:condition="context/event_url|nothing">
+  <p>
+    <span tal:condition="context/getPriceRange|nothing">
+      <strong><span i18n:translate="price_range">Price Range:</span></strong>
+      <span tal:content="context/getPriceRange">Price</span>
+      &nbsp; &nbsp;
+    </span>
+    <span tal:condition="context/getTicketUrl|nothing">
       <a class="url"
-         href="event_url"
+         tal:attributes="href context/getTicketUrl"
+         i18n:translate="book_online">
+         Book Online &hellip;</a>
+      &nbsp;
+    </span>
+  </p>
+  <p>
+    <span tal:condition="context/event_url|nothing">
+      <a class="url"
          tal:attributes="href context/event_url"
          i18n:translate="visit_organiser_website">
-         Visit the organiser&apos;s website &hellip;</a>
-  </p>
-  <p tal:condition="context/getReviewUrl|nothing">
+         Visit the performer&apos;s website &hellip;</a>
+      &nbsp; &nbsp;
+    </span>
+    <span tal:condition="context/getReviewUrl|nothing">
       <a class="url"
-         href="reviewUrl"
          tal:attributes="href context/getReviewUrl"
          i18n:translate="read_review">
-         Read a review of event ...</a>
+         Read a review of event &hellip;</a>
+    </span>
   </p>
 
   </div>
