@@ -1,5 +1,8 @@
 /* Stylesheet for the 'Intranet Theme' Plone theme */
-
+select#eventType_existing_keywords {
+  size: 1 !important;
+  border: 3px 3px;
+}
 /**** body ****/
 body{
     font-size: 70%;
@@ -455,3 +458,18 @@ table.listing a:hover {
 	margin-top: 10px;
 }
 
+div.navi {
+  display: none;
+}
+a.next {
+  display: none;
+}
+a.prev {
+  display: none;
+}
+div.scrollable {
+  height: 125px !important;
+}
+div.carousel {
+  height: 135px !important;
+}
