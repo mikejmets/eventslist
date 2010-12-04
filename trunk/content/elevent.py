@@ -229,7 +229,7 @@ schema = Schema((
     ),
     ImageField('tileImage',
         required = False,
-        storage = AnnotationStorage(),
+        #storage = AnnotationStorage(),
         languageIndependent = True,
         max_size = (400,400),
         sizes= { 'preview' : (400, 400),
@@ -280,6 +280,8 @@ ELEvent_schema.moveField('contactFax', after='contactMobile')
 ELEvent_schema.moveField('attendees', after='contactFax')
 ELEvent_schema.moveField('liabilityClause', after='attendees')
 ELEvent_schema.moveField('declarationAndConfirmation', after='liabilityClause')
+ELEvent_schema.moveField('tileImage', after='declarationAndConfirmation')
+ELEvent_schema.moveField('terms', after='tileImage')
 
 #Set default values from configlet tool
 ELEvent_schema['liabilityClause'].default_method = \
