@@ -194,6 +194,12 @@
       <div tal:replace="structure context/getText" />
   </div>
 
+<!--
+  <div tal:condition="context/getTileImage|nothing">
+      <div tal:replace="structure context/getTileImage" />
+  </div>
+-->
+
   <p>
     <span tal:condition="context/getPriceRange|nothing">
       <strong><span i18n:translate="price_range">Price Range:</span></strong>
@@ -244,7 +250,7 @@
       <span tal:content="view/getReviewState">Draft</span>
       &nbsp;&nbsp;
       <strong><span>Actions:&nbsp; </span></strong>
-      <span tal:condition="python: view.getReviewState() != 'Published'">
+      <span tal:condition="python: user_can_manage or view.getReviewState() != 'Published'">
         <a tal:attributes="href string:${context/absolute_url}/edit"
            i18n:translate="edit_event">Edit</a>
         &nbsp;&nbsp;
