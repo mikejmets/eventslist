@@ -226,8 +226,25 @@ schema = Schema((
             label_msgid='eventslist_label_terms',
             i18n_domain='eventslist',
         ),
-        validators=('isTrue',),
     ),
+    ImageField('tileImage',
+        required = False,
+        storage = AnnotationStorage(),
+        languageIndependent = True,
+        max_size = (400,400),
+        sizes= { 'preview' : (400, 400),
+                'mini'    : (200, 200),
+                'thumb'   : (128, 128),
+                'tile'    :  (64, 64),
+                'icon'    :  (32, 32),
+                'listing' :  (16, 16),
+               },
+        validators = (('isNonEmptyFile', True)),
+        widget = ImageWidget(
+            label= _(u'label_tile_image', default=u'Tile Image'),
+            show_content_type = False)
+        ),
+    
 
 ),
 )
