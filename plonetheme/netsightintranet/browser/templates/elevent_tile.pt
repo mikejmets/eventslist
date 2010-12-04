@@ -6,7 +6,8 @@
   <div tal:condition="exists:context/getTileImage" style="float:right;" >
     <a href="#"
        tal:attributes="href item_url;">
-<img tal:attributes="src python:'%s/tileImage_thumb' % item_url" alt="Masters Of Rock " title="Masters Of Rock " height="128" width="128" />
+       <img tal:attributes="src python:'%s/tileImage_thumb' % item_url" 
+            height="128" width="128" />
     </a>
   </div>                
 
