@@ -87,32 +87,26 @@
      permission="zope2.View"
      />
 
+  <browser:resource
+      name="eventsignup.kss"
+      file="eventsignup.kss"
+      />
 
+  <browser:page
+      for="Products.eventslist.content.interfaces.IELEvent"
+      name="calculate_total"
+      class="Products.eventslist.browser.kssview.Calculations"
+      attribute="calculateTotal"
+      permission="zope2.View"
+      />
 
- 
-
-  
-<!-- ##code-section BROWSER #fill in your manual code here -->
-    <browser:resource
-        name="eventsignup.kss"
-        file="eventsignup.kss"
-        />
-
-    <browser:page
-        for="Products.eventslist.content.interfaces.IELEvent"
-        name="calculate_total"
-        class="Products.eventslist.browser.kssview.Calculations"
-        attribute="calculateTotal"
-        permission="zope2.View"
-        />
-
-    <browser:page
-        for="Products.eventslist.content.interfaces.IELEvent"
-        name="view_registrations"
-        class="Products.eventslist.browser.registrationsview.RegistrationsView"
-        template="templates/RegistrationsView.pt"
-        permission="zope2.View"
-        />
+  <browser:page
+      for="Products.eventslist.content.interfaces.IELEvent"
+      name="view_registrations"
+      class="Products.eventslist.browser.registrationsview.RegistrationsView"
+      template="templates/RegistrationsView.pt"
+      permission="zope2.View"
+      />
 
   <browser:page
      for="Products.eventslist.content.interfaces.IELEvent"
@@ -174,7 +168,5 @@
      attribute="do_action_on_all"
      permission="eventslist.ContributeEvents"
      />
-
-<!-- ##/code-section BROWSER -->
 
 </configure>
