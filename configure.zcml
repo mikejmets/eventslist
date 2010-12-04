@@ -17,9 +17,10 @@
   <include file="handlers/configure.zcml" />
 
   <include package="plone.app.z3cform" />
-  <include package="plone.directives.form" file="meta.zcml" />
-  <include package="plone.directives.form" />
-
+  <!-- 
+    <include package="plone.directives.form" file="meta.zcml" />
+    <include package="plone.directives.form" />
+  -->
   <include package=".portlets" />
 
   <!-- DOW Vocabulary -->
