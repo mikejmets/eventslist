@@ -13,9 +13,6 @@
     <viewlet name="plone.app.i18n.locales.languageselector"/>
     <viewlet name="plone.path_bar"/>
   </order>
-  <hidden manager="plone.portaltop" skinname="*" >
-    <viewlet name="plone.personal_bar"/>
-  </hidden>
 
   <order manager="plone.portalheader" skinname="*" >
     <viewlet name="plone.skip_links"/>
@@ -23,11 +20,9 @@
     <viewlet name="plone.top_banner"/>
     <viewlet name="plone.searchbox"/>
     <viewlet name="plone.global_sections"/>
-  </order>
-  <hidden manager="plone.portalheader" skinname="*" >
     <viewlet name="plone.personal_bar"/>
     <viewlet name="plone.site_actions"/>
-  </hidden>
+  </order>
 
   <order manager="plone.contentviews" skinname="*" >
     <viewlet name="intranet.edittoolbar"/>
@@ -43,9 +38,9 @@
 
   <order manager="plone.portalfooter" skinname="*" >
     <viewlet name="plone.site_actions"/>
-    <viewlet name="plone.personal_bar"/>
   </order>
   <hidden manager="plone.portalfooter" skinname="*" >
+    <viewlet name="plone.personal_bar"/>
     <viewlet name="plone.footer"/>
     <viewlet name="plone.colophon"/>
   </hidden>
