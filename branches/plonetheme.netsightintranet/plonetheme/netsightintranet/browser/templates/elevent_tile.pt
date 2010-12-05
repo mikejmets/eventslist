@@ -12,6 +12,7 @@
   </div>                
 
   <h2 class="tileHeadline">
+      <span>Featured Event: &nbsp;</span>
       <a href="#"
          class="summary url"
          tal:attributes="href item_url;"
