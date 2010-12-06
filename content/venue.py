@@ -339,15 +339,15 @@ class Venue(BaseFolder, BrowserDefaultMixin):
         return subs
 
     def getParentVenue(self):
-        if self.aq_parent:
-            portal_type = self.aq_parent.get('portal_type', None)
+        if self.aq_inner.aq_parent:
+            portal_type = self.aq_inner.aq_parent.get('portal_type', None)
             if portal_type:
                 if portal_type == 'VenueFolder':
                     return
                 if portal_type == 'Venue':
-                    return self.aq_parent
-                return getParentVenue(self.aq_parent)
-            return getParentVenue(self.aq_parent)
+                    return self.aq_inner.aq_parent
+                return getParentVenue(self.aq_inner.aq_parent)
+            return getParentVenue(self.aq_inner.aq_parent)
 
 
 
@@ -356,14 +356,14 @@ registerType(Venue, PROJECTNAME)
 
 ##code-section module-footer #fill in your manual code here
 def getParentVenue(obj):
-    if obj.aq_parent:
-        portal_type = obj.aq_parent.get('portal_type', None)
+    if obj.aq_inner.aq_parent:
+        portal_type = obj.aq_inner.aq_parent.get('portal_type', None)
         if portal_type:
             if portal_type == 'VenueFolder':
                 return
             if portal_type == 'Venue':
-                return obj.aq_parent
-            return getParentVenue(obj.aq_parent)
-        return getParentVenue(obj.aq_parent)
+                return obj.aq_inner.aq_parent
+            return getParentVenue(obj.aq_inner.aq_parent)
+        return getParentVenue(obj.aq_inner.aq_parent)
 ##/code-section module-footer
 
