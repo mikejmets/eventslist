@@ -7,6 +7,8 @@ from zope.interface import Interface
 from z3c.form import form, button, field
 from z3c.form.interfaces import INPUT_MODE
 from plone.app.z3cform.layout import wrap_form
+from plone.app.z3cform.wysiwyg import WysiwygFieldWidget
+from z3c.form.browser.checkbox import CheckBoxFieldWidget
 from plone.z3cform.z2 import setup_locale
 from collective.z3cform.datetimewidget import DatetimeWidget
 
@@ -83,12 +85,16 @@ class IAddEventForm(Interface):
     contact_mobile = schema.TextLine(title=_(u"Contact Mobile Number"),
         required=False)
     terms = schema.Bool(title=_(u"Terms and Conditions"),
-        required=True)
+        required=False)
 
 
 class AddEventForm(form.Form):
     ignoreContext = True
     fields = field.Fields(IAddEventForm)
+
+    def update(self):
+      self.fields["text"].widgetFactory = WysiwygFieldWidget
+      form.Form.update(self)
 
     def updateWidgets(self):
       form.Form.updateWidgets(self)
