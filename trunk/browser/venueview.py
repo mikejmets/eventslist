@@ -49,16 +49,16 @@ class VenueView(BrowserView):
 
     def getEvents(self):
         context = self.context
-        """
         pc = getToolByName(context, 'portal_catalog')
-        brains = pc.searchResults(
-            portal_type='ELEvent',
-            getVenue=context,
-            review_state='published',
-            getEndDate={'query': DateTime(),
-                        'range': 'min'},
-            sort_on='getStartDate',
-            )
+        query = {
+            'portal_type':'ELEvent',
+            'getVenueName':context.getLongName(),
+            'review_state':'published',
+            'getEndDate':{'query': DateTime(),
+                          'range': 'min'},
+            'sort_on':'getStartDate',
+            }
+        brains = pc.searchResults(query)
 
         return brains
 
@@ -87,6 +87,7 @@ class VenueView(BrowserView):
                 sort_on='getStartDate',
                 )
             return brains
+        """
 
 
 ##code-section module-footer #fill in your manual code here
