@@ -117,7 +117,7 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
 
             """ Venue required for top if no subs exist
             """
-            if top.venue is None:
+            if not hasattr(top, 'venue') or top.venue is None:
                 errors.append({'objects': (top,),
                   'msg':'event requires a venue '})
 
