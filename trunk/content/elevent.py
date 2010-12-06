@@ -514,19 +514,19 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         return wft.getInfoFor(self, 'review_state')
 
     def getParentEvent(self):
-        if self.aq_parent:
-            portal_type = self.aq_parent.get('portal_type', None)
+        if self.aq_inner.aq_parent:
+            portal_type = self.aq_inner.aq_parent.get('portal_type', None)
             if portal_type:
                 if portal_type == 'ELFolder':
                     return
                 if portal_type == 'ELEvent':
-                    return self.aq_parent
-                return getParentEvent(self.aq_parent)
-            return getParentEvent(self.aq_parent)
+                    return self.aq_inner.aq_parent
+                return getParentEvent(self.aq_inner.aq_parent)
+            return getParentEvent(self.aq_inner.aq_parent)
 
     def getEventFolder(self):
-        if self.aq_parent:
-            parent = self.aq_parent
+        if self.aq_inner.aq_parent:
+            parent = self.aq_inner.aq_parent
             portal_type = parent.get('portal_type', None)
             if portal_type:
                 if portal_type == 'ELFolder':
@@ -630,13 +630,13 @@ registerType(ELEvent, PROJECTNAME)
 def getParentEvent(obj):
     if obj.id == '':
         return
-    if obj.aq_parent:
-        portal_type = obj.aq_parent.get('portal_type', None)
+    if obj.aq_inner.aq_parent:
+        portal_type = obj.aq_inner.aq_parent.get('portal_type', None)
         if portal_type:
             if portal_type == 'ELFolder':
                 return
             if portal_type == 'ELEvent':
-                return obj.aq_parent
-            return getParentEvent(obj.aq_parent)
-        return getParentEvent(obj.aq_parent)
+                return obj.aq_inner.aq_parent
+            return getParentEvent(obj.aq_inner.aq_parent)
+        return getParentEvent(obj.aq_inner.aq_parent)
 
