@@ -232,7 +232,7 @@
               </tal:sameday>
             </td>
             <td>
-               <span tal:content="event/getVenueName">event venue</span>
+               <span tal:content="structure event/getVenueName">event venue</span>
             </td>
             <td tal:condition="user_can_edit">
               <a href="edit"
