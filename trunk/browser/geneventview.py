@@ -34,8 +34,6 @@ class IGenEventForm(Interface):
           )
     title = schema.TextLine(title=_(u"Title"),
           required=True)
-    include_count = schema.Bool(title=_(u"Include Counter In Title?"),
-          default=False)
     start_date = schema.Datetime(title=_(u"Start Date"),
         description=_(u"Use format CCYY-MM-DD HH:MM"),
           required=True)
@@ -70,7 +68,6 @@ class GenEventForm(formbase.PageForm):
             hours=end_date.hour, minutes=end_date.minute)
         dows = data['dows']
         title = data['title']
-        include_count = data['include_count']
 
         cnt = 1
         while True:
@@ -83,9 +80,7 @@ class GenEventForm(formbase.PageForm):
             notify(ObjectCreatedEvent(obj))
             context._setObject(id, obj)
             obj = context._getOb(id)
-            sub_title = title
-            if include_count:
-              sub_title = "%s - %s" % (title, cnt)
+            sub_title = "%s - %s" % (title, cnt)
             sub_start_date = event_date + start_delta
             sub_end_date = event_date + end_delta
             kwargs = {
