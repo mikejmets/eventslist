@@ -179,7 +179,7 @@ class AddEventForm(form.Form):
               notify(ObjectCreatedEvent(child))
               obj._setObject(id, child)
               child = obj._getOb(id)
-              sub_title = "%s - %s" % (title, cnt)
+              sub_title = "%s" % event_type
               sub_start_date = event_date + start_delta
               sub_end_date = event_date + end_delta
               kwargs = {
