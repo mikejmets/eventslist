@@ -162,6 +162,14 @@ schema = Schema((
         ),
     ),
     ComputedField(
+        name='venueRegion',
+        widget=ComputedField._properties['widget'](
+            label='VenueRegion',
+            label_msgid='eventslist_label_venueName',
+            i18n_domain='eventslist',
+        ),
+    ),
+    ComputedField(
         name='parentTitle',
         widget=ComputedField._properties['widget'](
             label='Parenttitle',
@@ -576,6 +584,11 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         venue = self.getVenueObject()
         if venue:
             return "/".join(venue.getPhysicalPath())
+
+    def getVenueRegion(self):
+        venue = self.getVenueObject()
+        if venue:
+            return venue.getRegion()
 
     def getEventTypeVocab(self):
       vocab = event_type_vocabulary(self).by_value.keys()

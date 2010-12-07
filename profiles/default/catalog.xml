@@ -8,20 +8,23 @@
          meta_type="FieldIndex">
       <indexed_attr value="isTopEvent"/>
   </index>
+  <index name="getVenueRegion" 
+         meta_type="FieldIndex">
+      <indexed_attr value="getVenueRegion"/>
+  </index>
   <column value="getVenueName"/>
   <column value="getVenuePath"/>
   <column value="getParentTitle"/>
   <column value="getFullTitle"/>
-<!-- ##code-section FOOT -->
+  <column value="getRegion"/>
   <index name="getStartDate" 
          meta_type="DateIndex">
     <indexed_attr value="getStartDate"/>
   </index>
+  <column value="getStartDate"/>
   <index name="getEndDate" 
          meta_type="DateIndex">
     <indexed_attr value="getEndDate"/>
   </index>
-  <column value="getStartDate"/>
   <column value="getEndDate"/>
-<!-- ##/code-section FOOT -->
 </object>

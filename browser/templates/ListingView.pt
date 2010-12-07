@@ -7,9 +7,36 @@
 <div metal:fill-slot="main">
   <div  
     tal:define="
-      user_can_edit python:view.userCanEdit(user);">
+      user_can_edit python:view.userCanEdit(user);
+      region request/region|string:;
+      ">
   <h1 i18n:translate="listing_title">Listing</h1>
 
+  <div>
+    <form tal:attributes="action request/URL" method="post">
+      <table class="listing">
+        <th colspan="2"><strong>Filter Options</strong></th>
+        <tr>
+          <td i18n:translate="regions">Regions</td>
+          <td>
+            <select name="region"
+                    onchange="this.form.submit();">
+              <option tal:attributes="value python:''" tal:content="string:All"/>
+              <tal:block tal:repeat="aRegion view/getRegions">
+                <option selected 
+                      tal:condition="python:aRegion==region"
+                      tal:attributes="value aRegion" tal:content="aRegion"/>
+                <option 
+                      tal:condition="python:aRegion!=region"
+                      tal:attributes="value aRegion" tal:content="aRegion"/>
+              </tal:block>
+            </select>
+          </td>
+        </tr>
+      </table>
+    </form>
+    
+  </div>
   <p i18n:translate="" tal:condition="nothing">
   In this context, you can create, edit and manage event workflow. You can also navigate to event registrations to accept or reject applications.
   </p>
@@ -26,12 +53,14 @@
                   events python:view.getEvents(
                                   filter='current', 
                                   review_state=state,
+                                  region=region,
                                   sort_order='ascending')">
     <table tal:condition="events" class="listing">
       <thead>
         <tr>
           <th i18n:translate="event_title">Title</th>
           <th i18n:translate="event_date">Dates</th>
+          <th i18n:translate="event_description">Description</th>
           <th i18n:translate="event_venue">Venue</th>
           <th tal:condition="user_can_edit"
               i18n:translate="event_state">State</th>
@@ -86,6 +115,9 @@
                   <span i18n:translate="event_to">to</span>
                   <span tal:replace="python:ampm and event.getEndDate.AMPMMinutes()or event.getEndDate.TimeMinutes()">End Time</span>
               </tal:sameday>
+            </td>
+            <td>
+              <span tal:content="event/description">description</span>
             </td>
             <td tal:define="venue_path event/getVenuePath">
                <a tal:condition="python:venue_path"
