@@ -37,7 +37,7 @@ class ListingView(BrowserView):
 
         # check if the sign up form has been submitted
         form = self.request.form
-        if form.get('form.submitted', False):
+        #if form.get('form.submitted', False):
 
         return self.index()
 
