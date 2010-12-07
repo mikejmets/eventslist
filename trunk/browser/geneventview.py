@@ -32,8 +32,6 @@ class IGenEventForm(Interface):
           value_type = schema.Choice(
             vocabulary=dow_vocab)
           )
-    title = schema.TextLine(title=_(u"Title"),
-          required=True)
     start_date = schema.Datetime(title=_(u"Start Date"),
         description=_(u"Use format CCYY-MM-DD HH:MM"),
           required=True)
@@ -67,7 +65,6 @@ class GenEventForm(formbase.PageForm):
         end_delta = timedelta(
             hours=end_date.hour, minutes=end_date.minute)
         dows = data['dows']
-        title = data['title']
 
         cnt = 1
         while True:
@@ -80,7 +77,10 @@ class GenEventForm(formbase.PageForm):
             notify(ObjectCreatedEvent(obj))
             context._setObject(id, obj)
             obj = context._getOb(id)
-            sub_title = "%s - %s" % (title, cnt)
+            #default if no Subject
+            sub_title = "%s" % context.Title()
+            if len(context.Subject()) > 0:
+              sub_title = "%s" % context.Subject()[0]
             sub_start_date = event_date + start_delta
             sub_end_date = event_date + end_delta
             kwargs = {
