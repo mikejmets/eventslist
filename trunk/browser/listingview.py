@@ -39,19 +39,6 @@ class ListingView(BrowserView):
         form = self.request.form
         if form.get('form.submitted', False):
 
-            post_back = False
-            count = 0
-            for k in form.keys():
-                obj = self.getEventByUID(k)
-                if obj:
-                    count += 1
-                    logging.info('%s %s' % (obj.Title(), form[k]))
-                    subjects = form[k]
-                    obj.setSubject(subjects)
-                else:
-                    logging.info('=========NOT FOUND %s' % (k))
-            logging.info('Found %s events' % (count))
-
         return self.index()
 
 
@@ -61,6 +48,16 @@ class ListingView(BrowserView):
         #if user has role
         return 'EventManager' in roles
 
+    def getRegions(self):
+        context = aq_inner(self.context)
+        pc = getToolByName(self, 'portal_catalog')
+        brains = pc.searchResults(portal_type='Venue', review_state="published")
+        regions = []
+        for brain in brains:
+          if brain.getRegion not in regions:
+            regions.append(brain.getRegion)
+
+        return regions
 
     def getEventByUID(self, UID):
         """ fetch an object by uid """
@@ -72,7 +69,8 @@ class ListingView(BrowserView):
             return None
 
     def getEvents(self,
-           filter=None, sort_order='ascending', review_state='published'):
+           filter=None, region=None, 
+           sort_order='ascending', review_state='published'):
 
         #Using portal catalog
         query = {
@@ -81,6 +79,9 @@ class ListingView(BrowserView):
             'sort_on': 'getStartDate',
             'sort_order': sort_order,
             }
+
+        if region != 'all' and region is not None:
+          query['getVenueRegion'] = region
 
         if review_state == 'all':
           query['review_state'] = ['submitted', 'published']
