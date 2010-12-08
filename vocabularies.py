@@ -15,7 +15,7 @@ def event_type_vocabulary(context):
   """Vocabulary with event types
   """
   categories = ['Concert', 'Conference', 'Exhibition', 
-                'Festival', 'Market', 'Show', 'Sport']
+                'Festival', 'Market', 'Party', 'Show', 'Sport']
   terms = []
   for cat in categories:
     terms.append(SimpleTerm(value=cat, token=cat, title=cat))
