@@ -117,7 +117,7 @@
               </tal:sameday>
             </td>
             <td>
-              <span tal:content="event/description">description</span>
+              <span tal:content="event/Description">description</span>
             </td>
             <td tal:define="venue_path event/getVenuePath">
                <a tal:condition="python:venue_path"
