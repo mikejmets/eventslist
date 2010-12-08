@@ -29,7 +29,7 @@ class IAddEventForm(Interface):
         required=True)
     event_type = schema.Choice(
           title=_(u"Event Type"),
-          description=u"Select one event catagory",
+          description=u"Select one event category",
           source='Products.eventslist.vocabularies.EventTypeVocabulary',
           )
     description = schema.Text(title=_(u"Short Event Description"),
@@ -155,6 +155,7 @@ class AddEventForm(form.Form):
             'eventUrl': eventUrl,
             'reviewUrl': reviewUrl,
             'ticketUrl': ticketUrl,
+            'terms': data['terms'],
             }
         if venue_uid == 0 and new_venue:
           kwargs['location'] = new_venue
