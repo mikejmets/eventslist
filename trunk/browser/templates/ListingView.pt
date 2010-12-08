@@ -9,6 +9,7 @@
     tal:define="
       user_can_edit python:view.userCanEdit(user);
       region request/region|string:;
+      event_type request/event_type|string:;
       ">
   <h1 i18n:translate="listing_title">Listing</h1>
 
@@ -17,7 +18,24 @@
       <table class="listing">
         <th colspan="2"><strong>Filter Options</strong></th>
         <tr>
-          <td i18n:translate="regions">Regions</td>
+          <td i18n:translate="category">Category</td>
+          <td i18n:translate="region">Region</td>
+        </tr>
+        <tr>
+          <td>
+            <select name="event_type"
+                    onchange="this.form.submit();">
+              <option tal:attributes="value python:''" tal:content="string:All"/>
+              <tal:block tal:repeat="aType view/getEventTypeVocab">
+                <option selected 
+                      tal:condition="python:aType==event_type"
+                      tal:attributes="value aType" tal:content="aType"/>
+                <option 
+                      tal:condition="python:aType!=event_type"
+                      tal:attributes="value aType" tal:content="aType"/>
+              </tal:block>
+            </select>
+          </td>
           <td>
             <select name="region"
                     onchange="this.form.submit();">
@@ -54,6 +72,7 @@
                                   filter='current', 
                                   review_state=state,
                                   region=region,
+                                  event_type=event_type,
                                   sort_order='ascending')">
     <table tal:condition="events" class="listing">
       <thead>
@@ -80,13 +99,15 @@
                 icon_path python:'/%s/eventslist-calendar/Icon_%s.png' % (site, subject);
                 icon_exists python:subject and exists('here%s' % icon_path);">
               <img tal:condition="icon_exists"
-                   tal:attributes="src icon_path"/>
+                   tal:attributes="src icon_path;
+                                   title subject;"/>
               <span tal:condition="not: icon_exists"
                     tal:content="python:len(event.Subject) > 0 and event.Subject[0] or ''">subject</span>
             </td>
             <td>
               <a href=""
-                tal:attributes="href string:${event/getURL}/view"
+                tal:attributes="href string:${event/getURL}/view;
+                                title event/Description;"
                 tal:content="event/Title">event title</a>
             </td>
             <td>

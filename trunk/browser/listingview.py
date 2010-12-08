@@ -22,6 +22,8 @@ from Products.Five import BrowserView
 from zope.interface import implements
 from Products.CMFDynamicViewFTI.browserdefault import BrowserDefaultMixin
 
+from Products.eventslist.vocabularies \
+    import event_type_vocabulary, venue_vocabulary
 
 class ListingView(BrowserView):
     """
@@ -68,8 +70,13 @@ class ListingView(BrowserView):
         else :
             return None
 
+    def getEventTypeVocab(self):
+      vocab = event_type_vocabulary(self).by_value.keys()
+      vocab.sort()
+      return vocab
+        
     def getEvents(self,
-           filter=None, region=None, 
+           filter=None, region=None, event_type=None,
            sort_order='ascending', review_state='published'):
 
         #Using portal catalog
@@ -82,6 +89,9 @@ class ListingView(BrowserView):
 
         if region != 'all' and region is not None:
           query['getVenueRegion'] = region
+
+        if event_type != 'all' and event_type is not None:
+          query['Subject'] = event_type
 
         if review_state == 'all':
           query['review_state'] = ['submitted', 'published']
