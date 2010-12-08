@@ -58,9 +58,9 @@
     <table tal:condition="events" class="listing">
       <thead>
         <tr>
+          <th i18n:translate="event_category">Category</th>
           <th i18n:translate="event_title">Title</th>
           <th i18n:translate="event_date">Dates</th>
-          <th i18n:translate="event_description">Description</th>
           <th i18n:translate="event_venue">Venue</th>
           <th tal:condition="user_can_edit"
               i18n:translate="event_state">State</th>
@@ -74,6 +74,11 @@
         <tal:loop repeat="event events">
           <tr tal:define="oddrow repeat/event/odd;"
               tal:attributes="class python:oddrow and 'odd' or 'even'">
+            <td>
+              <span tal:content="python:len(event.Subject) > 0 and event.Subject[0] or ''">subject</span>
+              <img tal:condition="python:False and len(event.Subject) > 0"
+                tal:attributes="src python:'Icon_%s.png' % event.Subject[0]"/>
+            </td>
             <td>
               <a href=""
                 tal:attributes="href string:${event/getURL}/view"
@@ -115,9 +120,6 @@
                   <span i18n:translate="event_to">to</span>
                   <span tal:replace="python:ampm and event.getEndDate.AMPMMinutes()or event.getEndDate.TimeMinutes()">End Time</span>
               </tal:sameday>
-            </td>
-            <td>
-              <span tal:content="event/Description">description</span>
             </td>
             <td tal:define="venue_path event/getVenuePath">
                <a tal:condition="python:venue_path"
