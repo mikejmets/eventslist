@@ -76,7 +76,8 @@
               tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td tal:define="
                 subject python:len(event.Subject) > 0 and event.Subject[0] or '';
-                icon_path python:'/eventslist/eventslist-calendar/Icon_%s.png' % subject;
+                site python:portal.getPhysicalPath()[1];
+                icon_path python:'/%s/eventslist-calendar/Icon_%s.png' % (site, subject);
                 icon_exists python:subject and exists('here%s' % icon_path);">
               <img tal:condition="icon_exists"
                    tal:attributes="src icon_path"/>
