@@ -16,10 +16,11 @@
   <div>
     <form tal:attributes="action request/URL" method="post">
       <table class="listing">
-        <th colspan="2"><strong>Filter Options</strong></th>
+        <th colspan="3"><strong>Filter Options</strong></th>
         <tr>
           <td i18n:translate="category">Category</td>
           <td i18n:translate="region">Region</td>
+          <td i18n:translate="start_date">Start Date</td>
         </tr>
         <tr>
           <td>
@@ -40,6 +41,19 @@
             <select name="region"
                     onchange="this.form.submit();">
               <option tal:attributes="value python:''" tal:content="string:All"/>
+              <tal:block tal:repeat="aRegion view/getRegions">
+                <option selected 
+                      tal:condition="python:aRegion==region"
+                      tal:attributes="value aRegion" tal:content="aRegion"/>
+                <option 
+                      tal:condition="python:aRegion!=region"
+                      tal:attributes="value aRegion" tal:content="aRegion"/>
+              </tal:block>
+            </select>
+          </td>
+          <td>
+            <select name="start_date"
+                    onchange="this.form.submit();">
               <tal:block tal:repeat="aRegion view/getRegions">
                 <option selected 
                       tal:condition="python:aRegion==region"

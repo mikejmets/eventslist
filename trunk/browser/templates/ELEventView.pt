@@ -27,209 +27,239 @@
  <div tal:define="
     user_can_manage python:view.userCanManage(user);
     user_can_edit python:view.userCanEdit(user);
+    errors view/validateEvent|nothing;
+    subevents view/getSubEvents;
   ">
   <div class="vevent">
 
-  <h1 tal:content="context/getFullTitle" class="documentFirstHeading summary">
-      Title or id
-  </h1>
-
-  <p tal:condition="request/input_errors|nothing"
-     tal:content="request/input_errors"
-     style="color: red; font-weight: bold;">correct the indicated errors</p>
-
-  <div class="eventDetails vcard">
-    <table class="vertical listing"
-           summary="Event details" i18n:attributes="summary summary_event_details;">
-
-      <tbody>
-          <tr>
-              <th i18n:translate="event_what">What</th>
-              <td tal:content="python:modules['string'].join(context.Subject(), ' ')">
-                  Subject
-              </td>
-          </tr>
-          <tr>
-              <th i18n:translate="event_when">When</th>
+    <div class="error_listing"
+        tal:condition="errors">
+      <p i18n:translate="resolve_errors_description" >You must resolve the following issues before you can sumbit this event for publication</p>
+      <tal:errors >
+        <table class="listing">
+          <thead>
+            <tr>
+              <th i18n:translate="error_message">Message</th>
+              <th i18n:translate="error_title">Events</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr tal:repeat="error errors">
               <td>
-                  <tal:differentday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() != context.getEndDate().Date()">
-                      <abbr class="dtstart"
-                            tal:attributes="title python:context.getStartDate()"
-                            tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
-                          Start Date Time
-                      </abbr>
-                      <span i18n:translate="event_to">to</span> <br />
-                      <abbr class="dtend"
-                            tal:attributes="title python:context.getEndDate()"
-                            tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
-                          End Date Time
-                      </abbr>
-                  </tal:differentday>
-
-                  <tal:sameday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() == context.getEndDate().Date()"
-                               tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
-                      <abbr class="dtstart"
-                            style="display: none;"
-                            tal:attributes="title python:context.getStartDate()"
-                            tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
-                          Start Date Time
-                      </abbr>
-                      <abbr class="dtend"
-                            style="display: none;"
-                            tal:attributes="title python:context.getEndDate()"
-                            tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
-                          End Date Time
-                      </abbr>
-                      <span tal:replace="python:context.getStartDate().Day()">DOW</span>
-                      <span tal:replace="python:context.toLocalizedTime(context.getStartDate())">Start Date Time</span> <br />
-                      <span i18n:translate="event_from">from</span>
-                      <span tal:replace="python:ampm and context.getStartDate().AMPMMinutes() or context.getStartDate().TimeMinutes()">Start Time</span>
-                      <span i18n:translate="event_to">to</span>
-                      <span tal:replace="python:ampm and context.getEndDate().AMPMMinutes()or context.getEndDate().TimeMinutes()">End Time</span>
-                  </tal:sameday>
-
+                  <span tal:content='error/msg'>Message</span>
               </td>
-          </tr>
-          <tr tal:condition="context/getSignupStartDate | nothing">
-              <th i18n:translate="event_signup_start">Registration opens on</th>
-              <td class="location">
-                <span tal:replace="python:context.toLocalizedTime(context.getSignupStartDate())">signup starts</span>
-              </td>
-          </tr>
-          <tr tal:condition="context/getSignupEndDate | nothing">
-              <th i18n:translate="event_signup_ends">Registration closes on</th>
-              <td class="location">
-                <span tal:replace="python:context.toLocalizedTime(context.getSignupEndDate())">signup ends</span>
-              </td>
-          </tr>
-          <tr tal:condition="context/getEarlybirdEndDate | nothing">
-              <th i18n:translate="early_bird_ends">Early-bird bonus until</th>
-              <td class="location">
-                <span tal:replace="python:context.toLocalizedTime(context.getEarlybirdEndDate())">signup ends</span>
-              </td>
-          </tr>
-          <tr tal:define="locationText context/getLocation;
-                              venueObj context/getVenueObject">
-              <th i18n:translate="event_where">Where</th>
               <td>
-                  <a tal:condition="python:venueObj"
-                     tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
-                     tal:content="structure venueObj/getLongName">Oslo, Norway
-                  </a>
-                  <span class="location" 
-                      tal:condition="python:not venueObj and locationText"
-                      tal:content="locationText"/>
+                <span tal:repeat="obj error/objects">
+                  <span tal:condition="repeat/obj/odd">,</span>
+                  <a href=""
+                    tal:attributes="href string:${obj/absolute_url}/edit"
+                    tal:content="obj/Title">event title</a>
+                </span>
               </td>
-          </tr>
-          <tr tal:condition="context/getContactName">
-              <th i18n:translate="contact_name">Contact Name</th>
-              <td class="fn"
-                  tal:content="context/getContactName">John Smith</td>
-          </tr>
-          <tr tal:define="contact_email context/getContactEmail"
-              tal:condition="context/getContactEmail">
-              <th i18n:translate="contact_email">Contact Email</th>
-              <td class="email">
-                  <a tal:replace="structure python: context.spamProtect(contact_email)" />
-              </td>
-          </tr>
-          <tr tal:condition="context/contact_phone">
-              <th i18n:translate="contact_phone">Contact Phone</th>
-              <td class="tel"
-                  tal:content="context/contact_phone">555-GET-PLONE</td>
-          </tr>
-          <tr tal:condition="context/getContactMobile">
-              <th i18n:translate="contact_mobile">Contact Mobile</th>
-              <td class="tel"
-                  tal:content="context/getContactMobile">555-GET-PLONE</td>
-          </tr>
-          <tr tal:condition="context/getContactFax">
-              <th i18n:translate="contact_fax">Contact Fax</th>
-              <td class="tel"
-                  tal:content="context/getContactFax">555-GET-PLONE</td>
-          </tr>
-          <tr>
-              <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
-              <td>
-                  <a href="#"
-                    tal:attributes="href string:${context/absolute_url}/vcs_view"
-                     title="Add this item to your vCal calendar"
-                     i18n:attributes="title title_add_to_vcal;">
-                      <img tal:replace="structure context/icon_export_vcal.png" src="" alt="" />
-                      <span i18n:translate="label_add_to_vcal">vCal</span></a><br />
-                  <a href="#"
-                    tal:attributes="href string:${context/absolute_url}/ics_view"
-                     title="Add this item to your iCal calendar"
-                     i18n:attributes="title title_add_to_ical;">
-                      <img tal:replace="structure context/icon_export_ical.png" src="" alt="" />
-                      <span i18n:translate="label_add_to_ical">iCal</span></a>
-              </td>
-          </tr>
-          <tr>
-              <th i18n:translate="facebook_like">Facebook</th>
-              <td tal:define="fb_url python:'http://www.facebook.com/plugins/like.php?href=%s&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21' % context.absolute_url()" >
-                <iframe tal:attributes="src fb_url" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
-              </td>
-          </tr>
+            </tr>
+          </tbody>
+        </table>
 
-      </tbody>
-    </table>
-  </div>
-
-  <!-- ****************************************************************** -->
-
-  <tal:byline tal:condition="user_can_edit">
-    <div metal:use-macro="context/document_byline/macros/byline">
-        Get the byline - contains details about author and modification date.
+      </tal:errors>
     </div>
-  </tal:byline>
+    <br tal:condition="errors"/>
 
-  <p class="documentDescription description"
-     tal:content="context/Description"
-     tal:condition="context/Description">
-      Description
-  </p>
+    <div class="eventDetails vcard">
+      <table class="vertical listing"
+             summary="Event details" i18n:attributes="summary summary_event_details;">
 
-  <div tal:condition="context/getText|nothing">
-      <div tal:replace="structure context/getText" />
-  </div>
+        <tbody>
+            <tr>
+                <th i18n:translate="event_what">What</th>
+                <td tal:content="python:modules['string'].join(context.Subject(), ' ')">
+                    Subject
+                </td>
+            </tr>
+            <tr>
+                <th i18n:translate="event_when">When</th>
+                <td>
+                    <tal:differentday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() != context.getEndDate().Date()">
+                        <abbr class="dtstart"
+                              tal:attributes="title python:context.getStartDate()"
+                              tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
+                            Start Date Time
+                        </abbr>
+                        <span i18n:translate="event_to">to</span> <br />
+                        <abbr class="dtend"
+                              tal:attributes="title python:context.getEndDate()"
+                              tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
+                            End Date Time
+                        </abbr>
+                    </tal:differentday>
 
-<!--
-  <div tal:condition="context/getTileImage|nothing">
-      <div tal:replace="structure context/getTileImage" />
-  </div>
--->
+                    <tal:sameday tal:condition="python:context.getStartDate() and context.getEndDate() and context.getStartDate().Date() == context.getEndDate().Date()"
+                                 tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                        <abbr class="dtstart"
+                              style="display: none;"
+                              tal:attributes="title python:context.getStartDate()"
+                              tal:content="python:context.toLocalizedTime(context.getStartDate(), long_format=1)">
+                            Start Date Time
+                        </abbr>
+                        <abbr class="dtend"
+                              style="display: none;"
+                              tal:attributes="title python:context.getEndDate()"
+                              tal:content="python:context.toLocalizedTime(context.getEndDate(), long_format=1)">
+                            End Date Time
+                        </abbr>
+                        <span tal:replace="python:context.getStartDate().Day()">DOW</span>
+                        <span tal:replace="python:context.toLocalizedTime(context.getStartDate())">Start Date Time</span> <br />
+                        <span i18n:translate="event_from">from</span>
+                        <span tal:replace="python:ampm and context.getStartDate().AMPMMinutes() or context.getStartDate().TimeMinutes()">Start Time</span>
+                        <span i18n:translate="event_to">to</span>
+                        <span tal:replace="python:ampm and context.getEndDate().AMPMMinutes()or context.getEndDate().TimeMinutes()">End Time</span>
+                    </tal:sameday>
 
-  <p>
-    <span tal:condition="context/getPriceRange|nothing">
-      <strong><span i18n:translate="price_range">Price Range:</span></strong>
-      <span tal:content="context/getPriceRange">Price</span>
-      &nbsp; &nbsp;
-    </span>
-    <span tal:condition="context/getTicketUrl|nothing">
-      <a class="url"
-         tal:attributes="href context/getTicketUrl"
-         i18n:translate="book_online">
-         Book Online &hellip;</a>
-      &nbsp;
-    </span>
-  </p>
-  <p>
-    <span tal:condition="context/event_url|nothing">
-      <a class="url"
-         tal:attributes="href context/event_url"
-         i18n:translate="visit_organiser_website">
-         Visit the performer&apos;s website &hellip;</a>
-      &nbsp; &nbsp;
-    </span>
-    <span tal:condition="context/getReviewUrl|nothing">
-      <a class="url"
-         tal:attributes="href context/getReviewUrl"
-         i18n:translate="read_review">
-         Read a review of event &hellip;</a>
-    </span>
-  </p>
+                </td>
+            </tr>
+            <tr tal:condition="context/getSignupStartDate | nothing">
+                <th i18n:translate="event_signup_start">Registration opens on</th>
+                <td class="location">
+                  <span tal:replace="python:context.toLocalizedTime(context.getSignupStartDate())">signup starts</span>
+                </td>
+            </tr>
+            <tr tal:condition="context/getSignupEndDate | nothing">
+                <th i18n:translate="event_signup_ends">Registration closes on</th>
+                <td class="location">
+                  <span tal:replace="python:context.toLocalizedTime(context.getSignupEndDate())">signup ends</span>
+                </td>
+            </tr>
+            <tr tal:condition="context/getEarlybirdEndDate | nothing">
+                <th i18n:translate="early_bird_ends">Early-bird bonus until</th>
+                <td class="location">
+                  <span tal:replace="python:context.toLocalizedTime(context.getEarlybirdEndDate())">signup ends</span>
+                </td>
+            </tr>
+            <tr tal:define="locationText context/getLocation;
+                                venueObj context/getVenueObject">
+                <th i18n:translate="event_where">Where</th>
+                <td>
+                    <a tal:condition="python:venueObj"
+                       tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+                       tal:content="structure venueObj/getLongName">Oslo, Norway
+                    </a>
+                    <span class="location" 
+                        tal:condition="python:not venueObj and locationText"
+                        tal:content="locationText"/>
+                </td>
+            </tr>
+            <tr tal:condition="context/getContactName">
+                <th i18n:translate="contact_name">Contact Name</th>
+                <td class="fn"
+                    tal:content="context/getContactName">John Smith</td>
+            </tr>
+            <tr tal:define="contact_email context/getContactEmail"
+                tal:condition="context/getContactEmail">
+                <th i18n:translate="contact_email">Contact Email</th>
+                <td class="email">
+                    <a tal:replace="structure python: context.spamProtect(contact_email)" />
+                </td>
+            </tr>
+            <tr tal:condition="context/contact_phone">
+                <th i18n:translate="contact_phone">Contact Phone</th>
+                <td class="tel"
+                    tal:content="context/contact_phone">555-GET-PLONE</td>
+            </tr>
+            <tr tal:condition="context/getContactMobile">
+                <th i18n:translate="contact_mobile">Contact Mobile</th>
+                <td class="tel"
+                    tal:content="context/getContactMobile">555-GET-PLONE</td>
+            </tr>
+            <tr tal:condition="context/getContactFax">
+                <th i18n:translate="contact_fax">Contact Fax</th>
+                <td class="tel"
+                    tal:content="context/getContactFax">555-GET-PLONE</td>
+            </tr>
+            <tr>
+                <th i18n:translate="heading_add_to_calendar">Add event to calendar</th>
+                <td>
+                    <a href="#"
+                      tal:attributes="href string:${context/absolute_url}/vcs_view"
+                       title="Add this item to your vCal calendar"
+                       i18n:attributes="title title_add_to_vcal;">
+                        <img tal:replace="structure context/icon_export_vcal.png" src="" alt="" />
+                        <span i18n:translate="label_add_to_vcal">vCal</span></a><br />
+                    <a href="#"
+                      tal:attributes="href string:${context/absolute_url}/ics_view"
+                       title="Add this item to your iCal calendar"
+                       i18n:attributes="title title_add_to_ical;">
+                        <img tal:replace="structure context/icon_export_ical.png" src="" alt="" />
+                        <span i18n:translate="label_add_to_ical">iCal</span></a>
+                </td>
+            </tr>
+            <tr>
+                <th i18n:translate="facebook_like">Facebook</th>
+                <td tal:define="fb_url python:'http://www.facebook.com/plugins/like.php?href=%s&amp;layout=button_count&amp;show_faces=true&amp;width=100&amp;action=like&amp;colorscheme=light&amp;height=21' % context.absolute_url()" >
+                  <iframe tal:attributes="src fb_url" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:100px; height:21px;" allowTransparency="true"></iframe>
+                </td>
+            </tr>
 
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ****************************************************************** -->
+    <h1 tal:content="context/getFullTitle" class="documentFirstHeading summary">
+        Title or id
+    </h1>
+    <tal:byline tal:condition="user_can_edit">
+      <div metal:use-macro="context/document_byline/macros/byline">
+          Get the byline - contains details about author and modification date.
+      </div>
+    </tal:byline>
+
+    <div class="elevent_content">
+      <p class="documentDescription description"
+         tal:content="context/Description"
+         tal:condition="context/Description">
+          Description
+      </p>
+
+      <div tal:condition="context/getText|nothing">
+          <div tal:replace="structure context/getText" />
+      </div>
+
+    <!--
+      <div tal:condition="context/getTileImage|nothing">
+          <div tal:replace="structure context/getTileImage" />
+      </div>
+    -->
+
+      <p>
+        <span tal:condition="context/getPriceRange|nothing">
+          <strong><span i18n:translate="price_range">Price Range:</span></strong>
+          <span tal:content="context/getPriceRange">Price</span>
+          &nbsp; &nbsp;
+        </span>
+        <span tal:condition="context/getTicketUrl|nothing">
+          <a class="url"
+             tal:attributes="href context/getTicketUrl"
+             i18n:translate="book_online">
+             Book Online &hellip;</a>
+          &nbsp;
+        </span>
+      </p>
+      <p>
+        <span tal:condition="context/event_url|nothing">
+          <a class="url"
+             tal:attributes="href context/event_url"
+             i18n:translate="visit_organiser_website">
+             Visit the performer&apos;s website &hellip;</a>
+          &nbsp; &nbsp;
+        </span>
+        <span tal:condition="context/getReviewUrl|nothing">
+          <a class="url"
+             tal:attributes="href context/getReviewUrl"
+             i18n:translate="read_review">
+             Read a review of event &hellip;</a>
+        </span>
+      </p>
+
+    </div>
   </div>
 
     <!-- ********************************************************************** -->
@@ -246,6 +276,7 @@
           <span tal:content="eventparent/Title">parent</span>
         </a>
       </p>
+
       <strong><span>State:&nbsp; </span></strong>
       <span tal:content="view/getReviewState">Draft</span>
       &nbsp;&nbsp;
@@ -258,32 +289,32 @@
       <a tal:attributes="href string:${context/absolute_url}/delete_confirmation"
         i18n:translate="delete_event">Delete</a>
       &nbsp;&nbsp;
-      <span tal:condition="not:isValid">
+      <span tal:condition="nothing|not:isValid">
         <a tal:attributes="href string:${context/absolute_url}/validate_event"
          i18n:translate="validate_event">Validate</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Publish')">
+      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Publish')">
         <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=publish"
          i18n:translate="publish_all">Publish All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and view.isActionAllowed('Retract')">
+      <span tal:condition="python:not eventparent and subevents and view.isActionAllowed('Retract')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=retract"
          i18n:translate="retract_all">Retract All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Accept')">
+      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Accept')">
         <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=accept"
          i18n:translate="accept_all">Accept All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and view.isActionAllowed('Reject')">
+      <span tal:condition="python:not eventparent and subevents and view.isActionAllowed('Reject')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=reject"
          i18n:translate="reject_all">Reject All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and isValid and view.isActionAllowed('Submit for publication')">
+      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Submit for publication')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=submit"
          i18n:translate="submit_all">Submit All</a>
         &nbsp;&nbsp;
@@ -653,7 +684,6 @@
 
     <!-- ============================================================= -->
     <tal:events 
-        tal:define="subevents view/getSubEvents"
         tal:condition="python:subevents or user_can_edit">
     <h3 i18n:translate="external_events">Events within the Parent Event</h3>
     <p tal:condition="user_can_edit" >

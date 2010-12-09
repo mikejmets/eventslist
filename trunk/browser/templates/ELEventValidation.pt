@@ -14,7 +14,7 @@
 
   <h2 i18n:translate="error_list">List of Errors</h2>
   <tal:errors 
-      tal:define="errors view/validate_event|nothing">
+      tal:define="errors view/validateEvent|nothing">
     <table tal:condition="errors" class="listing">
       <thead>
         <tr>
