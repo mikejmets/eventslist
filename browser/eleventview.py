@@ -261,7 +261,7 @@ class ELEventView(BrowserView):
         return "%s%s" % (state[0].upper(), state[1:])
 
 
-    def validate_event(self):
+    def validateEvent(self):
         """ get the available workflow actions on the object
         """
         context = aq_inner(self.context)

@@ -169,4 +169,8 @@
      permission="eventslist.ContributeEvents"
      />
 
+  <browser:resourceDirectory
+     name="eventslist.stylesheets"
+     directory="stylesheets"
+     />
 </configure>
