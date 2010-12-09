@@ -19,7 +19,13 @@ div.error_listing td{
     border: 1px solid Black;
 }
 div.elevent_content {
-    border: 1px solid Black;
-    padding: 5px;
-    width: 600px !important;
+}
+
+#form-widgets-title {
+  size:30;
+  width: 500px;
+}
+
+.uri-field {
+  width: 400px;
 }

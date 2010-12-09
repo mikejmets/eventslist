@@ -102,7 +102,6 @@ class AddEventForm(form.Form):
       self.request.locale = setup_locale(self.request)
       #Hide the editable border and tabs in Plone
       self.request.set('disable_border', True)
-      #self.fields['start_date'].default = datetime.now()
     
     @button.buttonAndHandler(u'Submit')
     def handleApply(self, action):
