@@ -1,0 +1,25 @@
+div.error_listing {
+    background-color:#FFDDCC;
+    border: 1px solid #DD0000;
+    padding: 5px;
+    width: 600px;
+}
+
+div.error_listing table {
+    border: 1px solid #DD0000;
+    background-color:White;
+}
+div.error_listing tr {
+    border: 1px solid Black;
+}
+div.error_listing th{
+    border: 1px solid Black;
+}
+div.error_listing td{
+    border: 1px solid Black;
+}
+div.elevent_content {
+    border: 1px solid Black;
+    padding: 5px;
+    width: 600px !important;
+}
