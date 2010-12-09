@@ -68,7 +68,7 @@ class IAddEventForm(Interface):
           required=False) # MJM HACK
     dows = schema.List(
           title=_(u"Days of the Week"),
-          description=u"iSelect the day(s) of the week the event is on",
+          description=u"Select the day(s) of the week the event is on",
           required=False,
           value_type=schema.Choice(
             source='Products.eventslist.vocabularies.DOWVocabulary',),
@@ -85,7 +85,7 @@ class IAddEventForm(Interface):
     contact_mobile = schema.TextLine(title=_(u"Contact Mobile Number"),
         required=False)
     terms = schema.Bool(title=_(u"Terms and Conditions"),
-        required=False)
+        required=True)
 
 
 class AddEventForm(form.Form):
@@ -119,10 +119,11 @@ class AddEventForm(form.Form):
         end_date = data['end_date']
         end_delta = timedelta(
             hours=end_date.hour, minutes=end_date.minute)
-        mulitple_events = True
-        if event_date == end_date - end_delta:
-            mulitple_events = False
         dows = data['dows']
+        mulitple_events = False
+        if event_date != end_date - end_delta \
+        and len(dows) > 0:
+            mulitple_events = True
         title = data['title']
         event_type = data['event_type']
         description = data['description']
