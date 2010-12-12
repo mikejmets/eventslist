@@ -85,6 +85,7 @@ class IAddEventForm(Interface):
     contact_mobile = schema.TextLine(title=_(u"Contact Mobile Number"),
         required=False)
     terms = schema.Bool(title=_(u"Terms and Conditions"),
+        description=u"I agree to the Terms and Conditions of EventsList - see www.eventslist.co.za/terms",
         required=True)
 
 
@@ -97,11 +98,11 @@ class AddEventForm(form.Form):
       form.Form.update(self)
 
     def updateWidgets(self):
-      form.Form.updateWidgets(self)
       #Ensure date widgets work
       self.request.locale = setup_locale(self.request)
       #Hide the editable border and tabs in Plone
       self.request.set('disable_border', True)
+      form.Form.updateWidgets(self)
     
     @button.buttonAndHandler(u'Submit')
     def handleApply(self, action):
