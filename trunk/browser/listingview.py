@@ -76,7 +76,8 @@ class ListingView(BrowserView):
       return vocab
         
     def getEvents(self,
-           filter=None, region=None, event_type=None,
+           filter=None, region=None, event_type=None, 
+           start_date='', end_date='',
            sort_order='ascending', review_state='published'):
 
         #Using portal catalog
@@ -98,12 +99,33 @@ class ListingView(BrowserView):
         else:
           query['review_state'] = review_state
 
-        if filter == 'current':
-          query['getEndDate'] = {'query':DateTime(), 'range':'min'}
-        elif filter == 'past':
-          query['getEndDate'] = {'query':DateTime(), 'range':'max'}
+        if len(start_date) > 0 and len(end_date) > 0:
+          #query['getStartDate'] = {'query':[start_date, end_date], 'range':'minmax'}
+          start_date_list = start_date.split('/')
+          start_date = "%s/%s/%s" % (
+              start_date_list[1], start_date_list[0], start_date_list[2])
+          end_date_list = end_date.split('/')
+          end_date= "%s/%s/%s" % (
+              end_date_list[1], end_date_list[0], end_date_list[2])
+          query['getStartDate'] = {'query':end_date, 'range':'max'}
+          query['getEndDate'] = {'query':start_date, 'range':'min'}
+        elif len(start_date) > 0:
+          start_date_list = start_date.split('/')
+          start_date = "%s/%s/%s" % (
+              start_date_list[1], start_date_list[0], start_date_list[2])
+          query['getEndDate'] = {'query':start_date, 'range':'min'}
+        elif len(end_date) > 0:
+          end_date_list = end_date.split('/')
+          end_date= "%s/%s/%s" % (
+              end_date_list[1], end_date_list[0], end_date_list[2])
+          query['getStartDate'] = {'query':end_date, 'range':'min'}
+        else:
+          if filter == 'current':
+            query['getEndDate'] = {'query':DateTime(), 'range':'min'}
+          elif filter == 'past':
+            query['getEndDate'] = {'query':DateTime(), 'range':'max'}
 
-        #logging.info('getEvents: %s' % query)
+        logging.info('getEvents: %s' % query)
         pc = getToolByName(self, 'portal_catalog')
         events = pc.searchResults(query)
         return events

@@ -4,23 +4,33 @@
       i18n:domain="plone">
 <body>
 
+<metal:js fill-slot="javascript_head_slot">
+<script type="text/javascript">
+  jQuery(document).ready(function() {
+    jQuery(".datepicker").datepicker();
+  });
+</script>
+</metal:js>
+
 <div metal:fill-slot="main">
   <div  
     tal:define="
       user_can_edit python:view.userCanEdit(user);
       region request/region|string:;
       event_type request/event_type|string:;
+      start_date request/start_date|string:;
+      end_date request/end_date|string:;
       ">
   <h1 i18n:translate="listing_title">Listing</h1>
-
   <div>
     <form tal:attributes="action request/URL" method="post">
       <table class="listing">
-        <th colspan="3"><strong>Filter Options</strong></th>
+        <th colspan="4"><strong>Filter Options</strong></th>
         <tr>
           <td i18n:translate="category">Category</td>
           <td i18n:translate="region">Region</td>
           <td i18n:translate="start_date">Start Date</td>
+          <td i18n:translate="end_date">End Date</td>
         </tr>
         <tr>
           <td>
@@ -52,17 +62,12 @@
             </select>
           </td>
           <td>
-            <select name="start_date"
+            <input tal:attributes="value start_date" name=start_date type="text" class="datepicker"
                     onchange="this.form.submit();">
-              <tal:block tal:repeat="aRegion view/getRegions">
-                <option selected 
-                      tal:condition="python:aRegion==region"
-                      tal:attributes="value aRegion" tal:content="aRegion"/>
-                <option 
-                      tal:condition="python:aRegion!=region"
-                      tal:attributes="value aRegion" tal:content="aRegion"/>
-              </tal:block>
-            </select>
+          </td>
+          <td>
+            <input tal:attributes="value end_date" name=end_date type="text" class="datepicker"
+                    onchange="this.form.submit();">
           </td>
         </tr>
       </table>
@@ -86,6 +91,8 @@
                                   filter='current', 
                                   review_state=state,
                                   region=region,
+                                  start_date=start_date,
+                                  end_date=end_date,
                                   event_type=event_type,
                                   sort_order='ascending')">
     <table tal:condition="events" class="listing">
