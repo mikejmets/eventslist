@@ -59,11 +59,11 @@ class IAddEventForm(Interface):
           description=u"Sumbit a new venue and we'll add it for you",
           required=False)
     start_date = schema.Datetime(title=_(u"Start Date"),
-          description=_(u"Enter the first date of the event and it's starting time (DD/MM/CCYY HH:MM)"),
+          description=_(u"Enter the first date of the event and it's starting time"),
           default=datetime.now() + timedelta(hours=1)- timedelta(minutes=datetime.now().minute),
           required=False) #MJM HACK
     end_date = schema.Datetime(title=_(u"End Date"),
-          description=_(u"Enter the last date of the event and it's ending time (DD/MM/CCYY HH:MM)"),
+          description=_(u"Enter the last date of the event and it's ending time"),
           default=datetime.now() + timedelta(hours=2)- timedelta(minutes=datetime.now().minute),
           required=False) # MJM HACK
     dows = schema.List(
