@@ -92,6 +92,12 @@ def postInstall(context):
         # wft = getToolByName(site, 'portal_workflow')
         # wft.doActionFor(folder, 'publish')
 
+    # Hide action "My Folder": a link is now available in the portlet.
+    actions = site.portal_actions.listActions()
+    for action in actions:
+      if action.id == 'mystuff':
+        action.visible = False
+  	
     # do other configuration stuff
     enableMemberSelfRegistration(site)
     setupEventsListOther(site)
