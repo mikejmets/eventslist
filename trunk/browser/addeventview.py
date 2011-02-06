@@ -3,7 +3,7 @@ from Acquisition import aq_inner
 from zope import schema
 from zope.event import notify
 from zope.lifecycleevent import ObjectCreatedEvent, ObjectModifiedEvent
-from zope.interface import Interface
+from zope.interface import Interface, alsoProvides
 from z3c.form import form, button, field
 from z3c.form.interfaces import INPUT_MODE
 from plone.app.z3cform.layout import wrap_form
@@ -20,6 +20,7 @@ from Products.CMFPlone import PloneMessageFactory as _
 
 from Products.eventslist.content.elevent import ELEvent
 from Products.eventslist.content.interfaces import IELEvent
+from Products.eventslist.interfaces import ITermSingleCheckBoxWidget
 
 class IAddEventForm(Interface):
     """Define the fields of our form
@@ -38,16 +39,16 @@ class IAddEventForm(Interface):
     text = schema.Text(title=_(u"Long Event Description"),
           description=u"Enter the full details of your event",
           required=False)
-    performer_url = schema.URI(title=_(u"Performer URL"),
-          description=u"Provide the URL of performer's website.",
+    performer_url = schema.URI(title=_(u"Performer Link"),
+          description=u"Provide the Link of performer's website.",
           default="http://",
           required=False)
-    ticket_url = schema.URI(title=_(u"Ticket URL"),
-          description=u"Provide the URL of where a ticket for the event can be purchased online",
+    ticket_url = schema.URI(title=_(u"Ticket Link"),
+          description=u"Provide the Link of where a ticket for the event can be purchased online",
           default="http://",
           required=False)
-    review_url = schema.URI(title=_(u"Review URL"),
-          description=u"Provide the URL of where this event has been reviewed",
+    review_url = schema.URI(title=_(u"Review Link"),
+          description=u"Provide the Link of where this event has been reviewed",
           default="http://",
           required=False)
     venue = schema.Choice(
@@ -84,8 +85,7 @@ class IAddEventForm(Interface):
         required=False)
     contact_mobile = schema.TextLine(title=_(u"Contact Mobile Number"),
         required=False)
-    terms = schema.Bool(title=_(u"Terms and Conditions"),
-        description=u"I agree to the Terms and Conditions of EventsList - see www.eventslist.co.za/terms",
+    terms = schema.Bool(title=_(u"I agree to the Terms and Conditions of EventsList"),
         required=True)
 
 
@@ -96,6 +96,7 @@ class AddEventForm(form.Form):
     def update(self):
       self.fields["text"].widgetFactory = WysiwygFieldWidget
       form.Form.update(self)
+      alsoProvides(self.widgets['terms'], ITermSingleCheckBoxWidget)
 
     def updateWidgets(self):
       #Ensure date widgets work
