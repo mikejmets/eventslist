@@ -178,5 +178,12 @@
      template="templates/TermsWidget.pt" 
      /> 
 
+  <browser:page
+    name="carousel-view"                  
+    for="Products.eventslist.content.interfaces.IELEvent"
+    template="templates/elevent_tile.pt"
+    permission="zope2.View"
+    layer="collective.carousel.interfaces.ICollectiveCarouselLayer"      
+    />
 
 </configure>

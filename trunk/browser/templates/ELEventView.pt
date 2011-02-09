@@ -320,7 +320,7 @@
         &nbsp;&nbsp;
       </span>
       <tal:actions 
-        condition="python: isValid"
+        condition="python: False and isValid"
         repeat="action view/getNextWorkflowActions">
         <a tal:attributes="href action/url"
            tal:condition="python:action['category'] == 'workflow'"
@@ -686,21 +686,21 @@
     <tal:events 
         tal:condition="python:subevents or user_can_edit">
     <h3 i18n:translate="external_events">Events within the Parent Event</h3>
-    <p tal:condition="user_can_edit" >
+    <p tal:condition="python:False and user_can_edit" >
         To view only the sub events of this event, 
         <a href="#"
           tal:attributes="href string:${context/absolute_url}/sub_event_listing"
           i18n:translate="add_internal_event">click here</a>
     </p>
+    <a href="#"
+      tal:condition="user_can_edit"
+      tal:attributes="href string:${context/absolute_url}/create-sub-events"
+      i18n:translate="add_internal_event">Add a sub-event</a>
     <p tal:condition="user_can_edit" >
       <a href="#"
         tal:attributes="href string:${context/absolute_url}/generate-sub-events"
-        i18n:translate="generate_internal_event">Generate multiple sub events</a>
+        i18n:translate="generate_internal_event">Generate multiple sub-events</a>
     </p>
-    <a href="#"
-      tal:condition="user_can_edit"
-      tal:attributes="href string:${context/absolute_url}/createObject?type_name=ELEvent"
-      i18n:translate="add_internal_event">Add an sub-event</a>
     <div tal:condition="subevents">
       <table class="listing">
         <thead>
@@ -737,9 +737,11 @@
             </tal:has_external_value>
             <metal:events metal:define-macro="sub_event_details">
             <td>
-              <a href="#"
+              <a tal:condition="nothing"
+                href="#"
                 tal:attributes="href string:${evt/absolute_url}/view"
                 tal:content="evt/Title">event</a>
+              <span tal:content="evt/Title">event</span>
             </td>
             <td>
               <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() != evt.getEndDate().Date()">
@@ -801,7 +803,7 @@
               <span tal:content="evt/getReviewState">Draft</span>
             </td>
             <td  tal:condition="user_can_edit">
-              <span tal:condition="python:evt.getReviewState() != 'published'">
+              <span tal:condition="python: False and evt.getReviewState() not in ['submitted', 'published']">
                 <a tal:attributes="href string:${evt/absolute_url}/edit"
                 i18n:translate="agenda_edit">Edit</a>
                 <br />

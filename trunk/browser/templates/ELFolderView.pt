@@ -10,9 +10,6 @@
       user_can_edit python:view.userCanEdit(user);">
   <h1 tal:content="context/Title">Events</h1>
 
-  <p i18n:translate="">
-  In this context, you can create, edit and manage event workflow. You can also navigate to event registrations to accept or reject applications.
-  </p>
 
   <p tal:condition="python: 0 and user_can_edit">
     <a href=""
