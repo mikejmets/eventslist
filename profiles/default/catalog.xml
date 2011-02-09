@@ -12,6 +12,10 @@
          meta_type="FieldIndex">
       <indexed_attr value="getVenueRegion"/>
   </index>
+  <index name="getVenuePath" 
+         meta_type="ExtendedPathIndex">
+      <indexed_attr value="getVenuePath"/>
+  </index>
   <column value="getVenueName"/>
   <column value="getVenuePath"/>
   <column value="getParentTitle"/>
