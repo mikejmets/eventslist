@@ -562,7 +562,7 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         """
         venue = self.getVenueObject()
         if venue:
-            return venue.getLongName()
+            return venue.getShortName()
         #otheriwse
         return self.getLocation()
 
@@ -583,7 +583,10 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         """
         venue = self.getVenueObject()
         if venue:
-            return "/".join(venue.getPhysicalPath())
+            path = "/".join(venue.getPhysicalPath())
+            logging.info('getVenuePath = "%s"' % path)
+            return path
+        return ''
 
     def getVenueRegion(self):
         venue = self.getVenueObject()
@@ -651,5 +654,5 @@ def getParentEvent(obj):
             if portal_type == 'ELEvent':
                 return obj.aq_inner.aq_parent
             return getParentEvent(obj.aq_inner.aq_parent)
-        return getParentEvent(obj.aq_inner.aq_parent)
+        return 
 

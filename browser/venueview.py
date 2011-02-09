@@ -49,15 +49,18 @@ class VenueView(BrowserView):
 
     def getEvents(self):
         context = self.context
+        path = "/".join(context.getPhysicalPath())
         pc = getToolByName(context, 'portal_catalog')
         query = {
             'portal_type':'ELEvent',
-            'getVenueName':context.getLongName(),
+            'isTopEvent': True,
+            'getVenuePath': {'query': path, 'depth':2},
             'review_state':'published',
             'getEndDate':{'query': DateTime(),
                           'range': 'min'},
             'sort_on':'getStartDate',
             }
+        logging.info('getEvents query = "%s"' % query)
         brains = pc.searchResults(query)
 
         return brains

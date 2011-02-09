@@ -99,6 +99,6 @@ class GenEventForm(formbase.PageForm):
                  confirm, type='info')
 
         self.request.response.redirect(
-            "%s/sub_event_listing" % context.absolute_url())
+            "%s" % context.absolute_url())
         return ''
 
