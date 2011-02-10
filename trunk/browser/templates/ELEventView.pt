@@ -294,27 +294,27 @@
          i18n:translate="validate_event">Validate</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Publish')">
+      <span tal:condition="python:isValid and view.isActionAllowed('Publish')">
         <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=publish"
          i18n:translate="publish_all">Publish All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and subevents and view.isActionAllowed('Retract')">
+      <span tal:condition="python:view.isActionAllowed('Retract')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=retract"
          i18n:translate="retract_all">Retract All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Accept')">
+      <span tal:condition="python:isValid and view.isActionAllowed('Accept')">
         <a tal:attributes="href string:${context/absolute_url}/do-manager-action-on-all?action=accept"
          i18n:translate="accept_all">Accept All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and subevents and view.isActionAllowed('Reject')">
+      <span tal:condition="python:view.isActionAllowed('Reject')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=reject"
          i18n:translate="reject_all">Reject All</a>
         &nbsp;&nbsp;
       </span>
-      <span tal:condition="python:not eventparent and subevents and isValid and view.isActionAllowed('Submit for publication')">
+      <span tal:condition="python:isValid and view.isActionAllowed('Submit for publication')">
         <a tal:attributes="href string:${context/absolute_url}/do-contributor-action-on-all?action=submit"
          i18n:translate="submit_all">Submit All</a>
         &nbsp;&nbsp;
