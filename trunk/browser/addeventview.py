@@ -97,6 +97,7 @@ class AddEventForm(form.Form):
       self.fields["text"].widgetFactory = WysiwygFieldWidget
       form.Form.update(self)
       alsoProvides(self.widgets['terms'], ITermSingleCheckBoxWidget)
+      #self.widgets['terms'].addClass('KAK')
 
     def updateWidgets(self):
       #Ensure date widgets work
