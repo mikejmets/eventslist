@@ -569,10 +569,11 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
     def setVenue(self, value):
         """ Set the venue
         """
+        #Delete existing values
         rc = getToolByName(self, 'reference_catalog')
+        rc.deleteReferences(self, relationship='elevent_venue')
+        self.venue = None
         if value == '0':
-          self.venue = None
-          rc.deleteReferences(self, relationship='elevent_venue')
           return
         self.venue = value
         venue = rc.lookupObject(value)
