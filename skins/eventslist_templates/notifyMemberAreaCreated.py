@@ -8,3 +8,10 @@ elffolder = getattr(context, elfId)
 elffolder.setTitle(elfTitle)
 elffolder.reindexObject()
 
+fId = 'myimages'
+fTitle = 'My Images'
+context.invokeFactory('Folder',id=fId)
+folder = getattr(context, fId)
+folder.setTitle(fTitle)
+folder.reindexObject()
+
