@@ -364,6 +364,6 @@ def getParentVenue(obj):
             if portal_type == 'Venue':
                 return obj.aq_inner.aq_parent
             return getParentVenue(obj.aq_inner.aq_parent)
-        return getParentVenue(obj.aq_inner.aq_parent)
+        return 
 ##/code-section module-footer
 
