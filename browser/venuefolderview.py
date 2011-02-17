@@ -53,7 +53,7 @@ class VenueFolderView(BrowserView):
         #if user has role
         if 'EventManager' in roles or 'EventContributor' in roles:
             #user has local access
-            return 'Contributor' in roles
+            return 'Manager' in roles
         return False
 
 
