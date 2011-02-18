@@ -218,7 +218,7 @@ class Venue(BaseFolder, BrowserDefaultMixin):
 
     def getDefaultSubRegion(self):
         if self.isTopVenue():
-            return 'Cape Town'
+            return 'City of Cape Town'
         #otherwise
         return ''
 
