@@ -14,4 +14,6 @@ context.invokeFactory('Folder',id=fId)
 folder = getattr(context, fId)
 folder.setTitle(fTitle)
 folder.reindexObject()
-
+#wft = context.portal_workflow
+#context.plone_log("wfti %s" % wft)
+#doActionFor(folder, 'publish')
