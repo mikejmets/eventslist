@@ -736,11 +736,10 @@
             </tal:has_external_value>
             <metal:events metal:define-macro="sub_event_details">
             <td>
-              <a tal:condition="nothing"
+              <a 
                 href="#"
                 tal:attributes="href string:${evt/absolute_url}/view"
                 tal:content="evt/Title">event</a>
-              <span tal:content="evt/Title">event</span>
             </td>
             <td>
               <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() != evt.getEndDate().Date()">
