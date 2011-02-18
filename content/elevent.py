@@ -584,10 +584,9 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         """
         venue = self.getVenueObject()
         if venue:
-            path = "/".join(venue.getPhysicalPath())
-            logging.info('getVenuePath = "%s"' % path)
-            return path
-        return ''
+            return "/".join(venue.getPhysicalPath())
+        #ExtendedPathIndex requires a path so use self is no venue
+        return "/".join(self.getPhysicalPath())
 
     def getVenueRegion(self):
         venue = self.getVenueObject()
