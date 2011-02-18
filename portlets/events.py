@@ -71,10 +71,11 @@ class Renderer(base.Renderer):
         return self._data()
 
     def all_events_link(self):
-        if self.have_events_folder:
-            return '%s/events' % self.navigation_root_url
-        else:
-            return '%s/events_listing' % self.navigation_root_url
+        return '%s/eventslist' % self.navigation_root_url
+        #if self.have_events_folder:
+        #    return '%s/eventslist' % self.navigation_root_url
+        #else:
+        #    return '%s/events_listing' % self.navigation_root_url
 
     def prev_events_link(self):
         if (self.have_events_folder and
