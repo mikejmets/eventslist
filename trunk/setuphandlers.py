@@ -138,14 +138,14 @@ def enableMemberSelfRegistration(site):
 def setupEventsListOther(site):
     # Add ELEvent as a type to be displayed in the Events folder
     # Update the events collection portal types criteria topic with ELEvent
-    plone_events_folder = getToolByName(site, 'events')
-    if plone_events_folder:
-        ptc = plone_events_folder.aggregator.crit__Type_ATPortalTypeCriterion
-        if ptc:
-            portal_types = [t for t in ptc.Value()]
-            if 'ELEvent' not in portal_types:
-                portal_types.append('ELEvent')
-            ptc.setValue(tuple(portal_types))
+    #plone_events_folder = getToolByName(site, 'events')
+    #if plone_events_folder:
+    #    ptc = plone_events_folder.aggregator.crit__Type_ATPortalTypeCriterion
+    #    if ptc:
+    #        portal_types = [t for t in ptc.Value()]
+    #        if 'ELEvent' not in portal_types:
+    #            portal_types.append('ELEvent')
+    #        ptc.setValue(tuple(portal_types))
 
     # Add ELEvent as a type to be displayed in the calendar portlet
     ct = getToolByName(site, 'portal_calendar')
