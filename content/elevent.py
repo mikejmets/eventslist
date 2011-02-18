@@ -500,6 +500,15 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         if parent:
             return parent.contactEmail
 
+    def getContactPhone(self):
+        if self.isTemporary():
+            return ''
+        if self.contact_phone() and len(self.contact_phone()) > 0:
+            return self.contact_phone()
+        parent = getParentEvent(self)
+        if parent:
+            return parent.contact_phone()
+
     def getContactMobile(self):
         if self.isTemporary():
             return ''
@@ -508,6 +517,42 @@ class ELEvent(BaseFolder, ATEvent, BrowserDefaultMixin):
         parent = getParentEvent(self)
         if parent:
             return parent.contactMobile
+
+    def getTicketUrl(self):
+        if self.isTemporary():
+            return ''
+        if self.ticketUrl and len(self.ticketUrl) > 0:
+            return self.ticketUrl
+        parent = getParentEvent(self)
+        if parent:
+            return parent.ticketUrl
+
+    def getReviewUrl(self):
+        if self.isTemporary():
+            return ''
+        if self.reviewUrl and len(self.reviewUrl) > 0:
+            return self.reviewUrl
+        parent = getParentEvent(self)
+        if parent:
+            return parent.reviewUrl
+
+    def getEventUrl(self):
+        if self.isTemporary():
+            return ''
+        if self.eventUrl and len(self.eventUrl) > 0:
+            return self.eventUrl
+        parent = getParentEvent(self)
+        if parent:
+            return parent.eventUrl
+
+    def getPriceRange(self):
+        if self.isTemporary():
+            return ''
+        if self.priceRange and len(self.priceRange) > 0:
+            return self.priceRange
+        parent = getParentEvent(self)
+        if parent:
+            return parent.priceRange
 
     def getNextWorkflowActions(self):
         """ get the available workflow actions on the object

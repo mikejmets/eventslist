@@ -158,10 +158,10 @@
                     <a tal:replace="structure python: context.spamProtect(contact_email)" />
                 </td>
             </tr>
-            <tr tal:condition="context/contact_phone">
-                <th i18n:translate="contact_phone">Contact Phone</th>
+            <tr tal:condition="context/getContactPhone">
+                <th i18n:translate="getContactPhone">Contact Phone</th>
                 <td class="tel"
-                    tal:content="context/contact_phone">555-GET-PLONE</td>
+                    tal:content="context/getContactPhone">555-GET-PLONE</td>
             </tr>
             <tr tal:condition="context/getContactMobile">
                 <th i18n:translate="contact_mobile">Contact Mobile</th>
@@ -243,9 +243,9 @@
         </span>
       </p>
       <p>
-        <span tal:condition="context/event_url|nothing">
+        <span tal:condition="context/getEventUrl|nothing">
           <a class="url"
-             tal:attributes="href context/event_url"
+             tal:attributes="href context/getEventUrl"
              i18n:translate="visit_organiser_website">
              Visit the performer&apos;s website &hellip;</a>
           &nbsp; &nbsp;
