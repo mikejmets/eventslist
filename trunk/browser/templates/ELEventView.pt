@@ -29,6 +29,10 @@
     errors view/validateEvent|nothing;
     subevents view/getSubEvents;
   ">
+  <div tal:condition="user_can_manage">
+    <a tal:attributes="href python:'%s/@@seo-context-properties' % here.absolute_url()"
+      > SEO Properties </a>
+  </div>
   <div class="vevent">
 
     <div class="error_listing"
