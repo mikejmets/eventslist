@@ -58,6 +58,11 @@ class ELEventView(BrowserView):
             return 'Contributor' in roles or 'Owner' in roles
         return False
 
+    def userIsOwner(self, user):
+        context = aq_inner(self.context)
+        roles = user.getRolesInContext(context)
+        return 'Owner' in roles
+
 
     def getSubEvents(self):
         """ get the available workflow actions on the object

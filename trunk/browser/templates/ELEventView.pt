@@ -32,7 +32,7 @@
   <div class="vevent">
 
     <div class="error_listing"
-        tal:condition="errors">
+        tal:condition="python: len(errors) > 0 and view.userIsOwner(user)">
       <p i18n:translate="resolve_errors_description" >You must resolve the following issues before you can sumbit this event for publication</p>
       <tal:errors >
         <table class="listing">
