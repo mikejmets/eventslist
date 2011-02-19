@@ -8,6 +8,10 @@
      tal:define="user_can_edit python:view.userCanEdit(user);">
 
   <h1>Venues</h1>
+  <div tal:condition="user_can_edit">
+    <a tal:attributes="href python:'%s/@@seo-context-properties' % here.absolute_url()"
+      > SEO Properties </a>
+  </div>
 
   <a href="#"
     tal:condition="user_can_edit"
