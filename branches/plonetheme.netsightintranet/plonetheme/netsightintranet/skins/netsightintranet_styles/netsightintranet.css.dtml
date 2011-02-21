@@ -7,8 +7,13 @@
 
 /* Events List customisations */
 
+.portlet {
+  border-top: &dtml-borderWidth; &dtml-borderStyle; #FFFFFF;
+}
+
 #toolbar-holder{
-    height:0px;
+  height:0px;
+  border-bottom: &dtml-borderThickness; &dtml-borderStyle; #FFFFFF;
 }
 
 #portal-column-two {
@@ -101,7 +106,6 @@ input.destructive {
 /**** portlets ****/
 
 .portlet{
-    border-top: &dtml-borderWidth; &dtml-borderStyle; &dtml-borderColor2;;
     border-bottom: &dtml-borderWidth; &dtml-borderStyle; &dtml-borderColor3;;
 }
     .portletHeader{
@@ -170,10 +174,6 @@ dl.portalMessage{
   }
 
 /**** editing ****/
-#toolbar-holder{
-        border-bottom: &dtml-borderThickness; &dtml-borderStyle; &dtml-borderColor2;;
-}
-
 #edit-toolbar{
     background-color: &dtml-globalBackgroundColor;;
 }
