@@ -1,0 +1,40 @@
+<tal:block 
+  define="item_url context/getURL|context/absolute_url;
+          item_description context/Description;
+          item_title_or_id context/pretty_title_or_id;
+        ">
+  <div tal:condition="exists:context/getTileImage" style="float:right;" >
+    <a href="#"
+       tal:attributes="href item_url;">
+       <img tal:attributes="src python:'%s/tileImage_thumb' % item_url" 
+            height="128" width="128" />
+    </a>
+  </div>                
+
+  <h2 class="tileHeadline">
+      <span>Featured Event: &nbsp;</span>
+      <a href="#"
+         class="summary url"
+         tal:attributes="href item_url;"
+         tal:content="item_title_or_id">
+          Item Title
+      </a>
+  </h2>
+
+  <div class="tileBody">
+      <span tal:omit-tag="" tal:condition="not:item_description">
+          &nbsp;
+      </span>
+      <span class="description" tal:content="item_description">
+          description
+      </span>
+  </div>
+
+  <p class="tileFooter">
+      <a href=""
+         tal:attributes="href item_url;"
+         i18n:translate="read_more">
+      Read More&hellip;
+      </a>
+  </p>
+</tal:block>

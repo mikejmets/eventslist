@@ -25,7 +25,7 @@
       <tbody>
           <tr>
               <th i18n:translate="event_what">What</th>
-              <td tal:content="python:modules['string'].join(context.getSubject(), ' ')">
+              <td tal:content="python:modules['string'].join(context.Subject(), ' ')">
                   Subject
               </td>
           </tr>
