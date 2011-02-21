@@ -1,0 +1,280 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
+
+
+  <h1 tal:content="context/Title" class="documentFirstHeading summary">
+      Title or id
+  </h1>
+
+
+  <tal:byline tal:condition="user_can_edit">
+    <div metal:use-macro="context/document_byline/macros/byline">
+        Get the byline - contains details about author and modification date.
+    </div>
+  </tal:byline>
+
+  <div style="float:right;">
+    <script type="text/javascript"><!--
+      google_ad_client = "pub-0376216002411660";
+      /* EventsList Venue Ad */
+      google_ad_slot = "6613012155";
+      google_ad_width = 300;
+      google_ad_height = 250;
+      //-->
+    </script>
+    <script type="text/javascript"
+      src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+    </script>
+  </div>
+
+
+  <table class="listing vertical" style="width:350px">
+    <tbody>
+      <tr tal:condition="context/Description">
+        <th i18n:translate="description">Description</th>
+        <td>
+          <span metal:use-macro="python:context.widget('description', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getCountry">
+        <th i18n:translate="country">Country</th>
+        <td>
+          <span metal:use-macro="python:context.widget('country', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getRegion">
+        <th i18n:translate="region">Region</th>
+        <td>
+          <span metal:use-macro="python:context.widget('region', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getSubRegion">
+        <th i18n:translate="subRegion">SubRegion</th>
+        <td>
+          <span metal:use-macro="python:context.widget('subRegion', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getCity">
+        <th i18n:translate="city">City</th>
+        <td>
+          <span metal:use-macro="python:context.widget('city', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getSuburb">
+        <th i18n:translate="suburb">Suburb</th>
+        <td>
+          <span metal:use-macro="python:context.widget('suburb', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getAddress">
+        <th i18n:translate="address">Address</th>
+        <td>
+          <span metal:use-macro="python:context.widget('address', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getPhone">
+        <th i18n:translate="phone">Phone</th>
+        <td>
+          <span metal:use-macro="python:context.widget('phone', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getLatitude">
+        <th i18n:translate="latitude">Latitude</th>
+        <td>
+          <span metal:use-macro="python:context.widget('latitude', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getLongitude">
+        <th i18n:translate="longitude">Longitude</th>
+        <td>
+          <span metal:use-macro="python:context.widget('longitude', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getPostalAddress">
+        <th i18n:translate="postalAddress">PostalAddress</th>
+        <td>
+          <span metal:use-macro="python:context.widget('postalAddress', mode='view')" />
+        </td>
+      </tr>
+      <tr tal:condition="context/getWebsite">
+        <th i18n:translate="website">Website</th>
+        <td>
+          <a 
+            tal:attributes="href context/getWebsite"
+            tal:content="python:'Link to website'">url</a>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <!-- ****************************************************************** -->
+
+  <tal:venue 
+      tal:condition="user_can_edit">
+    <h2 i18n:translate="manage_the_venue">Manage the Venue</h2>
+
+    <div>
+      <div tal:condition="user_can_edit">
+        <a tal:attributes="href python:'%s/@@seo-context-properties' % here.absolute_url()"
+          > SEO Properties </a>
+      </div>
+
+      <a href="edit"
+        tal:attributes="href string:${context/absolute_url}/edit"
+        i18n:translate="edit_venue">Edit this venue</a>
+      &nbsp;&nbsp;
+      <a tal:define="parentvenue context/getParentVenue|nothing"
+         tal:condition="python:parentvenue"
+         href="#" tal:attributes="href string:${parentvenue/absolute_url}/view">
+        <span i18n:translate="up_to">Up to</span>
+        <span tal:content="parentvenue/Title">parent</span>
+      </a>
+    </div>
+  </tal:venue>
+
+  <tal:subvenues 
+      tal:define="subvenues context/getSubVenues;"
+      tal:condition="python:subvenues or user_can_edit">
+    <h3 i18n:translate="venues_within_venue">Venues within the venue complex</h3>
+    <a href="#"
+      tal:condition="user_can_edit"
+      tal:attributes="href string:${context/absolute_url}/createObject?type_name=Venue"
+      i18n:translate="add_sub_venue">Add an sub-venue</a>
+    <div tal:condition="subvenues">
+      <table class="listing">
+        <thead>
+          <tr>
+            <th i18n:translate="venue_name">Name</th>
+            <th tal:condition="user_can_edit"
+                i18n:translate="manage">Manage</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr tal:repeat="sub subvenues">
+            <td>
+              <a href="#"
+                tal:attributes="href string:${sub/absolute_url}/view"
+                tal:content="sub/Title">View</a>
+            </td>
+            <td  tal:condition="user_can_edit">
+              <a href="#"
+                tal:attributes="href string:${sub/absolute_url}/edit"
+                i18n:translate="venue_edit">Edit</a><br />
+              <a href="#"
+                tal:attributes="href string:${sub/absolute_url}/delete_confirmation"
+                i18n:translate="venue_delete">Delete</a><br />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </tal:subvenues>
+
+  <h3 i18n:translate="event_list">Current Events</h3>
+  <tal:events 
+      tal:define="events python:view.getEvents()">
+    <table tal:condition="events" class="listing">
+      <thead>
+        <tr>
+          <th i18n:translate="event_title">Title</th>
+          <th i18n:translate="event_date">Dates</th>
+          <th i18n:translate="event_venue">Venue</th>
+          <th tal:condition="user_can_edit"
+              i18n:translate="manage_event">Manage Event</th>
+          <th tal:condition="python: 0 and user_can_edit"
+              i18n:translate="registrations">Registrations</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tal:loop repeat="event events">
+          <tr tal:define="oddrow repeat/event/odd;"
+              tal:attributes="class python:oddrow and 'odd' or 'even'">
+            <td>
+              <a href=""
+                tal:attributes="href string:${event/getPath}/view"
+                tal:content="event/Title">event title</a>
+            </td>
+            <td>
+              <tal:differentday tal:condition="python:event.getStartDate and event.getEndDate and event.getStartDate.Date() != event.getEndDate.Date()">
+                  <abbr class="dtstart"
+                        tal:attributes="title python:event.getStartDate"
+                        tal:content="python:context.toLocalizedTime(event.getStartDate, long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <span i18n:translate="event_to">to</span> <br />
+                  <abbr class="dtend"
+                        tal:attributes="title python:event.getEndDate"
+                        tal:content="python:context.toLocalizedTime(event.getEndDate, long_format=1)">
+                      End Date Time
+                  </abbr>
+              </tal:differentday>
+
+              <tal:sameday tal:condition="python:event.getStartDate and event.getEndDate and event.getStartDate.Date() == event.getEndDate.Date()"
+                           tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+                  <abbr class="dtstart"
+                        style="display: none;"
+                        tal:attributes="title python:event.getStartDate"
+                        tal:content="python:context.toLocalizedTime(event.getStartDate, long_format=1)">
+                      Start Date Time
+                  </abbr>
+                  <abbr class="dtend"
+                        style="display: none;"
+                        tal:attributes="title python:event.getEndDate"
+                        tal:content="python:context.toLocalizedTime(event.getEndDate, long_format=1)">
+                      End Date Time
+                  </abbr>
+                  <span tal:replace="python:context.toLocalizedTime(event.getStartDate)">Start Date Time</span> <br />
+                  <span i18n:translate="event_from">from</span>
+                  <span tal:replace="python:ampm and event.getStartDate.AMPMMinutes() or event.getStartDate.TimeMinutes()">Start Time</span>
+                  <span i18n:translate="event_to">to</span>
+                  <span tal:replace="python:ampm and event.getEndDate.AMPMMinutes()or event.getEndDate.TimeMinutes()">End Time</span>
+              </tal:sameday>
+            </td>
+            <td>
+               <span tal:content="structure event/getVenueName">event venue</span>
+            </td>
+            <td tal:condition="user_can_edit">
+              <a href="edit"
+                tal:attributes="href string:${event/getPath}/edit"
+                i18n:translate="edit_event">Edit</a>
+              <br />
+              <a tal:attributes="href string:${event/getPath}/delete_confirmation"
+                i18n:translate="delete_event">Delete</a>
+              <br />
+              <tal:comment tal:condition="nothing"> 
+              <tal:actions 
+                  tal:define="eventview nocall:event/@@view_el_event"
+                  tal:repeat="action eventview/getNextWorkflowActions">
+                <a tal:attributes="href action/url"
+                   tal:condition="python:action['category'] == 'workflow'"
+                   tal:content="action/name">workflow action</a>
+                <br />
+              </tal:actions>
+              </tal:comment>
+            </td>
+            <td tal:condition="python: 0 and user_can_edit">
+              <a href=""
+                tal:attributes="href string:${event/getPath}/@@view_registrations"
+                i18n:translate="view_registrations">View and Manage Registrations</a>
+            </td>
+          </tr>
+        </tal:loop>
+      </tbody>
+    </table>
+
+    <p tal:condition="not:events" i18n:translate="">
+    There are no events.
+    </p>
+  </tal:events>
+
+</div>
+
+</body>
+</html>

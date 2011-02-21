@@ -1,0 +1,118 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      lang="en"
+      metal:use-macro="here/main_template/macros/master"
+      i18n:domain="plone">
+<body>
+
+<div metal:fill-slot="main"
+     tal:define="user_can_edit python:view.userCanEdit(user);">
+
+  <h1 tal:content="context/Title">Sub-Event View</h1>
+
+  <a href=""
+    tal:attributes="href string:${context/absolute_url}/view"
+    >Back to event</a>
+
+  <h3 i18n:translate="sub_events">Events within the Parent Event</h3>
+  <a href="#"
+    tal:attributes="href string:${context/absolute_url}/create-sub-events"
+    i18n:translate="add_internal_event">Add sub event</a>
+  <br />
+  <a href="#"
+    tal:attributes="href string:${context/absolute_url}/generate-sub-events"
+    i18n:translate="generate_internal_event">Generate multiple sub events</a>
+
+  <table class="listing"
+      tal:define="subevents context/getSubEvents;">
+    <thead>
+      <tr>
+        <th i18n:translate="title">Title</th>
+        <th i18n:translate="when_events">When</th>
+        <th i18n:translate="where_events">Where</th>
+        <th tal:condition="user_can_edit"
+            i18n:translate="item_manage">Manage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr tal:repeat="evt subevents">
+        <metal:events metal:define-macro="sub_event_details">
+        <td>
+          <a href="#"
+            tal:attributes="href string:${evt/absolute_url}/view"
+            tal:content="evt/Title">event</a>
+        </td>
+        <td>
+          <tal:differentday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() != evt.getEndDate().Date()">
+              <abbr class="dtstart"
+                    tal:attributes="title python:evt.getStartDate()"
+                    tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
+                  Start Date Time
+              </abbr>
+              <span i18n:translate="event_to">to</span> <br />
+              <abbr class="dtend"
+                    tal:attributes="title python:evt.getEndDate()"
+                    tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
+                  End Date Time
+              </abbr>
+          </tal:differentday>
+
+          <tal:sameday tal:condition="python:evt.getStartDate() and evt.getEndDate() and evt.getStartDate().Date() == evt.getEndDate().Date()"
+                       tal:define="ampm python:site_properties.getProperty('localLongTimeFormat').find('%p') >= 0">
+              <abbr class="dtstart"
+                    style="display: none;"
+                    tal:attributes="title python:evt.getStartDate()"
+                    tal:content="python:context.toLocalizedTime(evt.getStartDate(), long_format=1)">
+                  Start Date Time
+              </abbr>
+              <abbr class="dtend"
+                    style="display: none;"
+                    tal:attributes="title python:evt.getEndDate()"
+                    tal:content="python:context.toLocalizedTime(evt.getEndDate(), long_format=1)">
+                  End Date Time
+              </abbr>
+              <span tal:replace="python:evt.getStartDate().Day()">DOW</span>
+              <span tal:replace="python:context.toLocalizedTime(evt.getStartDate())">Start Date Time</span>
+              <br />
+              <span i18n:translate="event_from">from</span>
+              <span tal:replace="python:ampm and evt.getStartDate().AMPMMinutes() or evt.getStartDate().TimeMinutes()">Start Time</span>
+              <span i18n:translate="event_to">to</span>
+              <span tal:replace="python:ampm and evt.getEndDate().AMPMMinutes()or evt.getEndDate().TimeMinutes()">End Time</span>
+          </tal:sameday>
+        </td>
+        <td tal:define="locationText evt/getLocation;
+                            venueObj evt/getVenueObject">
+            <a tal:condition="nocall:venueObj"
+               tal:attributes="href python:'%s/view' % venueObj.absolute_url()" 
+               tal:content="venueObj/getShortName">Oslo, Norway
+            </a>
+            <span class="location" 
+                tal:condition="python:not venueObj and locationText"
+                tal:content="locationText">
+            </span>
+        </td>
+        </metal:events>
+        <td  tal:condition="user_can_edit">
+          <a href="#"
+            tal:attributes="href string:${evt/absolute_url}/edit"
+            i18n:translate="agenda_edit">Edit</a><br />
+          <a href="#"
+            tal:attributes="href string:${evt/absolute_url}/delete_confirmation"
+            i18n:translate="agenda_delete">Delete</a><br />
+          <tal:actions tal:repeat="action evt/getNextWorkflowActions">
+            <a tal:attributes="href action/url"
+               tal:condition="python:action['category'] == 'workflow'"
+               tal:content="action/name">workflow action</a><br />
+          </tal:actions>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <a href=""
+    tal:attributes="href string:${context/absolute_url}/view"
+    >Back to event</a>
+</div>
+
+</body>
+</html>
