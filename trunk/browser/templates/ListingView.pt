@@ -119,11 +119,8 @@
                 site python:portal.getPhysicalPath()[1];
                 icon_path python:'/%s/eventslist-calendar/Icon_%s.png' % (site, subject);
                 icon_exists python:subject and exists('here%s' % icon_path);">
-              <img tal:condition="icon_exists"
-                   tal:attributes="src icon_path;
+              <img tal:attributes="src icon_path;
                                    title subject;"/>
-              <span tal:condition="not: icon_exists"
-                    tal:content="python:len(event.Subject) > 0 and event.Subject[0] or ''">subject</span>
             </td>
             <td>
               <a href=""
