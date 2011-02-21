@@ -116,9 +116,7 @@
               tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td tal:define="
                 subject python:len(event.Subject) > 0 and event.Subject[0] or '';
-                site python:portal.getPhysicalPath()[1];
-                icon_path python:'/%s/eventslist-calendar/Icon_%s.png' % (site, subject);
-                icon_exists python:subject and exists('here%s' % icon_path);">
+                icon_path python:'/site-images/Icon_%s.png' % (subject);">
               <img tal:attributes="src icon_path;
                                    title subject;"/>
             </td>
