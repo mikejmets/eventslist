@@ -194,11 +194,12 @@
       </thead>
       <tbody>
         <tal:loop repeat="event events">
-          <tr tal:define="oddrow repeat/event/odd;"
+          <tr tal:define="oddrow repeat/event/odd;
+                          event_path python:'/%s' % '/'.join(event.getPath().split('/')[2:]);"
               tal:attributes="class python:oddrow and 'odd' or 'even'">
             <td>
               <a href=""
-                tal:attributes="href string:${event/getPath}/view"
+                tal:attributes="href string:${event_path}/view"
                 tal:content="event/Title">event title</a>
             </td>
             <td>
@@ -242,10 +243,10 @@
             </td>
             <td tal:condition="user_can_edit">
               <a href="edit"
-                tal:attributes="href string:${event/getPath}/edit"
+                tal:attributes="href string:${event_path}/edit"
                 i18n:translate="edit_event">Edit</a>
               <br />
-              <a tal:attributes="href string:${event/getPath}/delete_confirmation"
+              <a tal:attributes="href string:${event_path}/delete_confirmation"
                 i18n:translate="delete_event">Delete</a>
               <br />
               <tal:comment tal:condition="nothing"> 
@@ -261,7 +262,7 @@
             </td>
             <td tal:condition="python: 0 and user_can_edit">
               <a href=""
-                tal:attributes="href string:${event/getPath}/@@view_registrations"
+                tal:attributes="href string:${event_path}/@@view_registrations"
                 i18n:translate="view_registrations">View and Manage Registrations</a>
             </td>
           </tr>
