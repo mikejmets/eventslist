@@ -117,7 +117,7 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
 
             """ Venue required for top if no subs exist
             """
-            if not hasattr(top, 'venue') or top.venue is None:
+            if len(top.getVenueName()) == 0:
                 errors.append({'objects': (top,),
                   'msg':'event requires a venue '})
 
@@ -137,10 +137,7 @@ class EventsTool(UniqueObject, BaseContent, BrowserDefaultMixin):
 
             """ Venue required for subs if top doesn't exist
             """
-            if hasattr(top, 'venue') and hasattr(top, 'location') \
-               and hasattr(sub, 'venue') and hasattr(sub, 'venue') \
-               and top.venue is None and top.location is None \
-               and sub.venue is None and sub.location is None:
+            if len(top.getVenueName()) == 0 and len(sub.getVenueName()) == 0:
                 errors.append({'objects': (sub, top,),
                   'msg':'Either top or sub event requires a Venue '})
         #The End
