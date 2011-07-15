@@ -193,6 +193,7 @@ class AddEventForm(form.Form):
                   'endDate': dt2DT(sub_end_date),
                   }
               child.initializeArchetype(**kwargs)
+              child._renameAfterCreation()
               notify(ObjectModifiedEvent(child))
               cnt += 1
             event_date += timedelta(1)
