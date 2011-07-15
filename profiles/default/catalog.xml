@@ -31,4 +31,9 @@
     <indexed_attr value="getEndDate"/>
   </index>
   <column value="getEndDate"/>
+  <index name="getIsFeatured" 
+         meta_type="FieldIndex">
+    <indexed_attr value="getIsFeatured"/>
+  </index>
+  <column value="getIsFeatured"/>
 </object>
