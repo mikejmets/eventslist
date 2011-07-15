@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<rolemap>
+  <roles>
+    <role name="EventContributor"/>
+    <role name="EventManager"/>
+<!-- ##code-section roles -->
+<!-- ##/code-section roles -->
+  </roles>
+  <permissions>
+<!-- ##code-section permissions -->
+    <permission name="EventsList: Manage Events" acquire="False">
+      <role name="EventManager"/>
+    </permission>
+    <permission name="EventsList: Contribute Events" acquire="False">
+      <role name="EventContributor"/>
+    </permission>
+<!-- ##/code-section permissions -->
+  </permissions>
+</rolemap>

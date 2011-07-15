@@ -1,0 +1,38 @@
+<configure xmlns="http://namespaces.zope.org/zope" 
+           xmlns:browser="http://namespaces.zope.org/browser" 
+           xmlns:five="http://namespaces.zope.org/five"
+           xmlns:i18n="http://namespaces.zope.org/i18n"
+           i18n_domain="eventslist">
+  
+  <i18n:registerTranslations directory="locales" />
+
+  <include file="profiles.zcml" />
+
+  <include file="generatedsubscribers.zcml"/>
+
+  <include file="permissions.zcml" />
+  <include file="browser/browser.zcml"/>
+
+
+  <include file="handlers/configure.zcml" />
+
+  <include package="plone.app.z3cform" />
+  <!-- 
+    <include package="plone.directives.form" file="meta.zcml" />
+    <include package="plone.directives.form" />
+  -->
+  <include package=".portlets" />
+
+  <!-- DOW Vocabulary -->
+  <utility component=".vocabularies.dow_vocabulary"
+           name="Products.eventslist.vocabularies.DOWVocabulary"
+           provides="zope.schema.interfaces.IVocabularyFactory" />
+  <utility component=".vocabularies.event_type_vocabulary"
+           name="Products.eventslist.vocabularies.EventTypeVocabulary"
+           provides="zope.schema.interfaces.IVocabularyFactory" />
+  <utility component=".vocabularies.venue_vocabulary"
+           name="Products.eventslist.vocabularies.VenueVocabulary"
+           provides="zope.schema.interfaces.IVocabularyFactory" />
+
+
+</configure>
