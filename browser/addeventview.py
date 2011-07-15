@@ -168,6 +168,7 @@ class AddEventForm(form.Form):
           kwargs['startDate'] = dt2DT(start_date)
           kwargs['endDate'] = dt2DT(end_date)
         obj.initializeArchetype(**kwargs)
+        obj._renameAfterCreation()
         notify(ObjectModifiedEvent(obj))
 
         if mulitple_events:
