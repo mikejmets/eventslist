@@ -1,3 +1,4 @@
+import logging
 from datetime import timedelta
 from zope.interface import Interface
 from zope import schema
@@ -38,7 +39,10 @@ class IGenEventForm(Interface):
     end_date = schema.Datetime(title=_(u"End Date"),
           description=_(u"Use format CCYY-MM-DD HH:MM"),
           required=True)
-
+    venue = schema.Choice(title=_(u"Venue"),
+          description=_(u"If venue is not in this list, go to Venues and add it first"),
+          source='Products.eventslist.vocabularies.VenueVocabulary',
+          required=True)
 
 class GenEventForm(formbase.PageForm):
     form_fields = form.FormFields(IGenEventForm)
@@ -65,6 +69,7 @@ class GenEventForm(formbase.PageForm):
         end_delta = timedelta(
             hours=end_date.hour, minutes=end_date.minute)
         dows = data['dows']
+        venue = data['venue']
 
         cnt = 1
         while True:
@@ -88,6 +93,8 @@ class GenEventForm(formbase.PageForm):
                 'startDate': dt2DT(sub_start_date),
                 'endDate': dt2DT(sub_end_date),
                 }
+            if venue:
+                kwargs['venue'] = venue
             obj.initializeArchetype(**kwargs)
             notify(ObjectModifiedEvent(obj))
             cnt += 1
